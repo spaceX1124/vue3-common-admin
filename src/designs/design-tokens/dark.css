@@ -1,0 +1,19 @@
+/**
+ 在拥有 data-theme="pink" 的元素内选择所有 .dark 元素
+[data-theme='pink'] .dark {
+    background-color: pink;
+}
+选择 class 为 dark 且其祖先有 data-theme="pink" 的元素
+.dark[data-theme='pink'] {
+    color: white;
+}
+*/
+.dark,
+.dark[data-theme='default']{
+    --foreground: 242,242,242;
+}
+
+.dark[data-theme='pink'],
+[data-theme='pink'] .dark {
+    --foreground: 242,242,242;
+}

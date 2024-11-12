@@ -1,0 +1,3 @@
+import './light.css'
+
+export {}

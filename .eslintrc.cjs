@@ -35,7 +35,7 @@ module.exports = {
       'warn',
       {
         'singleline': {
-          'max': 3
+          'max': 6
         },
         'multiline': {
           'max': 1
