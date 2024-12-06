@@ -33,9 +33,15 @@ export function useTabBar () {
   const handleClick = async (key: string) => {
     await router.push(key)
   }
+  // 关闭tab
+  const handleClose = async (key: string) => {
+    await tabBarStore.closeTabByKey(key, router)
+  }
+
   return {
     currentTabs,
     currentActive,
-    handleClick
+    handleClick,
+    handleClose
   }
 }

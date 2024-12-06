@@ -336,7 +336,7 @@ $namespace: zs;
       & .#{$namespace}-sub-menu-content {
         padding-left: calc(
             var(--menu-item-indent) + var(--menu-level) * var(--menu-item-indent)
-        )!important;
+        );
       }
       // 选中第一级有子菜单的项li
       & > .#{$namespace}-sub-menu {

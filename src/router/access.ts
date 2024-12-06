@@ -39,9 +39,10 @@ async function generateAccessible (
   accessibleRoutes.forEach((route) => {
     router.addRoute(route)
   })
-
+  console.log(accessibleRoutes, 'accessibleRoutes')
   // 生成菜单
   const accessibleMenus = await generateMenus(accessibleRoutes, options.router)
+  console.log(accessibleMenus, 'accessibleMenus')
   return { accessibleMenus, accessibleRoutes }
 }
 
@@ -54,7 +55,7 @@ async function generateRoutes (
   mode: AccessModeType,
   options: GenerateMenuAndRoutesOptions
 ): Promise<RouteRecordRaw[]> {
-  const { routes } = options
+  const { routes, pageMap = {} } = options
   let resultRoutes: RouteRecordRaw[] = routes
   switch (mode) {
     case 'backend': {
@@ -70,7 +71,31 @@ async function generateRoutes (
    * 调整路由树，做以下处理：
    * 1. 对未添加redirect的路由添加redirect
    */
-  resultRoutes = mapTree(resultRoutes, (route) => {
+  const normalizePageMap: ComponentRecordType = {}
+  // 把相对路径key转成绝对路径key，并去除views，如../views/examples/form/basic/index.vue =》 /examples/form/basic/index.vue
+  for (const [key, value] of Object.entries(pageMap)) {
+    normalizePageMap[normalizeViewPath(key)] = value
+  }
+  resultRoutes = mapTree(resultRoutes, (route, parent, level) => {
+    if (level === 0) {
+      if((!route.children || !route.children.length)) {
+        // 需要手动
+        if (normalizePageMap[route.path]) {
+          route.children = [
+            {
+              path: route.path + '/index',
+              name: String(route.name) + 'Index',
+              component: normalizePageMap[route.path],
+              meta: {
+                ...route.meta,
+                hideInMenu: true
+              }
+            }
+          ]
+        }
+      }
+    }
+
     // 如果有redirect或者没有子路由，则直接返回
     if (route.redirect || !route.children || route.children.length === 0) {
       return route
@@ -173,7 +198,7 @@ async function generateRoutesByBackend (
         path: '/examples',
         title: '示例',
         name: 'Examples',
-        order: 1,
+        order: 2,
         icon: 'lucide:layout-dashboard',
         children: [
           {
@@ -200,6 +225,12 @@ async function generateRoutesByBackend (
             ]
           }
         ]
+      }, {
+        path: '/home',
+        title: 'Home',
+        name: 'Home',
+        order: 1,
+        icon: 'lucide:layout-dashboard'
       }
     ]
     if (!menuRoutes) {
@@ -225,28 +256,13 @@ function convertRoutes (
   return mapTree<MenuRecordRaw, RouteRecordRaw>(routes, (node, parent, level) => {
     const { path, children, title, order, icon } = node
     const route: RouteRecordRaw = node as unknown as RouteRecordRaw
-    route.meta = {
-      title,
-      order,
-      icon
-    }
+    route.meta = { title, order, icon }
     // 只要有children，那么当前路由就需要重定向到他的第一个子路由
     if (children && children.length) {
       route.redirect = children[0].path
     }
     if (level === 0) {
       route.component = Layouts
-      if((!children || !children.length)) {
-        // 需要手动
-        if (pageMap[path]) {
-          route.children = [
-            {
-              path: path + '/index',
-              component: pageMap[path]
-            }
-          ]
-        }
-      }
     } else {
       route.component = pageMap[path]
     }

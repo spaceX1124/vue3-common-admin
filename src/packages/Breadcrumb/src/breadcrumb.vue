@@ -8,7 +8,6 @@
         <span>{{item.title}}</span>
       </li>
     </TransitionGroup>
-
   </ul>
 </template>
 <script lang="ts" setup>
@@ -21,10 +20,12 @@ const breadcrumbs = computed((): IBreadcrumb[] => {
   const resultBreadcrumb: IBreadcrumb[] = []
   for (const match of matched) {
     const { meta, path } = match
-    resultBreadcrumb.push({
-      path: path || route.path,
-      title: meta?.title as string || ''
-    })
+    if (meta.title) {
+      resultBreadcrumb.push({
+        path: path || route.path,
+        title: meta?.title as string || ''
+      })
+    }
   }
   return resultBreadcrumb
 })

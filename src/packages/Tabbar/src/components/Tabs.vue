@@ -35,6 +35,7 @@
         >
           <!-- close-icon -->
           <X
+            v-show="tabsView.length > 1"
             class="mt-[2px] size-3 cursor-pointer rounded-full transition-all"
             @click.stop="() => emit('close', tab.key)"
           />

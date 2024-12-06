@@ -14,6 +14,7 @@ export const defaultPreferences: Preferences = {
     collapsed: false, // 侧边栏是否折叠
     collapsedShowTitle: false, // 侧边栏折叠时，是否显示title
     expandOnHover: true, // 菜单自动展开状态
-    width: 210 // 侧边栏宽度
+    width: 210, // 侧边栏宽度
+    hidden: false // 侧边栏是否隐藏
   }
 }

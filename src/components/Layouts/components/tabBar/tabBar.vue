@@ -3,6 +3,7 @@
     :active="currentActive"
     @update:active="handleClick"
     :tabs="currentTabs"
+    @close="handleClose"
   />
   <div class="flex-center">
     <div
@@ -20,6 +21,7 @@ import { ChevronDown } from '@/packages/Icons'
 const {
   currentTabs,
   currentActive,
-  handleClick
+  handleClick,
+  handleClose
 } = useTabBar()
 </script>

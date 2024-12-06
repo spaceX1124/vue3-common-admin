@@ -15,6 +15,7 @@ interface SidebarPreferences {
     collapsedShowTitle: boolean; // 侧边栏折叠时，是否显示title
     expandOnHover: boolean; // 菜单自动展开状态
     width: number; // 侧边栏宽度
+    hidden: boolean;
 }
 
 // 整个项目偏好设置配置就在这

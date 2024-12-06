@@ -2,7 +2,9 @@
   <Layouts
     :sidebar-width="preferences.sidebar.width"
     :sidebar-collapse="preferences.sidebar.collapsed"
+    :sidebar-hidden="preferences.sidebar.hidden"
     @update:sidebar-collapse="(value: boolean) => updatePreferences({ sidebar: { collapsed: value } })"
+    @toggle-sidebar="toggleSidebar"
   >
     <template #logo>
       <div class="h-full flex items-center px-3">
@@ -43,4 +45,12 @@ const {
   sidebarActive,
   handleMenuSelect
 } = useMixedMenu()
+
+function toggleSidebar () {
+  updatePreferences({
+    sidebar: {
+      hidden: !preferences.sidebar.hidden
+    }
+  })
+}
 </script>

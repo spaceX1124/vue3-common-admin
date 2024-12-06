@@ -42,7 +42,7 @@ const headerHeight = 50
 const style = computed(() => {
   const { width, collapseWidth } = props
   let widthValue = width
-  if (collapsed.value) {
+  if (width !== 0 && collapsed.value) {
     widthValue = collapseWidth
   }
   return {
