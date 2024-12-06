@@ -1,20 +1,12 @@
+/*有些颜色需要设置透明度，所以变量只存值*/
 :root{
-    /* menu */
-    --sidebar: 255,255,255;
-    /* 主体区域背景色 */
-    --foreground: 50,54,57;
-    /* Used for accents such as hover effects on <DropdownMenuItem>, <SelectItem>...etc */
-    --accent: 244,244,245;
-
+    /* 侧边栏背景色 */
+    --sidebar: 28,30,35;
+    /* 文字颜色 */
+    --text-color: 50,54,57;
     /* 主题色 */
     --primary: 0,107,230;
+    /* 背景颜色 */
+    --bg-background: 244,244,245;
 }
 
-/**
-[data-theme='pink'] 是一种 属性选择器语法
-[data-theme='pink'] 选择所有具有 data-theme 属性且属性值为 'pink' 的元素。
- */
-[data-theme='pink'] {
-    --foreground: 9,9,11;
-    --accent: 244,244,245;
-}

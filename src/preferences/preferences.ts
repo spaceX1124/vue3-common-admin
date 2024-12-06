@@ -111,11 +111,7 @@ class PreferenceManager {
    * 当需要更新部分配置的时候，但是配置的属性都是必填的情况下，可以先将配置变成可选
    */
   private handleUpdates (updates: DeepPartial<Preferences>) {
-    // 根据最新的主题去更新相关的css及变量
-    const themeUpdates = updates.theme || {}
-    if (themeUpdates && Object.keys(themeUpdates).length > 0) {
-      updateCSSVariables(this.state)
-    }
+    
   }
 }
 

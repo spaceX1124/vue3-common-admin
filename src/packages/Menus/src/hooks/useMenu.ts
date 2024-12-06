@@ -1,6 +1,7 @@
 // 当前组件的父组件实例
 import { computed, getCurrentInstance } from 'vue'
-import type { SubMenuProvider } from '@/types/menu'
+import type { SubMenuProvider } from '../type'
+import { findComponentUpward } from '../utils'
 
 export function useMenu () {
   const instance = getCurrentInstance()
@@ -22,8 +23,14 @@ export function useMenu () {
     }
     return paths // 如['/parentPath', '/path']
   })
+
+  // 找到当前实例的父级，前提是name为['Menu', 'SubMenu']
+  const parentMenu = computed(() => {
+    return findComponentUpward(instance, ['MenuShow', 'SubMenu'])
+  })
   return {
-    parentPaths
+    parentPaths,
+    parentMenu
   }
 }
 

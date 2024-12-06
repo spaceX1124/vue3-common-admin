@@ -9,16 +9,4 @@ export function updateCSSVariables (preferences: Preferences) {
   if (!root) {
     return
   }
-  // 获取偏好配置的主题
-  const theme = preferences.theme
-  const { builtinType } = theme
-  
-  // html 设置 data-theme=[builtinType]
-  // 主题名称builtinType
-  if (Reflect.has(theme, 'builtinType')) {
-    const rootTheme = root.dataset.theme
-    if (rootTheme !== builtinType) {
-      root.dataset.theme = builtinType
-    }
-  }
 }

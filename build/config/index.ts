@@ -13,23 +13,23 @@ export function defineAppConfig<T extends DefineOptions> (defineOptions: T ) {
     server: {
       port: 8088,
       open: false
-    },
-    css: {
-      preprocessorOptions: {
-        // scss: {
-        //   modifyVars: {
-        //     // 在某些情况下，LESS 的某些功能可能会受到限制，hack: true; 可以用来启用特定的兼容模式，使得 LESS 能够更好地工作
-        //     hack: `true; @import (reference) "${resolve('./src/design/config.less')}"`
-        //   },
-        //   javascriptEnabled: true,
-        // },
-        scss: {
-          additionalData: `
-          @import "@/designs/index.ts";
-         `
-        }
-      }
     }
+    // css: {
+    //   preprocessorOptions: {
+    //     // scss: {
+    //     //   modifyVars: {
+    //     //     // 在某些情况下，LESS 的某些功能可能会受到限制，hack: true; 可以用来启用特定的兼容模式，使得 LESS 能够更好地工作
+    //     //     hack: `true; @import (reference) "${resolve('./src/design/config.less')}"`
+    //     //   },
+    //     //   javascriptEnabled: true,
+    //     // },
+    //     scss: {
+    //       additionalData: `
+    //       @import "@/designs/index.ts";
+    //      `
+    //     }
+    //   }
+    // }
   }
   return defineConfig(({ mode }: UserConfig) => {
     console.log(mode, 'mode')

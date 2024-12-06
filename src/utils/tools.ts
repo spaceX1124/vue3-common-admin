@@ -72,14 +72,3 @@ export const recursion = (list: Record<string, any>[], fn: Fn, children = 'child
   }
   recursionFn(list)
 }
-
-/**
- * 数组扁平化
- * */
-export function getFlatArr (arr: Record<string, any>[], children = 'children'): Record<string, any>[] {
-  return arr.reduce((pre: Record<string, any>[], current: Record<string, any>) => {
-    let flatArr = [...pre, current]
-    if (current[children]) flatArr = [...flatArr, ...getFlatArr(current[children])]
-    return flatArr
-  }, [])
-}

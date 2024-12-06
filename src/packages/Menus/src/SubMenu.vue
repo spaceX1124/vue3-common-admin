@@ -1,11 +1,11 @@
 <template>
   <MenuItem v-if="!hasChildren" :path="menu.path" :icon="menu.icon">
     <template #title>
-      <span>{{ menu.name }}</span>
+      <span>{{ menu.title }}</span>
     </template>
   </MenuItem>
   <SubMenuComp v-else :path="menu.path" :icon="menu.icon">
-    <template #title>{{ menu.name }}</template>
+    <template #title>{{ menu.title }}</template>
     <template v-for="childItem in menu.children || []" :key="childItem.path">
       <SubMenu :menu="childItem" />
     </template>
@@ -14,7 +14,7 @@
 <script lang="ts" setup>
 import { MenuItem, SubMenu as SubMenuComp } from './components'
 import SubMenu from './SubMenu.vue'
-import type { MenuRecordRaw } from '@/types/menu'
+import type { MenuRecordRaw } from '@/packages/Menus'
 import { computed } from 'vue'
 interface PropsType {
   menu: MenuRecordRaw; // 当前菜单项

@@ -1,5 +1,5 @@
 import { getCurrentInstance, inject, provide } from 'vue'
-import type { MenuProvider, SubMenuProvider } from '@/types/menu'
+import type { MenuProvider, SubMenuProvider } from '../type'
 import { findComponentUpward } from '../utils'
 
 const menuContextKey = Symbol('menuContext')

@@ -1,3 +1,7 @@
+/**
+ * 事件监听
+ * */
+
 export type EventType = string | symbol;
 
 // 事件类型

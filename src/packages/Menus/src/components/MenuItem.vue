@@ -1,25 +1,36 @@
 <template>
   <li
     :class="[
-      rootMenu.theme,
       b(),
       is('active', active)
     ]"
     @click.stop="handleClick">
-    <div :class="[e('content')]">
+    <Tooltip
+      v-if="showTooltip"
+      side="right"
+    >
+      <template #trigger>
+        <div :class="[nsMenu.b('tooltip__trigger')]">
+          <Icons :class="nsMenu.e('icon')" :icon="icon" fallback />
+          <slot/>
+        </div>
+      </template>
+      <slot name="title"/>
+    </Tooltip>
+    <div v-show="!showTooltip" :class="[e('content')]">
       <Icons :icon="icon" :class="nsMenu.e('icon')"/>
-      <slot/>
       <slot name="title"/>
     </div>
   </li>
 </template>
 <script setup lang="ts">
-import type { MenuItemProps, MenuItemRegistered } from '@/types/menu'
+import type { MenuItemProps, MenuItemRegistered } from '../type'
 import { useMenuContext, useSubMenuContext } from '../hooks/useMenuContext'
 import { useMenu } from '../hooks/useMenu'
 import { useNamespace } from '@/utils/composables/useNameSpace'
-import { computed, onMounted, onBeforeUnmount, reactive } from 'vue'
+import { computed, onMounted, onBeforeUnmount, reactive, useSlots } from 'vue'
 import { Icons } from '@/packages/Icons'
+import { Tooltip } from '@/packages/Tooltip'
 
 // MenuItem接收的参数
 interface PropsType extends MenuItemProps {}
@@ -39,14 +50,25 @@ const rootMenu = useMenuContext()
 // 获取当前MenuItem组件的上级SubMenu组件提供的数据
 const subMenu = useSubMenuContext()
 
-// 获取当前菜单项及父级链路
-const { parentPaths } = useMenu()
+// 获取当前菜单项及父级链路，找到当前组件实例的父级实例
+const { parentPaths, parentMenu } = useMenu()
 
 // 当前菜单项是否是active的, rootMenu?.activePath是当前选中的菜单的path
 const active = computed(() => {
-  console.log(rootMenu, 'rootMenu')
   return props.path === rootMenu?.activePath
 })
+
+// 如果当前实例的父级实例name为Menu，即最外层，./Menu.vue这个组件
+const isTopLevelMenuItem = computed(
+  () => parentMenu.value?.type.name === 'MenuShow'
+)
+const slots = useSlots()
+// 最外层菜单，没有子菜单的情况下，又是折叠的，就展示
+const showTooltip = computed(() => (
+  isTopLevelMenuItem.value &&
+    rootMenu.props?.collapse &&
+    slots.title)
+)
 
 /**
  * 菜单项点击事件
