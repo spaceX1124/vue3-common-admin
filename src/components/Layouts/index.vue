@@ -26,8 +26,13 @@
     <template #tabBar>
       <TabBar/>
     </template>
+    <!-- 主题内容 -->
     <template #content>
       <Content/>
+    </template>
+    <!-- 页面加载的动画效果 -->
+    <template #content-overlay>
+      <LayoutContentSpinner />
     </template>
   </Layouts>
 </template>
@@ -39,6 +44,7 @@ import TabBar from './components/tabBar/tabBar.vue'
 import LayoutHeader from './components/header/header.vue'
 import { useMixedMenu } from './components/menu/useMixedMenu'
 import { preferences, updatePreferences } from '@/preferences'
+import LayoutContentSpinner from './components/content/contentSpinner.vue'
 
 const {
   sidebarMenus,
