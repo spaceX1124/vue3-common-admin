@@ -51,7 +51,7 @@ function onTransitionEnd () {
   <!-- 就是给主题内容上方盖了一层 -->
   <!-- duration-500，就是过渡时间，所以我在切换页面的时候会看到内容都出现了，又随着加载动画出来，慢慢变模糊，所以这个时间不能太长 -->
   <div
-    class="flex-center z-100 bg-overlay-content absolute left-0 top-0 size-full backdrop-blur-sm transition-all duration-0"
+    class="flex-center z-[9999] bg-overlay-content absolute left-0 top-0 size-full backdrop-blur-sm transition-all duration-0"
     :class="[
       !showSpinner ? 'invisible opacity-0': '',
       props.class

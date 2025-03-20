@@ -1,5 +1,5 @@
 <template>
-  <header :style="style" style="height: 50px" class="border-b flex items-center w-full">
+  <header :style="style" style="height: 50px" class="border-b flex items-center w-full bg-white">
     <slot name="toggle-button"/>
     <slot/>
   </header>

@@ -7,7 +7,7 @@
     @toggle-sidebar="toggleSidebar"
   >
     <template #logo>
-      <div class="h-full flex items-center px-3">
+      <div class="h-full flex items-center px-3 transition-all duration-150">
         <img class="w-8" src="https://unpkg.com/@vbenjs/static-source@0.1.7/source/logo-v1.webp" alt="">
         <span v-if="!preferences.sidebar.collapsed" class="font-semibold ml-2 text-white">ZS Admin</span>
       </div>

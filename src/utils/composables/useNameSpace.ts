@@ -1,3 +1,6 @@
+/**
+ * 处理class命名规范-BEM
+ * */
 import { DEFAULT_NAMESPACE } from '@/libs/constants'
 
 const statePrefix = 'is-'

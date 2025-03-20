@@ -72,3 +72,22 @@ export const recursion = (list: Record<string, any>[], fn: Fn, children = 'child
   }
   recursionFn(list)
 }
+/**
+ * 在多个值中，第一个值不为null或undefined，就返回这个值
+ * @example
+ * getFirstNonNullOrUndefined(undefined, null, 42, 'hello'); // 42
+ * @example
+ * getFirstNonNullOrUndefined(null, undefined, 'hello', 123); // 'hello'
+ * @example
+ * getFirstNonNullOrUndefined(undefined, null); // undefined
+ */
+export function getFirstNonNullOrUndefined<T> (
+  ...values: (null | T | undefined)[]
+): T | undefined {
+  for (const value of values) {
+    if (value !== undefined && value !== null) {
+      return value
+    }
+  }
+  return undefined
+}

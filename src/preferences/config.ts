@@ -16,5 +16,9 @@ export const defaultPreferences: Preferences = {
     expandOnHover: true, // 菜单自动展开状态
     width: 210, // 侧边栏宽度
     hidden: false // 侧边栏是否隐藏
+  },
+  // header配置
+  header: {
+    height: 50 // header高度
   }
 }

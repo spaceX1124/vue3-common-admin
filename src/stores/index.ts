@@ -9,7 +9,7 @@ export interface InitStoreOptions {
  * @zh_CN 初始化pinia
  */
 let pinia: Pinia
-export async function initStores (app: App, options: InitStoreOptions) {
+export function initStores (app: App, options: InitStoreOptions) {
   pinia = createPinia()
   const { namespace } = options
   // store持久化

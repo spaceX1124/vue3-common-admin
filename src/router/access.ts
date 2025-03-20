@@ -39,10 +39,8 @@ async function generateAccessible (
   accessibleRoutes.forEach((route) => {
     router.addRoute(route)
   })
-  console.log(accessibleRoutes, 'accessibleRoutes')
   // 生成菜单
   const accessibleMenus = await generateMenus(accessibleRoutes, options.router)
-  console.log(accessibleMenus, 'accessibleMenus')
   return { accessibleMenus, accessibleRoutes }
 }
 
@@ -221,6 +219,22 @@ async function generateRoutesByBackend (
                 title: '搜索表单',
                 icon: 'lucide:layout-dashboard',
                 order: 2
+              }
+            ]
+          },
+          {
+            path: '/examples/table',
+            title: '表格',
+            name: 'ExamplesTable',
+            order: 1,
+            icon: 'lucide:layout-dashboard',
+            children: [
+              {
+                path: '/examples/table/basic',
+                name: 'ExamplesTableBasic',
+                title: '基础表格',
+                icon: 'lucide:layout-dashboard',
+                order: 1
               }
             ]
           }

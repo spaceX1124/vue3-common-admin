@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-full w-full" style="height: 100%">
+  <div class="flex min-h-full w-full">
     <!-- 左侧 -->
     <LayoutSidebar
       v-model:collapse="sidebarCollapse"
@@ -12,23 +12,28 @@
       <slot name="menu"/>
     </LayoutSidebar>
     <!-- 右侧 -->
-    <div class="flex-1 flex overflow-hidden">
+    <div class="flex-1 flex flex-col overflow-hidden transition-all duration-150">
       <div class="overflow-hidden transition-all duration-150" :style="headerWrapperStyle" >
+        <!-- header -->
         <LayoutHeader :height="headerHeight">
           <button class="ml-2 mr-1 px-1" @click="handleHeaderToggle">
             <Icons :icon="Menu" class="size-4"/>
           </button>
           <slot name="header"/>
         </LayoutHeader>
+        <!-- tabBar -->
         <LayoutTabBar
           :height="tabBarHeight"
         >
           <slot name="tabBar"/>
         </LayoutTabBar>
       </div>
-      <LayoutContent :style="contentStyle" class="flex-1 bg-background">
+      <!-- content -->
+      <LayoutContent :style="contentStyle">
         <slot name="content"/>
-
+        <template #overlay>
+          <slot name="content-overlay"/>
+        </template>
       </LayoutContent>
     </div>
   </div>
@@ -67,11 +72,12 @@ const headerWrapperStyle = computed((): CSSProperties => {
   const { sidebarCollapse, collapseWidth, sidebarWidth, sidebarHidden } = props
   let left = sidebarHidden ? 0 : sidebarCollapse ? collapseWidth : sidebarWidth
   return {
-    height: `${props.headerHeight + props.tabBarHeight}px`,
+    height: `${props.headerHeight + props.tabBarHeight}px`, // 面包屑+tabBar的高度
     left: `${left}px`,
     position: 'fixed',
     top: 0,
-    width: `calc(100% - ${left}px)`
+    width: `calc(100% - ${left}px)`,
+    zIndex: 200
   }
 })
 

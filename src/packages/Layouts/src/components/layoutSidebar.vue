@@ -1,7 +1,8 @@
 <template>
+  <div :style="style" class="h-full transition-all duration-150"/>
   <aside 
     :style="style"
-    class="border-r shrink-0 bg-side-background transition-all duration-150"
+    class="fixed left-0 top-0 h-full border-r shrink-0 bg-side-background transition-all duration-150"
   >
     <div :style="{height: headerHeight + 'px'}">
       <slot name="logo"/>

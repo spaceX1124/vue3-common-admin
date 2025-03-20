@@ -16,6 +16,7 @@ import type { IBreadcrumb } from './type'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 const breadcrumbs = computed((): IBreadcrumb[] => {
+  // 包含了当前路由匹配到的所有嵌套层级的路由记录
   const matched = route.matched
   const resultBreadcrumb: IBreadcrumb[] = []
   for (const match of matched) {

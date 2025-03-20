@@ -23,9 +23,16 @@ body {
 .bg-accent {
     background: rgb(var(--sidebar));
 }
+
 .bg-background {
     background: rgb(var(--bg-background));
 }
+
+.bg-white {
+    background: #fff;
+}
+
+
 .bg-primary {
     background: rgb(var(--primary));
 }
@@ -38,6 +45,27 @@ body {
 .flex-between {
     @apply flex items-center justify-between;
 }
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+::-webkit-scrollbar-track-piece {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
+    border-radius: 5px;
+    border-style: dashed;
+    background-color: #d8d8d8;
+    border-color: transparent;
+    border-width: 2px;
+    background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #d8d8d8
+}
+
 
 
 

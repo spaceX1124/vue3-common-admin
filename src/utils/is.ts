@@ -60,6 +60,14 @@ export function isMap (val: unknown): val is Map<any, any> {
 }
 
 /**
+ * 判断是否是一个正则表达式
+ * */
+
+export function isRegexp (val: unknown): val is RegExp {
+  return val instanceof RegExp
+}
+
+/**
  * 判断是否是null
  * */
 export function isNull (val: unknown): val is null {
