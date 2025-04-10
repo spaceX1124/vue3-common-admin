@@ -93,7 +93,8 @@ const [Table] = useTable({
   listApi: {
     url: '/api/pageList',
     method: 'post'
-  }
+  },
+  height: 'auto'
 })
 
 // @todo，处理一下页面的样式和滚动条，分页

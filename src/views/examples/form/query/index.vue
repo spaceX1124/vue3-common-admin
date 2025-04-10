@@ -1,5 +1,5 @@
 <template>
-  <Page auto-content-height>
+  <Page>
     <div style="height: 500px;background: red">1</div>
     <div style="height: 500px;background: red">1</div>
     <div style="height: 500px;background: red">1</div>

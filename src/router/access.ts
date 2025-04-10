@@ -6,6 +6,7 @@ const Layouts = () => import('@/components/Layouts/index.vue')
 import { cloneDeep } from '@/utils/tools'
 import { filterTree, mapTree } from '@/utils/tree'
 import type { MenuRecordRaw } from '@/packages/Menus'
+import { http } from '@/utils/http'
 
 type ComponentRecordType = Record<string, () => Promise<Component>>;
 interface GenerateMenuAndRoutesOptions {
@@ -191,62 +192,7 @@ async function generateRoutesByBackend (
   try {
     // 获取权限范围内数据
     // const menuRoutes = await fetchMenuListAsync?.()
-    const menuRoutes: MenuRecordRaw[] = [
-      {
-        path: '/examples',
-        title: '示例',
-        name: 'Examples',
-        order: 2,
-        icon: 'lucide:layout-dashboard',
-        children: [
-          {
-            path: '/examples/form',
-            title: '表单',
-            name: 'ExamplesForm',
-            order: 1,
-            icon: 'lucide:layout-dashboard',
-            children: [
-              {
-                path: '/examples/form/basic',
-                name: 'ExamplesFormBasic',
-                title: '基础表单',
-                icon: 'lucide:layout-dashboard',
-                order: 1
-              },
-              {
-                path: '/examples/form/query',
-                name: 'ExamplesFormQuery',
-                title: '搜索表单',
-                icon: 'lucide:layout-dashboard',
-                order: 2
-              }
-            ]
-          },
-          {
-            path: '/examples/table',
-            title: '表格',
-            name: 'ExamplesTable',
-            order: 1,
-            icon: 'lucide:layout-dashboard',
-            children: [
-              {
-                path: '/examples/table/basic',
-                name: 'ExamplesTableBasic',
-                title: '基础表格',
-                icon: 'lucide:layout-dashboard',
-                order: 1
-              }
-            ]
-          }
-        ]
-      }, {
-        path: '/home',
-        title: 'Home',
-        name: 'Home',
-        order: 1,
-        icon: 'lucide:layout-dashboard'
-      }
-    ]
+    const menuRoutes: MenuRecordRaw[] = await http.post('/api/getMenuList')
     if (!menuRoutes) {
       return []
     }

@@ -1,18 +1,22 @@
 <template>
-  <div class="flex min-h-full w-full">
-    <!-- 左侧 -->
+  <!-- 整体布局应用包，提供页面各个模块的布局位置，并提供slot -->
+  <div class="flex h-full w-full">
+    <!-- 左侧区域 -->
     <LayoutSidebar
       v-model:collapse="sidebarCollapse"
       :width="getSidebarWidth"
       :collapseWidth="collapseWidth"
     >
+      <!-- 展示logo的位置 -->
       <template #logo>
         <slot name="logo"/>
       </template>
+      <!-- 展示菜单的位置 -->
       <slot name="menu"/>
     </LayoutSidebar>
-    <!-- 右侧 -->
+    <!-- 右侧区域 -->
     <div class="flex-1 flex flex-col overflow-hidden transition-all duration-150">
+      <!-- 头部 -->
       <div class="overflow-hidden transition-all duration-150" :style="headerWrapperStyle" >
         <!-- header -->
         <LayoutHeader :height="headerHeight">
@@ -22,15 +26,15 @@
           <slot name="header"/>
         </LayoutHeader>
         <!-- tabBar -->
-        <LayoutTabBar
-          :height="tabBarHeight"
-        >
+        <LayoutTabBar :height="tabBarHeight">
           <slot name="tabBar"/>
         </LayoutTabBar>
       </div>
-      <!-- content -->
+      <!-- 主体内容 -->
       <LayoutContent :style="contentStyle">
+        <!-- 要渲染主体内容的位置 -->
         <slot name="content"/>
+        <!-- 遮罩层loading -->
         <template #overlay>
           <slot name="content-overlay"/>
         </template>
@@ -59,7 +63,6 @@ const props = withDefaults(defineProps<PropsType>(), {
 const getSidebarWidth = computed(() => {
   let width = 0
   if (props.sidebarHidden) {
-    console.log(width, 'width132', props.sidebarHidden)
     return width
   }
   width = props.sidebarWidth

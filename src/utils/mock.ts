@@ -90,3 +90,69 @@ Mock.mock('/api/hobbyList', 'post', (data:any) => {
     result: 'success'
   }
 })
+
+Mock.mock('/api/getMenuList', 'post', (data:any) => {
+  const postData = JSON.parse(data.body)
+  return {
+    code: 0,
+    data: [
+      {
+        path: '/examples',
+        title: '示例',
+        name: 'Examples',
+        order: 2,
+        icon: 'lucide:layout-dashboard',
+        children: [
+          {
+            path: '/examples/form',
+            title: '表单',
+            name: 'ExamplesForm',
+            order: 1,
+            icon: 'lucide:layout-dashboard',
+            children: [
+              {
+                path: '/examples/form/basic',
+                name: 'ExamplesFormBasic',
+                title: '基础表单',
+                icon: 'lucide:layout-dashboard',
+                order: 1
+              },
+              {
+                path: '/examples/form/query',
+                name: 'ExamplesFormQuery',
+                title: '搜索表单',
+                icon: 'lucide:layout-dashboard',
+                order: 2
+              }
+            ]
+          },
+          {
+            path: '/examples/table',
+            title: '表格',
+            name: 'ExamplesTable',
+            order: 1,
+            icon: 'lucide:layout-dashboard',
+            children: [
+              {
+                path: '/examples/table/basic',
+                name: 'ExamplesTableBasic',
+                title: '基础表格',
+                icon: 'lucide:layout-dashboard',
+                order: 1
+              }
+            ]
+          }
+        ]
+      }, {
+        path: '/home',
+        title: 'Home',
+        name: 'Home',
+        order: 1,
+        icon: 'lucide:layout-dashboard'
+      }
+    ],
+    message: '调用成功',
+    ok: true,
+    result: 'success'
+  }
+})

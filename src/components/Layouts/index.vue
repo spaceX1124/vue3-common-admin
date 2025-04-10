@@ -1,4 +1,5 @@
 <template>
+  <!-- 该组件根据 -->
   <Layouts
     :sidebar-width="preferences.sidebar.width"
     :sidebar-collapse="preferences.sidebar.collapsed"

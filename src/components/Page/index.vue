@@ -1,11 +1,5 @@
 <script setup lang="ts">
-import {
-  computed,
-  nextTick,
-  onMounted,
-  ref,
-  type StyleValue
-} from 'vue'
+import { computed, ref, type StyleValue } from 'vue'
 
 defineOptions({
   name: 'Page'
@@ -13,44 +7,22 @@ defineOptions({
 
 interface PropsType {
   contentClass?: string;
-  /**
-   * 根据content可见高度自适应
-   */
-  autoContentHeight?: boolean;
+  autoContentHeight?: boolean; // 根据content可见高度自适应
 }
 
 const { autoContentHeight = false } = defineProps<PropsType>()
 
-const shouldAutoHeight = ref(false)
-
 const contentStyle = computed<StyleValue>(() => {
-  if (autoContentHeight) {
-    return {
-      height: 'calc(var(--zs-content-height)',
-      overflowY: shouldAutoHeight.value ? 'auto' : 'unset'
-    }
+  return {
+    'overflow-y': autoContentHeight ? 'hidden' : 'auto'
   }
-  return {}
 })
 
-async function calcContentHeight () {
-  if (!autoContentHeight) {
-    return
-  }
-  await nextTick()
-  setTimeout(() => {
-    shouldAutoHeight.value = true
-  }, 30)
-}
-
-onMounted(() => {
-  calcContentHeight()
-})
 </script>
 
 <template>
-  <div class="relative">
-    <div class="h-full p-4" :class="contentClass" :style="contentStyle">
+  <div class="h-full p-3.5" :class="contentClass" :style="contentStyle">
+    <div class="h-full p-2 rounded-md bg-white">
       <slot/>
     </div>
   </div>

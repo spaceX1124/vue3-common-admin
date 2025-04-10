@@ -2,7 +2,7 @@
  * 处理表格数据
  * */
 import { http } from '@/utils/http'
-import { onBeforeMount, ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import type { TableMethods } from '../tableMethods'
 
 interface ITableDataProp{
@@ -98,7 +98,7 @@ export function useDataList ({ tableMethods }: ITableDataProp) {
       pagerData.value.total = result.total
     }
   }
-  onBeforeMount(async () => {
+  onMounted(async () => {
     await dealApiColumnTableData()
   })
   return {

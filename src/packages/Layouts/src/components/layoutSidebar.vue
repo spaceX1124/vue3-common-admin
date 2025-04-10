@@ -20,7 +20,7 @@
 </template>
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { ChevronsRight, ChevronsLeft } from '@/packages/Icons'
+import { ChevronsLeft } from '@/packages/Icons'
 import { Scrollbar } from '@/packages/Scrollbar'
 
 interface PropsType {

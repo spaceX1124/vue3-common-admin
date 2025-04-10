@@ -1,22 +1,20 @@
 <template>
-  <div class="w-full h-full bg-white rounded-md">
-    <vxe-grid v-bind="vxeGridOptions" class="p-2">
-      <!-- 数据加载动画loading -->
-      <template #loading>
-        <ZsLoading :spinning="true"/>
-      </template>
-      <!-- 统一控状态 -->
-      <template #empty>
-        <slot name="empty">
-          <div class="mt-2">暂无数据</div>
-        </slot>
-      </template>
-    </vxe-grid>
-  </div>
+  <vxe-grid ref="gridRef" v-bind="vxeGridOptions">
+    <!-- 数据加载动画loading -->
+    <template #loading>
+      <ZsLoading :spinning="true"/>
+    </template>
+    <!-- 统一控状态 -->
+    <template #empty>
+      <slot name="empty">
+        <div class="mt-2">暂无数据</div>
+      </slot>
+    </template>
+  </vxe-grid>
 </template>
 
 <script lang="ts" setup>
-import { computed, onBeforeMount } from 'vue'
+import { computed, onMounted, nextTick } from 'vue'
 import type { VxeGridProps } from 'vxe-table'
 // 不能升级，目前4.8.11没问题，升级之后，引入会报Cannot resolve symbol 'VxeGrid'
 import { VxeGrid } from 'vxe-table'
@@ -65,15 +63,19 @@ const { tableData, loading, pagerData } = useDataList({ tableMethods: props.tabl
 
 // 给vxe-grid绑定属性
 const vxeGridOptions = computed(() => {
+  // @todo，不能在这设置高度，要从外面需要使用的地方传入，不然会卡顿缩放。
   const options: VxeGridProps = {
     columns: showColumns.value, // 表头
     data: tableData.value, // 表格数据
-    height: 'auto', // 表格高度
+    // height: '100%', // 表格高度
     minHeight: 180,
     loading: loading.value, // 数据加载状态
     columnConfig: {
       resizable: true // 列宽是否可以拖动
     }
+  }
+  if(props.tableMethods.height) {
+    options.height = props.tableMethods.height
   }
   // 如果不隐藏分页
   if (!props.tableMethods.hiddenPager) {
@@ -89,12 +91,8 @@ const vxeGridOptions = computed(() => {
       size: 'mini' as const
     }
   }
-
+  console.log(options, 'options')
   return options
-})
-
-onBeforeMount(async () => {
-
 })
 
 </script>
