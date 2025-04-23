@@ -4,7 +4,7 @@
   </Page>
 </template>
 <script lang="tsx" setup>
-import Page from '@/components/Page/index.vue'
+import Page from '@/components/page/Page.vue'
 import { useTable } from '@/packages/VxeTable'
 
 const [Table] = useTable({

@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-const Layouts = () => import('@/components/Layouts/index.vue')
+const Layouts = () => import('@/components/layouts/Layouts.vue')
 
 // 引入模块下的路由
 const dynamicRouteFiles = import.meta.glob('./modules/**/*.ts', {

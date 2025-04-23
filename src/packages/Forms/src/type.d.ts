@@ -27,6 +27,9 @@ export interface FormProvider {
     formMethods: FormMethods
 }
 
+/**
+ * 表单地默认配置
+ * */
 export interface FormAdapterOptions {
   defaultComponentProps?: Record<string, any>; // 组件的默认配置-props
   baseModelPropName?: string; // 绑定值名称-双向绑定底层机制

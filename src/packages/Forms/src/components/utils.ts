@@ -13,8 +13,10 @@ export function useOptions (schema: ISchema) {
    * 处理数据
    * */
   function dealDataList (arr?: Record<string, any>[]) {
+    // 禁用选项
     const disabledOptions = schema.async?.disabledOptions
-    const hiddenOptions = schema.async?.disabledOptions
+    // 隐藏选项
+    const hiddenOptions = schema.async?.hiddenOptions
     let hiddenOptionsSet
     if (isString(hiddenOptions)) {
       hiddenOptionsSet = new Set(hiddenOptions.split(','))
@@ -23,6 +25,7 @@ export function useOptions (schema: ISchema) {
     if (isString(disabledOptions)) {
       disabledOptionsSet = new Set(disabledOptions.split(','))
     }
+
     const label = schema?.async?.label || 'label'
     const value = schema?.async?.value || 'value'
     const listData: Record<string, any>[] = []
@@ -41,23 +44,22 @@ export function useOptions (schema: ISchema) {
             }
           }
         }
+
         // 判断是否禁用当前选项
         if (disabledOptions) {
-          // 是否隐藏当前选项，由外部业务去处理
-          if (isFunc(disabledOptions) && disabledOptions(arr[i])) {
-            arr[i].disabled = true
+          // 是否禁用当前选项，由外部业务去处理
+          if (isFunc(disabledOptions)) {
+            arr[i].disabled = disabledOptions(arr[i])
           }
           if (disabledOptionsSet) {
-            if (disabledOptionsSet.has(String(arr[i][value]))) {
-              arr[i].disabled = true
-            }
+            arr[i].disabled = disabledOptionsSet.has(String(arr[i][value]))
           }
         }
         listData.push({
+          ...arr[i],
           label: !isNullOrUndefOrEmpty(arr[i][label]) ? arr[i][label] : arr[i],
           value: !isNullOrUndefOrEmpty(arr[i][value]) ? arr[i][value].toString() : arr[i],
-          disabled: arr[i].disabled || false,
-          ...arr[i]
+          disabled: arr[i].disabled || false
         })
       }
     }
@@ -73,6 +75,7 @@ export function useOptions (schema: ISchema) {
         const { url, data, remoteKey, method } = schema.async
         const postData = { ...data }
         remoteKey && (postData[remoteKey] = query)
+        console.log(postData, 'postData')
         loading.value = true
         const res: Record<string, any>[] = await http[method || 'get'](url, postData)
         loading.value = false
@@ -87,6 +90,7 @@ export function useOptions (schema: ISchema) {
    * 直接搜索
    * */
   async function getOptionsList () {
+    // 未开启远程输入搜索remote
     if (unref(flag) && schema.async && !schema.async.remote) {
       try {
         const { url, data, method } = schema.async
@@ -105,6 +109,7 @@ export function useOptions (schema: ISchema) {
     showList,
     loading,
     searchData,
-    getOptionsList
+    getOptionsList,
+    dealDataList
   }
 }

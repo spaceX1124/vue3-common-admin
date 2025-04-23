@@ -92,7 +92,7 @@ export function isNullOrUnDef (val: unknown): val is null | undefined {
  * 判断是否是null或者undefined或者''
  * */
 export function isNullOrUndefOrEmpty (val: unknown) {
-  return isNullOrUnDef(val) || val === '' || isEmpty(val)
+  return isNullOrUnDef(val) || val === ''
 }
 export function isFormData (val: unknown) {
   return val !== null && is(val, 'FormData')

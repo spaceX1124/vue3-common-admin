@@ -25,7 +25,7 @@
           </button>
           <slot name="header"/>
         </LayoutHeader>
-        <!-- tabBar -->
+        <!-- tab-bar -->
         <LayoutTabBar :height="tabBarHeight">
           <slot name="tabBar"/>
         </LayoutTabBar>

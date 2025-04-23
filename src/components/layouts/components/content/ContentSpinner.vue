@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Spinner from './spinner.vue'
+import Spinner from './Spinner.vue'
 
 import { useContentSpinner } from './use-content-spinner'
 

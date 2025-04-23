@@ -1,6 +1,6 @@
 <template>
   <FieldItem :name="fieldKey" v-slot="slotProps" v-bind="fieldProps">
-    <div class="flex items-center pb-6" :class="{'flex-col': labelPosition === 'top'}">
+    <div class="flex items-center mb-5" :class="{'flex-col': labelPosition === 'top'}">
       <FormLabel
         :labelPosition="labelPosition"
         :labelWidth="labelWidth"
@@ -20,18 +20,17 @@
 </template>
 <script lang="ts" setup>
 import FormLabel from './form-label.vue'
-import { isArray, isEmpty, isFunc, isNullOrUndefOrEmpty, isString, isUndef } from '@/utils/is'
-import { computed, onMounted } from 'vue'
-import { useFormContext } from '../hooks/useCreateContext'
-import { defineRule, Field as FieldItem } from 'vee-validate'
 import FormMessage from './form-message.vue'
+
+import { computed } from 'vue'
+import { defineRule, Field as FieldItem } from 'vee-validate'
+
 import type { ISchema } from '@/adapter'
+import { isArray, isEmpty, isFunc, isNullOrUndefOrEmpty, isString, isUndef } from '@/utils/is'
+import { useFormContext } from '../hooks/useCreateContext'
 
-interface PropsType extends ISchema {
-
-}
+interface PropsType extends ISchema {}
 const props = defineProps<PropsType>()
-console.log(props, 'props111')
 // 获取透传数据
 const { componentMap, defaultComponentProps, componentBindEventMap, formMethods } = useFormContext()
 /**
@@ -51,6 +50,7 @@ const FieldComponent = computed(() => {
  * 给组件component绑定事件
  * */
 function fieldBindEvent (slotProps: Record<string, any>) {
+  // 从组件
   const handler = slotProps.componentField['onUpdate:modelValue']
   const modelValue = slotProps.componentField.modelValue
   const bindEventField = isString(props.component) ? componentBindEventMap?.[props.component] : null
@@ -69,7 +69,9 @@ function fieldBindEvent (slotProps: Record<string, any>) {
     onChange: undefined
   }
 }
+
 /**
+ * @param slotProps 使用vee-validate库的Field组件接收的子组件插槽绑定的所有属性，如<slot name="header" :title="title"></slot>
  * 给组件绑定props和event
  * */
 function createComponentProps (slotProps: Record<string, any>) {
@@ -82,7 +84,7 @@ function createComponentProps (slotProps: Record<string, any>) {
       } else {
         // 首字母转大写
         let key = eventKey.charAt(0).toUpperCase() + eventKey.slice(1)
-        event[key] = props.componentEvent?.[eventKey]
+        event['on' + key] = props.componentEvent?.[eventKey]
       }
     })
   }
@@ -91,12 +93,20 @@ function createComponentProps (slotProps: Record<string, any>) {
   const bind = {
     ...slotProps.componentField, // 这里面存着v-model的语法糖，实现同步变更字段值
     ...bindEvents,
+    ...event,
     ...defaultComponentProps, // 默认的组件props
     ...props.componentProps // 外部传入的UI框架自己的props
   }
+  console.log(bind, 'bind')
   return bind
 }
 
+// --------------------------------------------------------------------------------
+// vee-validate的Field组件绑定参数，校验规则处理
+// --------------------------------------------------------------------------------
+const triggerBlur = computed(() => {
+  return ['Input', 'IntervalInput'].includes(props.component)
+})
 /**
  * 给FieldItem绑定props
  * */
@@ -104,11 +114,13 @@ const fieldProps = computed(() => {
   const rules = fieldRules.value
   const prop = {
     label: props.fieldName,
-    ...(!isEmpty(rules) ? { rules } : {})
+    ...(!isEmpty(rules) ? { rules } : {}),
+    validateOnBlur: triggerBlur.value, // 失焦时校验
+    validateOnChange: !triggerBlur.value, // change时校验
+    validateOnModelUpdate: false // 触发update:modelValue事件时校验
   }
   return prop
 })
-
 /**
  * 处理表单校验规则
  * 只有required
@@ -118,15 +130,15 @@ const fieldProps = computed(() => {
  * */
 const fieldRules = computed(() => {
   const rule: any = {}
-  // 如果必填，如果置灰的，就不设置必填规则，只会显示必填的标识
+  // 必填且不能置灰
+  // 如果必填，但是置灰的，就不设置必填规则，只会显示必填的标识
   if (props.required && !props.componentProps?.disabled) {
     // name不能相同
-    let name = `isRequiredFor${props.fieldKey}`
+    let name = `isRequiredFor${props.fieldKey}` // 防止必填校验和自定义校验key重复，因为一个字段同时设置了必填和自定义规则
     defineRule(name, (value: any) => {
-      console.log(value, 'value123')
       // 如果是多个key的字段，值是存在fieldKey上的，需要分发去判断，如区间输入，包含2个key，则必填要满足2个key都有值
       if (props.fieldKeyArr && isArray(value)) {
-        const hasValues = props.fieldKeyArr.every((item, i) => !isUndef(value[i]))
+        const hasValues = props.fieldKeyArr.every((item, i) => !isNullOrUndefOrEmpty(value[i]))
         if (!hasValues) {
           return '请填写完整'
         }

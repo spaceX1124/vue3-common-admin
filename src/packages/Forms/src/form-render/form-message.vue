@@ -12,11 +12,12 @@ const { name } = useFormFieldValidate()
   <ErrorMessage
     :name="toValue(name)"
     as="p"
-    class="text-destructive text-[0.8rem]"
+    class="text-destructive"
   />
 </template>
 <style lang="scss" scoped>
 .text-destructive {
   color: #ff3860;
+  font-size: 12px;
 }
 </style>

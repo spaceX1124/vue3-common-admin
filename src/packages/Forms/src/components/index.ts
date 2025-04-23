@@ -1,7 +1,13 @@
-import ApiSelect from './apiSelect.vue'
-import CheckboxGroupAll from './checkboxGroupAll.vue'
-import ApiCheckboxGroup from './apiCheckboxGroup.vue'
-import ApiRadioGroup from './apiRadioGroup.vue'
-import IntervalInput from './intervalInput.vue'
+import RadioGroup from './RadioGroup.vue'
+import IntervalInput from './IntervalInput.vue'
+import FormTitle from './formTitle.vue'
+import CheckboxGroup from './CheckboxGroup.vue'
+import Select from './Select.vue'
 
-export { ApiSelect, CheckboxGroupAll, ApiCheckboxGroup, ApiRadioGroup, IntervalInput }
+export {
+  Select,
+  RadioGroup,
+  IntervalInput,
+  FormTitle,
+  CheckboxGroup
+}

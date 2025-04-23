@@ -1,16 +1,17 @@
 import { useForm } from './src/hooks/useForm'
-import { setupForm } from './src/tools/config'
-import { ApiSelect, CheckboxGroupAll, ApiCheckboxGroup, ApiRadioGroup, IntervalInput } from './src/components'
+import { initForm } from './src/initForm'
+export {
+  Select,
+  RadioGroup,
+  IntervalInput,
+  FormTitle,
+  CheckboxGroup
+} from './src/components'
 
 export type * from './src/type'
 export {
   useForm as useZsForm,
-  setupForm,
-  ApiSelect,
-  ApiCheckboxGroup,
-  CheckboxGroupAll,
-  ApiRadioGroup,
-  IntervalInput
+  initForm
 }
 
 /**

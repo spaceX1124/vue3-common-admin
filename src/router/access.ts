@@ -2,7 +2,7 @@ import type { Component } from 'vue'
 import type { AccessModeType } from '@/types/preferences'
 import { preferences } from '@/preferences'
 import type { Router, RouteRecordRaw } from 'vue-router'
-const Layouts = () => import('@/components/Layouts/index.vue')
+const Layouts = () => import('@/components/layouts/Layouts.vue')
 import { cloneDeep } from '@/utils/tools'
 import { filterTree, mapTree } from '@/utils/tree'
 import type { MenuRecordRaw } from '@/packages/Menus'
@@ -71,7 +71,7 @@ async function generateRoutes (
    * 1. 对未添加redirect的路由添加redirect
    */
   const normalizePageMap: ComponentRecordType = {}
-  // 把相对路径key转成绝对路径key，并去除views，如../views/examples/form/basic/index.vue =》 /examples/form/basic/index.vue
+  // 把相对路径key转成绝对路径key，并去除views，如../views/examples/form/basic/AddForm.vue =》 /examples/form/basic/AddForm.vue
   for (const [key, value] of Object.entries(pageMap)) {
     normalizePageMap[normalizeViewPath(key)] = value
   }
@@ -158,7 +158,7 @@ async function generateRoutesByBackend (
   const { pageMap = {} } = options
   /**
    * 菜单配置要求,这是可以人为控制的，只要按照这个要求就没问题
-   * 文件路径严格按照path的命名，多层级嵌套：如/examples/form/basic/index.vue
+   * 文件路径严格按照path的命名，多层级嵌套：如/examples/form/basic/AddForm.vue
    * [
    *     {
    *         title: '示例',
@@ -197,7 +197,7 @@ async function generateRoutesByBackend (
       return []
     }
     const normalizePageMap: ComponentRecordType = {}
-    // 把相对路径key转成绝对路径key，并去除views，如../views/examples/form/basic/index.vue =》 /examples/form/basic/index.vue
+    // 把相对路径key转成绝对路径key，并去除views，如../views/examples/form/basic/AddForm.vue =》 /examples/form/basic/AddForm.vue
     for (const [key, value] of Object.entries(pageMap)) {
       normalizePageMap[normalizeViewPath(key)] = value
     }

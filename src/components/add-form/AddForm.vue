@@ -15,16 +15,16 @@
 <script lang="ts" setup>
 import { useForm } from '@/adapter/form'
 import type { ISchema } from '@/adapter'
-import Dialog from '@/components/common/dialog/dialog.vue'
+import Dialog from '@/components/common/dialog/Dialog.vue'
 interface PropsType {
   schemaList: ISchema[];
-  wrapperClass?: string; // 控制一行展示几个
+  gridCols?: string; // 控制一行展示几个
 }
 const props = defineProps<PropsType>()
 const show = defineModel<boolean>()
 const [Form, formMethods] = useForm({
   schema: props.schemaList,
-  wrapperClass: props.wrapperClass || 'grid-cols-1', // 一行展示一个
+  gridCols: props.gridCols || 'grid-cols-1', // 一行展示一个
   handleSubmit (values) {
     console.log(values, '拿到了表单数据')
   }

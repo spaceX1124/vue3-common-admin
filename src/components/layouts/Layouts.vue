@@ -39,13 +39,13 @@
 </template>
 <script lang="ts" setup>
 import { Layouts } from '@/packages/Layouts'
-import Content from './components/content/content.vue'
-import Menu from './components/menu/menu.vue'
-import TabBar from './components/tabBar/tabBar.vue'
-import LayoutHeader from './components/header/header.vue'
+import Content from './components/content/Content.vue'
+import Menu from './components/menu/Menu.vue'
+import TabBar from '@/components/layouts/components/tab-bar/TabBar.vue'
+import LayoutHeader from './components/header/Header.vue'
 import { useMixedMenu } from './components/menu/useMixedMenu'
 import { preferences, updatePreferences } from '@/preferences'
-import LayoutContentSpinner from './components/content/contentSpinner.vue'
+import LayoutContentSpinner from './components/content/ContentSpinner.vue'
 
 const {
   sidebarMenus,

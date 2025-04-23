@@ -111,18 +111,46 @@ Mock.mock('/api/getMenuList', 'post', (data:any) => {
             icon: 'lucide:layout-dashboard',
             children: [
               {
-                path: '/examples/form/basic',
-                name: 'ExamplesFormBasic',
-                title: '基础表单',
+                path: '/examples/form/input',
+                name: 'ExamplesFormInput',
+                title: '输入框',
                 icon: 'lucide:layout-dashboard',
                 order: 1
+              },
+              {
+                path: '/examples/form/select',
+                name: 'ExamplesFormSelect',
+                title: '下拉框',
+                icon: 'lucide:layout-dashboard',
+                order: 2
+              },
+              {
+                path: '/examples/form/checkbox',
+                name: 'ExamplesFormCheckbox',
+                title: '复选框',
+                icon: 'lucide:layout-dashboard',
+                order: 3
+              },
+              {
+                path: '/examples/form/radio',
+                name: 'ExamplesFormRadio',
+                title: '单选框',
+                icon: 'lucide:layout-dashboard',
+                order: 4
+              },
+              {
+                path: '/examples/form/intervalInput',
+                name: 'ExamplesFormIntervalInput',
+                title: '区间输入',
+                icon: 'lucide:layout-dashboard',
+                order: 5
               },
               {
                 path: '/examples/form/query',
                 name: 'ExamplesFormQuery',
                 title: '搜索表单',
                 icon: 'lucide:layout-dashboard',
-                order: 2
+                order: 6
               }
             ]
           },
