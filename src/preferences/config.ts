@@ -4,7 +4,7 @@ import type { Preferences } from '@/types/preferences'
 export const defaultPreferences: Preferences = {
   // 全局配置
   app: {
-    accessMode: 'backend', // 权限模式
+    accessMode: 'frontend', // 权限模式
     defaultAvatar: 'https://unpkg.com/@vbenjs/static-source@0.1.7/source/avatar-v1.webp', // 应用默认头像
     watermark: false, // 是否开启水印
     name: 'ZS' // 项目标题

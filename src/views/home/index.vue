@@ -8,7 +8,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ElButton } from 'element-plus'
 import AddForm from '@/components/add-form/AddForm.vue'
 import { type ISchema } from '@/adapter'
 import { ref } from 'vue'

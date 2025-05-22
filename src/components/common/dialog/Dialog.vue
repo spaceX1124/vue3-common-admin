@@ -20,7 +20,7 @@
       <slot/>
     </div>
     <template #footer>
-      <div class="flex p-2 border-t justify-end">
+      <div class="flex p-3 border-t justify-end" v-if="!hiddenFooter">
         <el-button @click="handleClose">{{ cancelText || '取消' }}</el-button>
         <el-button type="primary" @click="handleConfirm">{{confirmText || '确认'}}</el-button>
       </div>
@@ -28,7 +28,6 @@
   </el-dialog>
 </template>
 <script lang="ts" setup>
-import { ElDialog, ElButton } from 'element-plus'
 import { Icons } from '@/packages/Icons'
 
 const show = defineModel<boolean>()
@@ -36,6 +35,7 @@ interface PropsType {
   title?: string; // 标题
   confirmText?: string; // 确认文字
   cancelText?: string; // 取消文字
+  hiddenFooter?: boolean; // 隐藏底部
 }
 const emit = defineEmits(['confirm'])
 defineProps<PropsType>()

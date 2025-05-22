@@ -1,5 +1,5 @@
 import { cloneDeep as lodashCloneDeep, mergeWith, unionWith, isEqual, intersectionWith } from 'lodash-es'
-import { isArray, isObj, isFunc, isBoolean } from '@/utils/is'
+import { isArray, isObj, isFunc, isBoolean, isString } from '@/utils/is'
 /**
  * 深拷贝
  * */
@@ -90,4 +90,51 @@ export function getFirstNonNullOrUndefined<T> (
     }
   }
   return undefined
+}
+
+export const setFormData = (target: Record<string, any>, path: string, value: any) => {
+  console.log(target, path, value, 'setFormData')
+  const keyPath = path.split('.')
+
+  let current = target
+  for (let i = 0; i < keyPath.length - 1; i++) {
+    const key = keyPath[i]
+    if (!current[key]) {
+      current[key] = {}
+    }
+    current = current[key]
+  }
+  const lastKey = keyPath[keyPath.length - 1]
+  current[lastKey] = value
+}
+
+/**
+ * 过滤没值的元素
+ * */
+export function removeEmptyProperties<T extends object> (obj: T): T {
+  // 处理非对象类型（直接返回原始值）
+  if (!isObj(obj)) {
+    return obj
+  }
+  // 处理数组（递归过滤每个元素）
+  if (isArray(obj)) {
+    return obj
+    .filter(item => item !== null && item !== undefined)
+    .map(item => removeEmptyProperties(item)) as unknown as T
+  }
+  // 处理普通对象（过滤无效属性并递归处理值）
+  return Object.fromEntries(
+    Object.entries(obj)
+    .filter(([_, value]) => {
+      // 过滤掉 null 和 undefined
+      if (value === null || value === undefined) return false
+      // 过滤掉空字符串
+      if (isString(value) && value.trim() === '') return false
+      // 过滤掉空数组（递归检查数组元素是否都为空）
+      if (Array.isArray(value) && value.length === 0) return false
+      // 过滤掉空对象（递归检查对象所有属性是否都为空）
+      return !(typeof value === 'object' && Object.keys(value).length === 0)
+    })
+    .map(([key, value]) => [key, removeEmptyProperties(value)])
+  ) as T
 }

@@ -20,28 +20,82 @@ const routes: RouteRecordRaw[] = [
         },
         children: [
           {
-            path: '/examples/form/basic',
-            name: 'FormBasicExample',
-            component: () => import('@/views/examples/form/basic/index.vue'),
+            path: '/examples/form/input',
+            name: 'ExamplesFormInput',
+            component: () => import('@/views/examples/form/input/index.vue'),
             meta: {
-              title: '基础表单'
+              title: '输入框'
             }
           },
           {
-            path: '/examples/form/rules',
-            name: 'FormRulesExample',
-            component: () => import('@/views/examples/form/rules/index.vue'),
+            path: '/examples/form/select',
+            name: 'ExamplesFormSelect',
+            component: () => import('@/views/examples/form/select/index.vue'),
             meta: {
-              title: '校验表单'
+              title: '下拉框'
             }
           },
           {
-            path: '/examples/form/query',
-            name: 'FormQueryExample',
-            component: () => import('@/views/examples/form/query/index.vue'), meta: {
-              title: '查询表单'
+            path: '/examples/form/checkbox',
+            name: 'ExamplesFormCheckbox',
+            component: () => import('@/views/examples/form/checkbox/index.vue'), meta: {
+              title: '复选框'
             }
-
+          },
+          {
+            path: '/examples/form/radio',
+            name: 'ExamplesFormRadio',
+            component: () => import('@/views/examples/form/radio/index.vue'), meta: {
+              title: '单选框'
+            }
+          },
+          {
+            path: '/examples/form/date',
+            name: 'ExamplesFormDate',
+            component: () => import('@/views/examples/form/date/index.vue'), meta: {
+              title: '日期'
+            }
+          },
+          {
+            path: '/examples/form/intervalInput',
+            name: 'ExamplesFormIntervalInput',
+            component: () => import('@/views/examples/form/intervalInput/index.vue'), meta: {
+              title: '区间输入'
+            }
+          }
+        ]
+      },
+      {
+        path: '/examples/table',
+        name: 'ExamplesTable',
+        redirect: '/examples/table/basic',
+        meta: {
+          title: '表格'
+        },
+        children: [
+          {
+            path: '/examples/table/basic',
+            name: 'ExamplesTableBasic',
+            component: () => import('@/views/examples/table/basic/index.vue'),
+            meta: {
+              title: '机构画像审核'
+            }
+          },
+          {
+            path: '/examples/table/channelList',
+            name: 'ExamplesTableChannelList',
+            component: () => import('@/views/examples/table/channelList/index.vue'),
+            meta: {
+              title: '渠道列表'
+            }
+          },
+          {
+            path: '/examples/table/channelDataStatics',
+            name: 'ExamplesTableChannelDataStatics',
+            component: () => import('@/views/examples/table/channelDataStatics/index.vue'),
+            meta: {
+              title: '渠道数据统计'
+            }
           }
         ]
       }

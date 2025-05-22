@@ -56,6 +56,7 @@ async function generateRoutes (
 ): Promise<RouteRecordRaw[]> {
   const { routes, pageMap = {} } = options
   let resultRoutes: RouteRecordRaw[] = routes
+  console.log(mode, 'mode')
   switch (mode) {
     case 'backend': {
       resultRoutes = await generateRoutesByBackend(options)
@@ -66,6 +67,7 @@ async function generateRoutes (
       break
     }
   }
+  console.log(resultRoutes, 'resultRoutes')
   /**
    * 调整路由树，做以下处理：
    * 1. 对未添加redirect的路由添加redirect

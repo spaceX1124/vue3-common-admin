@@ -5,7 +5,8 @@ export {
   RadioGroup,
   IntervalInput,
   FormTitle,
-  CheckboxGroup
+  CheckboxGroup,
+  DatePicker
 } from './src/components'
 
 export type * from './src/type'

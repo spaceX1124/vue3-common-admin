@@ -10,7 +10,7 @@ export const fieldList: ISchema[] = [
   {
     fieldKey: 'name1',
     component: 'Input',
-    fieldName: '普通输入',
+    fieldName: '普通输入1',
     componentProps: {
       placeholder: '无限制'
     },
@@ -215,6 +215,19 @@ export const fieldList: ISchema[] = [
     fieldKey: 'name17',
     component: 'Input',
     fieldName: '中文',
+    componentProps: {
+      placeholder: '请输入中文'
+    },
+    rules: {
+      regExp: RegExpEnum.fullName,
+      msg: '请输入正确的中文'
+    },
+    required: true
+  },
+  {
+    fieldKey: 'name18',
+    component: 'Input',
+    fieldName: '自定义',
     componentProps: {
       placeholder: '请输入中文'
     },

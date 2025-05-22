@@ -16,6 +16,12 @@ module.exports = {
           DEFAULT: 'rgb(var(--text-color))', // 默认样式
           hover: 'rgb(var(--bg-background))', // hover:bg-accent-hover,鼠标移入背景颜色
           active: 'rgb(var(--primary))' // 激活的样式
+        },
+        // 主题色，如text-primary，文字颜色就是主题色
+        primary: {
+          DEFAULT: 'rgb(var(--primary))',
+          hover: 'rgb(var(--primary))',
+          active: 'rgb(var(--primary))'
         }
       }
     }

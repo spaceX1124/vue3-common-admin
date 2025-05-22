@@ -6,7 +6,7 @@
       <el-button type="primary" @click="btn3">一行展示三列</el-button>
       <el-button type="primary" @click="btn4">根据宽度自适应列数</el-button>
     </div>
-    <BaseFormSelect/>
+    <BaseForm/>
     <div>
       <el-button type="primary" @click="handleSubmit">测试提交</el-button>
     </div>
@@ -15,11 +15,10 @@
 <script lang="ts" setup>
 import Page from '@/components/page/Page.vue'
 import { useForm } from '@/adapter/form'
-import { ElButton } from 'element-plus'
 import { getFieldList } from './index'
 import { onMounted } from 'vue'
 
-const [BaseFormSelect, baseFormApi] = useForm({
+const [BaseForm, baseFormApi] = useForm({
   schema: [],
   handleSubmit (values) {
     console.log(values, '数据框数据')

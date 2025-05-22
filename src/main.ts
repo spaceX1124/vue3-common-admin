@@ -2,16 +2,19 @@ import { createApp } from 'vue'
 
 import '@/designs'
 // 引入element-plus的样式，如果是其他UI框架，可以对应更改
+import ElementPlus from 'element-plus'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import 'element-plus/dist/index.css'
 import App from './App.vue'
 import router from './router'
 import { initStores } from '@/stores'
-import '@/utils/mock.ts'
+// import '@/utils/mock.ts'
 import { initComponentAdapter }from '@/adapter/component'
 
 const app = createApp(App)
 bootstrap()
 app.use(router)
+app.use(ElementPlus, { locale: zhCn })
 
 app.mount('#app')
 

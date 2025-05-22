@@ -1,12 +1,11 @@
 <template>
   <label
-    class="flex flex-shrink-0 text-sm leading-7"
+    class="flex flex-shrink-0 text-sm leading-8"
     :style="{
       width: labelPosition !== 'top' && labelWidth ? `${labelWidth}px` : '100%'
     }"
     :class="{
       'justify-end': labelPosition === 'right',
-      'items-center': labelPosition !== 'top',
       'mr-2': labelPosition !== 'top',
     }">
     <span v-if="required" class="required mr-0.5">*</span>

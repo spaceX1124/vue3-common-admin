@@ -146,11 +146,18 @@ Mock.mock('/api/getMenuList', 'post', (data:any) => {
                 order: 5
               },
               {
+                path: '/examples/form/date',
+                name: 'ExamplesFormDate',
+                title: '日期',
+                icon: 'lucide:layout-dashboard',
+                order: 6
+              },
+              {
                 path: '/examples/form/query',
                 name: 'ExamplesFormQuery',
                 title: '搜索表单',
                 icon: 'lucide:layout-dashboard',
-                order: 6
+                order: 7
               }
             ]
           },

@@ -3,7 +3,7 @@ import { ref, unref } from 'vue'
 import { http } from '@/utils/http'
 import type { ISchema } from '@/adapter'
 
-export function useOptions (schema: ISchema) {
+export function useOptions (schema?: Partial<ISchema>) {
   const showList = ref<Record<string, any>[]>([])
   // 控制接口请求只请求一次，如果需要每次都请求，就把它去掉
   const flag = ref(true)
@@ -14,9 +14,9 @@ export function useOptions (schema: ISchema) {
    * */
   function dealDataList (arr?: Record<string, any>[]) {
     // 禁用选项
-    const disabledOptions = schema.async?.disabledOptions
+    const disabledOptions = schema?.async?.disabledOptions
     // 隐藏选项
-    const hiddenOptions = schema.async?.hiddenOptions
+    const hiddenOptions = schema?.async?.hiddenOptions
     let hiddenOptionsSet
     if (isString(hiddenOptions)) {
       hiddenOptionsSet = new Set(hiddenOptions.split(','))
@@ -70,7 +70,7 @@ export function useOptions (schema: ISchema) {
    * 根据输入的关键词去搜索
    * */
   async function searchData (query?: string) {
-    if (schema.async) {
+    if (schema?.async) {
       try {
         const { url, data, remoteKey, method } = schema.async
         const postData = { ...data }
@@ -87,11 +87,26 @@ export function useOptions (schema: ISchema) {
     }
   }
   /**
-   * 直接搜索
+   * focus的时候，如果没开启远程输入搜索remote才请求
    * */
   async function getOptionsList () {
     // 未开启远程输入搜索remote
-    if (unref(flag) && schema.async && !schema.async.remote) {
+    if (unref(flag) && schema?.async && !schema.async.remote) {
+      await getApiList()
+    }
+  }
+  /**
+   * 用于外部刷新使用，遇到，开启了remote，但是有值的时候，进来就要请求
+   * */
+  async function getOptionsListNow () {
+    // 未开启远程输入搜索remote
+    if (unref(flag) && schema?.async) {
+      await getApiList()
+    }
+  }
+
+  async function getApiList () {
+    if (unref(flag) && schema?.async) {
       try {
         const { url, data, method } = schema.async
         loading.value = true
@@ -104,12 +119,15 @@ export function useOptions (schema: ISchema) {
         showList.value = []
       }
     }
+
   }
   return {
     showList,
     loading,
     searchData,
     getOptionsList,
-    dealDataList
+    getOptionsListNow,
+    dealDataList,
+    flag
   }
 }

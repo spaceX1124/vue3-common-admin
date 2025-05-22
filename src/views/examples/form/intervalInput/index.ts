@@ -31,7 +31,7 @@ export function getFieldList (baseFormApi: FormMethods):ISchema[] {
             return true
           }
         } else {
-          return '数据格式不正确'
+          return true
         }
       },
       extraConfig: {
@@ -68,7 +68,7 @@ export function getFieldList (baseFormApi: FormMethods):ISchema[] {
             return true
           }
         } else {
-          return '数据格式不正确'
+          return true
         }
       }
     },
@@ -82,6 +82,7 @@ export function getFieldList (baseFormApi: FormMethods):ISchema[] {
         maxPlaceholder: '请输入最大金额'
       },
       rules: (value) => {
+        console.log(value, 'value111')
         if (isArray(value)) {
           if (isNullOrUndefOrEmpty(value[0]) || isNullOrUndefOrEmpty(value[1])) {
             return '请填写完整'
@@ -89,7 +90,7 @@ export function getFieldList (baseFormApi: FormMethods):ISchema[] {
             return true
           }
         } else {
-          return '数据格式不正确'
+          return true
         }
       }
     }

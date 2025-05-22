@@ -1,5 +1,5 @@
 <template>
-  <vxe-grid ref="gridRef" v-bind="vxeGridOptions">
+  <vxe-grid ref="gridRef" class="myGrid" v-bind="vxeGridOptions" v-on="events">
     <!-- 数据加载动画loading -->
     <template #loading>
       <ZsLoading :spinning="true"/>
@@ -14,21 +14,21 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, nextTick } from 'vue'
+import { computed, onBeforeMount } from 'vue'
 import type { VxeGridProps } from 'vxe-table'
 // 不能升级，目前4.8.11没问题，升级之后，引入会报Cannot resolve symbol 'VxeGrid'
-import { VxeGrid } from 'vxe-table'
+import { VxeGrid, type VxeGridListeners } from 'vxe-table'
 import 'vxe-table/lib/style.css'
 import { VxeUI, VxeLoading } from 'vxe-pc-ui'
 import 'vxe-pc-ui/lib/style.css'
-import './style.css'
+import './style.scss'
 VxeUI.component(VxeLoading)
 
 import type { TableMethods } from './tableMethods'
-import { useColumn } from './hooks/useColumn'
-import { useDataList } from './hooks/useDataList'
+import { useColumn } from './hooks/useColumn.tsx'
 import type { ITableProps } from './type'
 import ZsLoading from './components/loading.vue'
+import { isEmpty } from '@/utils/is.ts'
 
 interface PropsType extends ITableProps{
   tableMethods: TableMethods
@@ -48,11 +48,6 @@ const props = defineProps<PropsType>()
 const { showColumns } = useColumn({ tableMethods: props.tableMethods })
 
 /**
- * 处理表格数据
- * */
-const { tableData, loading, pagerData } = useDataList({ tableMethods: props.tableMethods })
-
-/**
  * 当接收到表头字段之后，应该如何处理成表格需要的数据结构
  * 如何控制单选
  * 如何控制多选
@@ -66,33 +61,59 @@ const vxeGridOptions = computed(() => {
   // @todo，不能在这设置高度，要从外面需要使用的地方传入，不然会卡顿缩放。
   const options: VxeGridProps = {
     columns: showColumns.value, // 表头
-    data: tableData.value, // 表格数据
+    data: props.tableMethods.tableData.value, // 表格数据
     // height: '100%', // 表格高度
     minHeight: 180,
-    loading: loading.value, // 数据加载状态
+    loading: props.tableMethods.loading.value, // 数据加载状态
     columnConfig: {
       resizable: true // 列宽是否可以拖动
+    },
+    align: 'center',
+    border: true,
+    pagerConfig: { // 分页配置
+      pageSize: props.tableMethods.pagerData.value.size,
+      currentPage: props.tableMethods.pagerData.value.current,
+      total: props.tableMethods.pagerData.value.total,
+      background: false,
+      pageSizes: [10, 20, 30, 50, 100, 200],
+      className: 'w-full',
+      layouts: ['Total', 'Sizes', 'PrevPage', 'Number', 'NextPage'],
+      size: 'mini',
+      enabled: !props.tableMethods.hiddenPager // 隐藏分页
+    },
+    sortConfig: {
+      trigger: 'cell' // 点击表头触发排序
     }
   }
   if(props.tableMethods.height) {
     options.height = props.tableMethods.height
   }
-  // 如果不隐藏分页
-  if (!props.tableMethods.hiddenPager) {
-    // 设置分页配置可显示分页功能
-    options.pagerConfig = {
-      pageSize: pagerData.value.pageSize,
-      currentPage: pagerData.value.pageNum,
-      total: pagerData.value.total,
-      background: true,
-      pageSizes: [10, 20, 30, 50, 100, 200],
-      className: 'mt-2 w-full',
-      layouts: ['Total', 'Sizes', 'Home', 'PrevJump', 'PrevPage', 'Number', 'NextPage', 'NextJump', 'End'],
-      size: 'mini' as const
-    }
-  }
-  console.log(options, 'options')
   return options
 })
 
+// 给vxe-grid绑定事件
+const events: VxeGridListeners = {
+  pageChange (data) {
+    console.log(data, '分页改变')
+    props.tableMethods.updatePagerData({ current: data.currentPage, size: data.pageSize })
+  },
+  sortChange (data) {
+    const { field, order } = data
+    const schema = props.tableMethods.getField(field)
+    if (schema && schema.sortConfig && !isEmpty(schema.sortConfig)) {
+      const { sortKey, sortValue, sortTypeKey } = schema.sortConfig
+      const params = {
+        [sortKey]: sortValue,
+        [sortTypeKey]: order === 'desc' ? 0 : 1
+      }
+      // 恢复之后order为null
+      props.tableMethods.updateSortData(order ? params : {})
+    }
+  }
+}
+
+onBeforeMount(() => {
+  // 获取表格数据
+  props.tableMethods.dealApiColumnTableData()
+})
 </script>

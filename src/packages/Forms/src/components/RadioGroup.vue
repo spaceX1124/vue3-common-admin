@@ -1,5 +1,5 @@
 <template>
-  <el-radio-group :model-value="values">
+  <el-radio-group :model-value="selectVal">
     <component
       :is="showComponent"
       v-for="(item, index) in showList"
@@ -15,53 +15,64 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, type Component, onBeforeMount, watch, ref } from 'vue'
-import { ElRadio, ElRadioGroup, ElRadioButton } from 'element-plus'
+import { computed, onBeforeMount, watch, ref } from 'vue'
+import { ElRadioButton, ElRadio } from 'element-plus'
 
 import type { ISchema } from '@/adapter'
 import { useOptions } from './utils'
-import { useFormContext } from '@/packages/Forms/src/hooks/useCreateContext'
 
 interface PropsType {
-  component: Component;
-  schema: ISchema;
-  modelValue: any;
+  modelValue?: string | number;
+  schema?: Partial<ISchema>;
   options?: Record<string, any>[];
 }
 const props = withDefaults(defineProps<PropsType>(), {})
+const emit = defineEmits(['update:modelValue', 'refreshOptions', 'updateOptions', 'change'])
 
-const values = ref('')
+const selectVal = ref('')
 
 const showComponent = computed(() => {
   return props.schema?.componentProps?.isButton ? ElRadioButton : ElRadio
 })
 
-const { formMethods } = useFormContext()
-const { showList, getOptionsList, dealDataList } = useOptions(props.schema)
+const { showList, getOptionsListNow, dealDataList, flag } = useOptions(props.schema)
 
+// 没有给el-radio-group双向绑定，绑定change事件不执行
 /**
  * 处理单选框选中和取消选中
  * */
 function choose (item: Record<string, any>) {
-  formMethods.setFieldValue(props.schema.fieldKey, values.value === item.value ? '' : item.value)
+  let val = selectVal.value === item.value ? '' : item.value
+  emit('update:modelValue', val)
+  emit('change', val)
 }
 
 /**
  * 更新字段异步数据
  * */
 watch(() => showList.value, () => {
-  formMethods.updateFieldProperty(props.schema.fieldKey, 'componentProps.options', showList.value)
+  emit('updateOptions', showList.value)
 })
 
 watch(() => props.modelValue, (value) => {
-  values.value = String(value)
+  selectVal.value = String(value)
+}, {
+  immediate: true
 })
 
+async function refresh () {
+  flag.value = true
+  await getOptionsListNow()
+}
+
 onBeforeMount(async () => {
-  if (props.schema.async && props.schema.async.url) {
-    await getOptionsList()
+  if (props.schema?.async && props.schema.async.url) {
+    await getOptionsListNow()
+    // 用于外部使用，刷新下拉数据
+    emit('refreshOptions', refresh)
   } else {
     dealDataList(props.options)
   }
 })
+
 </script>

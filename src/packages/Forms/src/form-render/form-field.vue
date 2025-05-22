@@ -1,7 +1,12 @@
 <template>
+  <!-- slotProps：这是使用FieldItem组件时，这个组件内部的<slot>暴露出来的参数 -->
   <FieldItem :name="fieldKey" v-slot="slotProps" v-bind="fieldProps">
-    <div class="flex items-center mb-5" :class="{'flex-col': labelPosition === 'top'}">
+    <div
+      class="flex"
+      :class="{'flex-col': labelPosition === 'top', 'mb-3': formMethods.isSearch, 'mb-5': !formMethods.isSearch}"
+      v-bind="$attrs">
       <FormLabel
+        v-if="!hideLabel"
         :labelPosition="labelPosition"
         :labelWidth="labelWidth"
         :required="required">
@@ -9,7 +14,35 @@
         <span class="ml-[2px]" v-if="labelPosition !== 'top'">:</span>
       </FormLabel>
       <div class="relative w-full">
-        <component :is="FieldComponent" v-bind="createComponentProps(slotProps)" :schema="{...props}"/>
+        <!-- 渲染表单项的自定义内容。否则自己会渲染默认值component -->
+        <slot v-bind="{
+          ...slotProps,
+          ...createComponentProps(slotProps),
+          placeholder,
+          schema:{...props},
+          fieldName: props.fieldName
+        }">
+          <component
+            :is="FieldComponent"
+            v-bind="createComponentProps(slotProps)"
+            :schema="{...props}"
+            :placeholder="placeholder"
+            @updateOptions="updateOptions"
+            @refreshOptions="refreshOptions"
+            @validField="validField"
+          >
+            <template v-for="name in renderContentKey" :key="name" #[name]>
+              <RenderContent
+                :content="customContentRender[name]"
+              />
+            </template>
+          </component>
+        </slot>
+        <template v-if="slotContent && slotContent.bottom">
+          <RenderContent
+            :content="slotContent.bottom"
+          />
+        </template>
         <Transition name="slide-up">
           <FormMessage class="absolute -bottom-[22px]" />
         </Transition>
@@ -21,16 +54,26 @@
 <script lang="ts" setup>
 import FormLabel from './form-label.vue'
 import FormMessage from './form-message.vue'
+import RenderContent from './render-content.vue'
 
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { defineRule, Field as FieldItem } from 'vee-validate'
 
 import type { ISchema } from '@/adapter'
-import { isArray, isEmpty, isFunc, isNullOrUndefOrEmpty, isString, isUndef } from '@/utils/is'
+import { isArray, isEmpty, isFunc, isNullOrUndefOrEmpty, isString } from '@/utils/is'
 import { useFormContext } from '../hooks/useCreateContext'
 
 interface PropsType extends ISchema {}
 const props = defineProps<PropsType>()
+
+// 处理placeholder
+const placeholder = computed(() => {
+  if (isNullOrUndefOrEmpty(props.componentProps?.placeholder)) {
+    return ['Input'].includes(props.component) ? `请输入${props.fieldName}` : `请选择${props.fieldName}`
+  }
+  return props.componentProps?.placeholder
+})
+
 // 获取透传数据
 const { componentMap, defaultComponentProps, componentBindEventMap, formMethods } = useFormContext()
 /**
@@ -75,7 +118,7 @@ function fieldBindEvent (slotProps: Record<string, any>) {
  * 给组件绑定props和event
  * */
 function createComponentProps (slotProps: Record<string, any>) {
-  // @todo，思考下怎么绑定时间，以及和外部传入的事件进行耦合， formApi.updateSchema更新字段的options
+  // @todo，思考下怎么绑定事件，以及和外部传入的事件进行耦合， formApi.updateSchema更新字段的options
   const event: Record<string, any> = {}
   if (props.componentEvent) {
     Object.keys(props.componentEvent).forEach(eventKey => {
@@ -97,7 +140,6 @@ function createComponentProps (slotProps: Record<string, any>) {
     ...defaultComponentProps, // 默认的组件props
     ...props.componentProps // 外部传入的UI框架自己的props
   }
-  console.log(bind, 'bind')
   return bind
 }
 
@@ -107,6 +149,9 @@ function createComponentProps (slotProps: Record<string, any>) {
 const triggerBlur = computed(() => {
   return ['Input', 'IntervalInput'].includes(props.component)
 })
+
+// const attrs = useAttrs()
+// console.log(attrs, 'attrs1')
 /**
  * 给FieldItem绑定props
  * */
@@ -114,7 +159,7 @@ const fieldProps = computed(() => {
   const rules = fieldRules.value
   const prop = {
     label: props.fieldName,
-    ...(!isEmpty(rules) ? { rules } : {}),
+    ...(!isEmpty(rules) && !formMethods.isSearch ? { rules } : {}), // 搜索组件不需要表单校验
     validateOnBlur: triggerBlur.value, // 失焦时校验
     validateOnChange: !triggerBlur.value, // change时校验
     validateOnModelUpdate: false // 触发update:modelValue事件时校验
@@ -177,5 +222,36 @@ const fieldRules = computed(() => {
 const labelPosition = computed(() => {
   return formMethods.staticState.value.labelPosition
 })
+
+const customContentRender = computed(() => {
+  if (!isFunc(props.renderComponentSlotContent)) {
+    return {}
+  }
+  return props.renderComponentSlotContent()
+})
+
+const renderContentKey = computed(() => {
+  return Object.keys(customContentRender.value)
+})
+
+/**
+ * 给字段设置最新的数据列表，如select，checkbox，radio，等
+ * */
+function updateOptions (showList: Record<string, any>[]) {
+  formMethods.updateFieldProperty(props.fieldKey, 'componentProps.options', showList)
+}
+/**
+ *  用于外部使用，刷新下拉数据
+ * */
+function refreshOptions (refresh: () => void) {
+  formMethods.updateFieldProperty(props.fieldKey, 'insideComp.refresh', refresh)
+}
+
+/**
+ * 触发字段校验规则
+ * */
+function validField () {
+  formMethods.validField(props.fieldKey)
+}
 
 </script>

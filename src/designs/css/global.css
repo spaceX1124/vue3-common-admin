@@ -45,6 +45,16 @@ body {
 .flex-between {
     @apply flex items-center justify-between;
 }
+.flex-start {
+    @apply flex items-center justify-start;
+}
+.flex-end {
+    @apply flex items-center justify-end;
+}
+
+.pointer {
+    cursor: pointer;
+}
 
 ::-webkit-scrollbar {
     width: 10px;

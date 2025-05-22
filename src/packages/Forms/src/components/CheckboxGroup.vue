@@ -9,8 +9,8 @@
       全选
     </el-checkbox>
     <el-checkbox-group
-      v-bind="$attrs"
-      @change="handleCheckedCitiesChange"
+      v-model="selectVal"
+      @change="handleCheckedChange"
     >
       <el-checkbox
         v-for="(item, index) in showList"
@@ -26,56 +26,102 @@
 </template>
 
 <script lang="ts" setup>
-import { type Component, ref, computed, onBeforeMount, watch } from 'vue'
-import { type CheckboxValueType, ElCheckbox, ElCheckboxGroup } from 'element-plus'
+import { ref, computed, onBeforeMount, watch } from 'vue'
+import { type CheckboxValueType } from 'element-plus'
 
 import type { ISchema } from '@/adapter'
-import { useFormContext } from '../hooks/useCreateContext'
 import { useOptions } from '@/packages/Forms/src/components/utils'
+import { isArray, isNullOrUndefOrEmpty, isString } from '@/utils/is.ts'
 
 interface PropsType {
-  component: Component,
-  schema: ISchema,
+  modelValue?: string | string[];
+  // checked?: string | string[]; // 如果双向绑定底层是checked，就用这个，如ant-design-vue
+  schema?: Partial<ISchema>;
   options?: Record<string, any>[]
 }
 
 const props = withDefaults(defineProps<PropsType>(), {})
+const emit = defineEmits(['update:modelValue', 'update:checked', 'refreshOptions', 'updateOptions', 'change'])
 
 const checkAll = ref<boolean>(false)
 const isIndeterminate = ref(false)
+const selectVal = ref<string[]>([])
 
-const { formMethods } = useFormContext()
-const { showList, getOptionsList } = useOptions(props.schema)
+const { showList, getOptionsListNow, dealDataList, flag } = useOptions(props.schema)
 
 // 是否展示全选
 const isAll = computed(() => {
-  return props.schema.extraConfig?.isAll || false
+  return props.schema?.extraConfig?.isAll || false
 })
 
 function handleCheckAllChange (val: CheckboxValueType) {
   let values = []
   val && (values = showList.value.filter(item => !item.disabled).map(item => item.value))
-  formMethods.setFieldValue(props.schema.fieldKey, values)
   isIndeterminate.value = false
+  emit('update:modelValue', values)
+  // emit('update:checked', values)
+  emit('change', values)
+  if (props.schema?.componentEvent) {
+    props.schema.componentEvent?.onChange(values)
+  }
 }
-function handleCheckedCitiesChange (value: string[]) {
+function handleCheckedChange (value: string[]) {
   const checkedCount = value.length
   checkAll.value = checkedCount === showList.value.filter(item => !item.disabled).length
   isIndeterminate.value = checkedCount > 0 && checkedCount < showList.value.filter(item => !item.disabled).length
+  emit('update:modelValue', value)
+  // emit('update:checked', value)
+  emit('change', value)
 }
 
 /**
  * 更新字段异步数据
  * */
 watch(() => showList.value, () => {
-  formMethods.updateFieldProperty(props.schema.fieldKey, 'componentProps.options', showList.value)
+  emit('updateOptions', showList.value)
+  // 处理全选和半选
+  checkAll.value = selectVal.value.length === showList.value.filter(item => !item.disabled).length
+  isIndeterminate.value = selectVal.value.length > 0 && selectVal.value.length < showList.value.filter(item => !item.disabled).length
 })
 
-onBeforeMount(async () => {
-  if (props.schema.async && props.schema.async.url) {
-    await getOptionsList()
+const parseInputValue = (value: string | string[] | null | undefined): string[] => {
+  if (!isNullOrUndefOrEmpty(value)) {
+    if (isString(value)) {
+      return value.split(',')
+    } else if (isArray(value)) {
+      return value
+    } else {
+      return [value]
+    }
   } else {
-    showList.value = props.options || []
+    return []
+  }
+}
+
+watch(() => props.modelValue, (newVal) => {
+  selectVal.value = parseInputValue(newVal)
+}, {
+  immediate: true
+})
+// 兼容如ant-design-vue
+// watch(() => props.checked, (newVal) => {
+//   selectVal.value = parseInputValue(newVal)
+// }, {
+//   immediate: true
+// })
+
+async function refresh () {
+  flag.value = true
+  await getOptionsListNow()
+}
+
+onBeforeMount(async () => {
+  if (props.schema?.async && props.schema.async.url) {
+    await getOptionsListNow()
+    // 用于外部使用，刷新下拉数据
+    emit('refreshOptions', refresh)
+  } else {
+    dealDataList(props.options)
   }
 })
 </script>

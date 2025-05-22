@@ -12,7 +12,7 @@
 
 ### 3.使用mock
     + pnpm i vite-plugin-mock -D
-    + 在vite插件中配置，参见/build/plugins/index.ts
+    + 在vite插件中配置，参见/build/plugins/index.tsx
     + 根目录下创建mock文件夹,详细可看mock文件夹
     + 然后就可以使用自己封装的axios，跟正常请求后端接口一样
     + 参考链接 https://www.viterc.cn/en/vite-plugin-mock.html

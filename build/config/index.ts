@@ -12,7 +12,8 @@ export function defineAppConfig<T extends DefineOptions> (defineOptions: T ) {
     base: './', // 开发或生产环境服务的公共基础路径
     server: {
       port: 8088,
-      open: false
+      open: false,
+      host: true
     }
     // css: {
     //   preprocessorOptions: {
@@ -25,7 +26,7 @@ export function defineAppConfig<T extends DefineOptions> (defineOptions: T ) {
     //     // },
     //     scss: {
     //       additionalData: `
-    //       @import "@/designs/index.ts";
+    //       @import "@/designs/index.tsx";
     //      `
     //     }
     //   }

@@ -1,0 +1,46 @@
+:root .vxe-grid {
+  --vxe-ui-font-color: rgb(var(--text-color)); /* 单元格文字颜色 */
+  --vxe-ui-table-header-font-color: rgb(var(--text-color)); /* 表头文字颜色 */
+  --vxe-ui-table-header-font-weight: 600; /* 表头加粗 */
+}
+
+/* 分页样式 */
+.vxe-pager {
+  .vxe-pager--num-btn {
+    background: #f0f2f5;
+    @apply text-accent;
+    &:not(.is--disabled):hover {
+      @apply text-primary;
+    }
+    &.is--active {
+      @apply  bg-primary;
+      color: #fff!important;
+    }
+    &:not(.is--disabled):focus {
+      @apply  bg-primary;
+      color: #fff!important;
+    }
+  }
+  .vxe-pager--prev-btn,
+  .vxe-pager--next-btn {
+    background: #f0f2f5;
+    @apply text-accent;
+    &:not(.is--disabled):hover{
+      @apply text-primary;
+    }
+    .vxe-pager--btn-icon {
+      font-size: 11px;
+    }
+  }
+  .vxe-pager--total {
+    @apply text-accent;
+  }
+  .vxe-select {
+    .vxe-input--inner {
+      @apply text-accent;
+    }
+    .vxe-select-option {
+      @apply text-accent;
+    }
+  }
+}

@@ -1,7 +1,7 @@
-import { ElInput, ElRadio, ElRadioGroup, ElRadioButton } from 'element-plus'
+import { ElInput, ElButton } from 'element-plus'
 import { globalShareState } from '@/global/globalState'
-import { h, ref, type Component, type SetupContext } from 'vue'
-import { Select, RadioGroup, IntervalInput, CheckboxGroup } from '@/packages/Forms'
+import { h, type Component, type SetupContext } from 'vue'
+import { Select, RadioGroup, IntervalInput, CheckboxGroup, DatePicker } from '@/packages/Forms'
 
 // 这里需要自行根据业务组件库进行适配，需要用到的组件都需要在这里类型说明
 export type ComponentType =
@@ -11,6 +11,10 @@ export type ComponentType =
     | 'RadioGroup'
     | 'IntervalInput'
     | 'FormTitle'
+    | 'SlotCustom'
+    | 'Search'
+    | 'DefaultButton'
+    | 'DatePicker'
 
 // 这个函数可以处理初始的placeholder，不然在Form包中不好去处理
 const withDefaultPlaceholder = <T extends Component>(
@@ -72,6 +76,21 @@ export function initComponentAdapter () {
           ...props,
           ...attrs,
           component: IntervalInput
+        },
+        slots
+      )
+    },
+    // 自定义默认按钮
+    DefaultButton: (props, { attrs, slots }) => {
+      return h(ElButton, { ...props, attrs }, slots)
+    },
+    DatePicker: (props, { attrs, slots }) => {
+      return h(
+        DatePicker,
+        {
+          ...props,
+          ...attrs,
+          component: DatePicker
         },
         slots
       )

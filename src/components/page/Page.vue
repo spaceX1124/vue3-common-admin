@@ -22,7 +22,7 @@ const contentStyle = computed<StyleValue>(() => {
 
 <template>
   <div class="h-full p-3.5" :class="contentClass" :style="contentStyle">
-    <div class="h-full p-2 rounded-md bg-white">
+    <div class="h-full p-3 rounded-md bg-white">
       <slot/>
     </div>
   </div>

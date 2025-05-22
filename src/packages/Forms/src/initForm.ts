@@ -4,22 +4,23 @@
  * 默认表单配置
  * 组件双向绑定机制
  * */
-import { type Component } from 'vue'
+import { type Component, defineComponent } from 'vue'
 import { globalShareState } from '@/global/globalState'
-import type { BaseFormComponentType, FormAdapterOptions } from './type'
+import type { FormAdapterOptions } from './type'
 import { FormTitle } from './components'
+import type { ComponentType } from '@/adapter/component'
 
 // 默认双向绑定机制
 const DEFAULT_MODEL_PROP_NAME = 'modelValue'
 
 // 组件枚举集合
-export const COMPONENT_MAP: Partial<Record<BaseFormComponentType, Component>> = {
+export const COMPONENT_MAP: Partial<Record<ComponentType, Component>> = {
   FormTitle
 }
 // 组件的默认prop属性配置
 export const DEFAULT_COMPONENT_PROPS = {}
 // 组件双向绑定语法糖需要的modelValue,如{CheckboxGroupAll: 'checked',Input: 'modelValue' }
-export const COMPONENT_BIND_EVENT_MAP: Partial<Record<BaseFormComponentType, string>> = {}
+export const COMPONENT_BIND_EVENT_MAP: Partial<Record<ComponentType, string>> = {}
 export let CONFIG: Record<string, any> = {}
 
 export function initForm (options?: FormAdapterOptions) {
@@ -34,7 +35,7 @@ export function initForm (options?: FormAdapterOptions) {
   const modelPropNameMap = options?.modelPropNameMap
   // 合并UI组件库组件和自定义组件
   for (const component of Object.keys(components)) {
-    const key = component as BaseFormComponentType
+    const key = component as ComponentType
     // 设置组件集合
     COMPONENT_MAP[key] = components[component as never]
     // 设置组件双向绑定update:[baseModelPropName]事件用到的绑定机制值
