@@ -2,7 +2,7 @@
   <div class="flex-center">
     <el-select
       v-model="inputVal[0]"
-      :placeholder="schema?.extraConfig?.minPlaceholder || '请选择'"
+      :placeholder="minPlaceholder || '请选择'"
       style="flex: 1"
       @change="handleStartChange"
       clearable
@@ -12,7 +12,7 @@
     <span style="padding: 0 12px">至</span>
     <el-select
       v-model="inputVal[1]"
-      :placeholder="schema?.extraConfig?.maxPlaceholder || '请选择'"
+      :placeholder="maxPlaceholder || '请选择'"
       style="flex: 1"
       @change="handleEndChange"
       clearable
@@ -24,13 +24,13 @@
 
 <script lang="ts" setup>
 import { watch, ref } from 'vue'
-
-import type { ISchema } from '@/adapter'
 import { isNullOrUndefOrEmpty } from '@/utils/is.ts'
 
 interface PropsType {
-  schema?: Partial<ISchema>;
   modelValue?: string[];
+  minPlaceholder?: string;
+  maxPlaceholder?: string;
+
 }
 const props = defineProps<PropsType>()
 const emit = defineEmits(['update:modelValue'])
@@ -61,16 +61,16 @@ const hours = Array.from({ length: 24 }, (_, i) => i)
 // 处理开始时间变化
 const handleStartChange = (val) => {
   emit('update:modelValue', inputVal.value)
-  if (props.schema?.componentEvent) {
-    props.schema.componentEvent?.onChange(inputVal.value[0])
-  }
+  // if (props.schema?.componentEvent) {
+  //   props.schema.componentEvent?.onChange(inputVal.value[0])
+  // }
 }
 // 处理结束时间变化
 const handleEndChange = (val) => {
   emit('update:modelValue', inputVal.value)
-  if (props.schema?.componentEvent) {
-    props.schema.componentEvent?.onChange(inputVal.value[0])
-  }
+  // if (props.schema?.componentEvent) {
+  //   props.schema.componentEvent?.onChange(inputVal.value[0])
+  // }
 }
 
 </script>

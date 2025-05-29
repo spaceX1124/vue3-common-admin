@@ -1,12 +1,11 @@
 import { useForm } from './src/hooks/useForm'
 import { initForm } from './src/initForm'
 export {
-  Select,
-  RadioGroup,
+  ApiRadioGroup,
   IntervalInput,
   FormTitle,
-  CheckboxGroup,
-  DatePicker
+  ApiCheckboxAll,
+  ApiComponent
 } from './src/components'
 
 export type * from './src/type'

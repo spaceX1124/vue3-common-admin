@@ -3,149 +3,95 @@ import type { FormMethods } from '@/packages/Forms'
 export function getFieldList (baseFormApi: FormMethods):ISchema[] {
   return [
     {
-      fieldKey: 'hobby1',
+      fieldKey: 'key1',
+      fieldName: '普通单选',
       component: 'Select',
-      fieldName: '单选',
       componentProps: {
-        options: [
-          {
-            label: '篮球',
-            value: 1
-          },
-          {
-            label: '足球',
-            value: 2
-          }
-        ]
+        options: [{ label: '篮球', value: 1 }, { label: '足球', value: 2 }]
       },
-      required: true
+      useForm: true
     },
     {
-      fieldKey: 'hobby2',
+      fieldKey: 'key2',
+      fieldName: '普通多选',
       component: 'Select',
-      fieldName: '多选',
       componentProps: {
-        options: [
-          {
-            label: '篮球',
-            value: 1
-          },
-          {
-            label: '足球',
-            value: 2
-          }
-        ],
+        options: [{ label: '篮球', value: 1 }, { label: '足球', value: 2 }],
         multiple: true
       },
-      required: true
+      useForm: true
     },
     {
-      fieldKey: 'hobby21',
+      fieldKey: 'key3',
+      fieldName: '普通多选-禁用选项',
       component: 'Select',
-      fieldName: '多选+1',
       componentProps: {
-        options: [
-          {
-            label: '篮球',
-            value: 1
-          },
-          {
-            label: '足球',
-            value: 2
-          }
-        ],
-        multiple: true,
-        collapseTags: true
+        options: [{ label: '篮球', value: 1 }, { label: '足球', value: 2, disabled: true }, { label: '乒乓球', value: 3 }],
+        multiple: true
       },
-      required: true
+      useForm: true
     },
     {
-      fieldKey: 'hobby3',
-      component: 'Select',
-      fieldName: '异步下拉',
-      required: true,
+      fieldKey: 'key4',
+      fieldName: '异步单选',
+      component: 'ApiSelect',
       async: {
-        // 需要异步数据
-        url: '/api/hobbyList', // 接口地址
-        method: 'post', // 请求方法
-        label: 'title', // list对应的label取对应的字段
-        value: 'id', // list对应的value取对应的字段
-        data: { type: 1 }
+        url: '/bus/cms/channel-register-page/select-list',
+        method: 'get',
+        label: 'name',
+        value: 'id'
       },
-      componentEvent: {
-        onChange: (e: any) => {
-
-          // @todo 不仅要拿到选中值，还要拿到下拉list,或者当前选中项的数据
-          console.log(e, 'change')
-          // 更新hobby5字段请求接口时需要的参数
-          baseFormApi.updateFieldProperty('hobby5', 'async.data.hobby3', e)
-          // 如果hobby5已经有值才去清空
-          // 清空hobby5已选值
-          if (baseFormApi.getValues().hobby5) {
-            baseFormApi.setFieldValue('hobby5', '')
-          }
+      componentProps: {
+        multiple: true
+      },
+      useForm: true
+    },
+    {
+      fieldKey: 'key5',
+      fieldName: '异步多选',
+      component: 'ApiSelect',
+      async: {
+        url: '/bus/cms/channel-register-page/select-list',
+        method: 'get',
+        label: 'name',
+        value: 'id'
+      },
+      componentProps: {
+        multiple: true
+      },
+      useForm: true
+    },
+    {
+      fieldKey: 'key6',
+      fieldName: '异步多选-隐藏选项',
+      component: 'ApiSelect',
+      async: {
+        url: '/bus/cms/channel-register-page/select-list',
+        method: 'get',
+        label: 'name',
+        value: 'id',
+        hiddenOptions (data) {
+          return data.id === 7
         }
-      }
+      },
+      componentProps: {
+        multiple: true
+      },
+      useForm: true
     },
     {
-      fieldKey: 'hobby4',
-      component: 'Select',
-      fieldName: '关键词输入请求',
-      required: true,
+      fieldKey: 'key7',
+      fieldName: '输入搜索',
+      component: 'ApiSelect',
       async: {
-        // 需要异步数据
-        url: '/api/hobbyList', // 接口地址
-        method: 'post', // 请求方法
-        label: 'title', // list对应的label取对应的字段
-        value: 'id', // list对应的value取对应的字段
-        data: { type: 1 },
+        url: '/bus/cms/agency/select-list',
+        method: 'get',
+        label: 'name',
+        value: 'id',
         remote: true,
-        remoteKey: 'keyWord'
+        remoteKey: 'name'
       },
-      componentEvent: {
-        focus: (e: any) => {
-          console.log(e, 'focus')
-        }
-      }
-    },
-    {
-      fieldKey: 'hobby5',
-      component: 'Select',
-      fieldName: '关键词输入请求依赖异步下拉选中值',
-      required: true,
-      async: {
-        // 需要异步数据
-        url: '/api/hobbyList', // 接口地址
-        method: 'post', // 请求方法
-        label: 'title', // list对应的label取对应的字段
-        value: 'id', // list对应的value取对应的字段
-        data: { type: 1 },
-        remote: true,
-        remoteKey: 'keyWord'
-      },
-      componentEvent: {
-        focus: (e: any) => {
-          console.log(e, 'focus')
-
-        }
-      }
-    },
-    {
-      fieldKey: 'hobby6',
-      component: 'Select',
-      fieldName: '禁用某一个选项（异步）',
-      required: true,
-      async: {
-        // 需要异步数据
-        url: '/api/hobbyList', // 接口地址
-        method: 'post', // 请求方法
-        label: 'title', // list对应的label取对应的字段
-        value: 'id', // list对应的value取对应的字段
-        data: { type: 1 },
-        disabledOptions: (data: any) => {
-          return data.id === 3
-        }
-      }
+      useForm: true
     }
   ]
 }

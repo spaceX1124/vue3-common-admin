@@ -78,9 +78,7 @@ export class TableMethods {
    * @param fieldKey 字段的键
    * */
   getField (fieldKey: string) {
-    return this.schema.value.find(item => item.fieldKey === fieldKey
-        &&
-        !(isFunc(item.tableHidden) ? item.tableHidden() : item.tableHidden))
+    return this.schema.value.find(item => item.fieldKey === fieldKey && item.useTable)
   }
 
   /**
@@ -88,7 +86,7 @@ export class TableMethods {
    * */
   async dealApiColumnTableData () {
     // 需要异步获取数据的字段
-    const apiColumnList = this.schema.value.filter(schema => schema.async && !(isFunc(schema.tableHidden) ? schema.tableHidden() : schema.tableHidden))
+    const apiColumnList = this.schema.value.filter(schema => schema.async && schema.useTable)
     // 如果有异步表头数据，就执行异步获取数据，否则就直接获取表格数据
     if (apiColumnList) {
       const apiColumnFn: PromiseFn[] = []

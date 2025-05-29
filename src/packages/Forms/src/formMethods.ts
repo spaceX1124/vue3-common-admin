@@ -86,8 +86,15 @@ export class FormMethods {
    * @param value 新的字段值，可以是任意类型
    * */
   setFieldValue (fieldKey: string, value: any) {
-    console.log(fieldKey, value, 'setFieldValue')
     this.form.setFieldValue(fieldKey, value)
+  }
+
+  /**
+   * 清除单个表单字段的数据
+   * @param fieldKey 字段的键，用于找到要更新的数据对象
+   * */
+  clearFieldValue (fieldKey: string) {
+    this.form.resetField(fieldKey)
   }
 
   /**
@@ -98,7 +105,7 @@ export class FormMethods {
     // 根据数据结构fieldKey去设置
     const formData: Record<string, any> = {}
     this.schema.value.forEach(item => {
-      if ((this.isSearch && item.search) || (!this.isSearch && !(isFunc(item.formHidden) ? item.formHidden() : item.formHidden))) {
+      if ((this.isSearch && item.useSearch) || (!this.isSearch && item.useForm)) {
         // 多个key，组装到一个字段中显示
         if (item.fieldKeyArr && item.fieldKeyArr.length) {
           const arrData: any[] = []
@@ -137,7 +144,14 @@ export class FormMethods {
               !isNullOrUndefOrEmpty(val) ? newVal : ''
           } else {
             const val = fields[item.fieldKey]
-            const newVal = isArray(val) ? val.join(',') : String(val)
+            let newVal
+            // 如果是多选，则要数组
+            const multiple = item.componentProps?.multiple
+            if (multiple) {
+              newVal = !isNullOrUndefOrEmpty(val) ? isArray(val) ? val : val.split(',') : []
+            } else {
+              newVal = isArray(val) ? val.join(',') : String(val)
+            }
             formData[item.fieldKey] = item.valueFormatter && item.valueFormatter.from && !isNullOrUndefOrEmpty(val)
               ? item.valueFormatter.from(val)
               :
@@ -157,9 +171,10 @@ export class FormMethods {
   getValues () {
     const formData: Record<string, any> = {}
     const values = this.form.values
+    console.log(values, 'values123')
     this.schema.value.forEach(item => {
       // 搜索表单只取搜索字段 || 新增表单取非隐藏字段
-      if((this.isSearch && item.search) || (!this.isSearch && !(isFunc(item.formHidden) ? item.formHidden() : item.formHidden))) {
+      if((this.isSearch && item.useSearch) || (!this.isSearch && item.useForm)) {
         // 多个key，需要设置它们对应的属性值
         if (item.fieldKeyArr && item.fieldKeyArr.length) {
           item.fieldKeyArr.forEach((key, index) => {
@@ -183,7 +198,7 @@ export class FormMethods {
           // keys长度大于1才能去处理，不然const value = keys.reduce((obj, key) => obj[key], values)要报错
           if (keys.length > 1) {
             // 从values中获取对应的值
-            const value = keys.reduce((obj, key) => obj[key], values)
+            const value = keys.reduce((obj, key) => obj?.[key], values)
             // 值统一处理成字符串，如果需要特殊处理，请用valueFormatter
             let newVal = isArray(value) ? value.join(',') : String(value)
             // 是否需要处理值的格式化
@@ -233,11 +248,10 @@ export class FormMethods {
     if (!key) return
     // 找对象，必须要加这些判断，否则可能出现多个相同的fieldKey
     const schema = this.schema.value.find(item => item.fieldKey === fieldKey
-        && ((this.isSearch && item.search)
+        && ((this.isSearch && item.useSearch)
         ||
-        (!this.isSearch && !(isFunc(item.formHidden) ? item.formHidden() : item.formHidden))))
+        (!this.isSearch && item.useForm)))
     if (!schema) return
-    console.log(schema, 'schema')
     // 拆分嵌套属性路径
     const pathParts = key?.split('.')
     let current = schema
@@ -285,7 +299,7 @@ export class FormMethods {
   getField (fieldKey: string) {
     return this.schema.value.find(item => item.fieldKey === fieldKey
         &&
-        ((this.isSearch && item.search) || (!this.isSearch && !(isFunc(item.formHidden) ? item.formHidden() : item.formHidden))))
+        ((this.isSearch && item.useSearch) || (!this.isSearch && item.useForm)))
   }
   /**
    * 获取单个表单值

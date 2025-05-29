@@ -80,7 +80,6 @@ async function getDetail () {
     const { url, method, data } = props.detailUrl
     const apiUrl = isFunc(url) ? url(props.dataId) : url
     let res = await http[method](apiUrl, { ...data, id: props.dataId })
-    console.log(res, 'res111')
     // 拿到详情数据，设置到表单中
     formMethods.setFieldsValue(res)
     // 值设置成功后，执行方法

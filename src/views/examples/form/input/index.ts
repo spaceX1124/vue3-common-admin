@@ -5,7 +5,8 @@ export const fieldList: ISchema[] = [
   {
     fieldKey: 'FormTitle',
     component: 'FormTitle',
-    fieldName: '标题1'
+    fieldName: '标题1',
+    useForm: true
   },
   {
     fieldKey: 'name1',
@@ -14,7 +15,8 @@ export const fieldList: ISchema[] = [
     componentProps: {
       placeholder: '无限制'
     },
-    required: true
+    required: true,
+    useForm: true
   },
   {
     fieldKey: 'name2',
@@ -23,7 +25,8 @@ export const fieldList: ISchema[] = [
     componentProps: {
       placeholder: '禁用',
       disabled: true
-    }
+    },
+    useForm: true
   },
   {
     fieldKey: 'name3',
@@ -33,7 +36,8 @@ export const fieldList: ISchema[] = [
       placeholder: '需求：该字段值由后端生成，新增不校验不显示，编辑的时候会显示',
       disabled: true
     },
-    required: true
+    required: true,
+    useForm: true
   },
   {
     fieldKey: 'name4',
@@ -46,7 +50,8 @@ export const fieldList: ISchema[] = [
       regExp: RegExpEnum.number,
       msg: '请输入数字'
     },
-    required: true
+    required: true,
+    useForm: true
   },
   {
     fieldKey: 'name5',
@@ -59,7 +64,8 @@ export const fieldList: ISchema[] = [
       regExp: RegExpEnum.integer,
       msg: '请输入整数'
     },
-    required: true
+    required: true,
+    useForm: true
   },
   {
     fieldKey: 'name6',
@@ -72,12 +78,14 @@ export const fieldList: ISchema[] = [
       regExp: RegExpEnum.positiveInteger,
       msg: '请输入正整数'
     },
-    required: true
+    required: true,
+    useForm: true
   },
   {
     fieldKey: 'FormTitle',
     component: 'FormTitle',
-    fieldName: '标题2'
+    fieldName: '标题2',
+    useForm: true
   },
   {
     fieldKey: 'name7',
@@ -90,7 +98,8 @@ export const fieldList: ISchema[] = [
       regExp: RegExpEnum.notInteger,
       msg: '请输入非负整数'
     },
-    required: true
+    required: true,
+    useForm: true
   },
   {
     fieldKey: 'name8',
@@ -103,7 +112,8 @@ export const fieldList: ISchema[] = [
       regExp: RegExpEnum.positiveFloatingDigit1,
       msg: '请输入正小数'
     },
-    required: true
+    required: true,
+    useForm: true
   },
   {
     fieldKey: 'name9',
@@ -116,7 +126,8 @@ export const fieldList: ISchema[] = [
       regExp: RegExpEnum.positiveFloatingDigit1,
       msg: '最多输入2位正小数'
     },
-    required: true
+    required: true,
+    useForm: true
   },
   {
     fieldKey: 'name10',
@@ -129,7 +140,8 @@ export const fieldList: ISchema[] = [
       regExp: RegExpEnum.positiveFloatingDigit3,
       msg: '请输入非负小数'
     },
-    required: true
+    required: true,
+    useForm: true
   },
   {
     fieldKey: 'name11',
@@ -142,7 +154,8 @@ export const fieldList: ISchema[] = [
       regExp: RegExpEnum.positiveFloatingDigit4,
       msg: '最多输入2位非负小数'
     },
-    required: true
+    required: true,
+    useForm: true
   },
   {
     fieldKey: 'name12',
@@ -155,7 +168,8 @@ export const fieldList: ISchema[] = [
       regExp: RegExpEnum.rangeNumber,
       msg: '请输入数字在1到100之间，包含1和100'
     },
-    required: true
+    required: true,
+    useForm: true
   },
   {
     fieldKey: 'name13',
@@ -169,7 +183,8 @@ export const fieldList: ISchema[] = [
       regExp: RegExpEnum.length,
       msg: '请输入数字在1到100之间，包含1和100'
     },
-    required: true
+    required: true,
+    useForm: true
   },
   {
     fieldKey: 'name14',
@@ -183,7 +198,8 @@ export const fieldList: ISchema[] = [
       regExp: RegExpEnum.phone,
       msg: '请输入正确的手机号'
     },
-    required: true
+    required: true,
+    useForm: true
   },
   {
     fieldKey: 'name15',
@@ -196,7 +212,8 @@ export const fieldList: ISchema[] = [
       regExp: RegExpEnum.email,
       msg: '请输入正确的邮箱'
     },
-    required: true
+    required: true,
+    useForm: true
   },
   {
     fieldKey: 'name16',
@@ -209,7 +226,8 @@ export const fieldList: ISchema[] = [
       regExp: RegExpEnum.idCard,
       msg: '请输入正确的身份证号'
     },
-    required: true
+    required: true,
+    useForm: true
   },
   {
     fieldKey: 'name17',
@@ -222,7 +240,8 @@ export const fieldList: ISchema[] = [
       regExp: RegExpEnum.fullName,
       msg: '请输入正确的中文'
     },
-    required: true
+    required: true,
+    useForm: true
   },
   {
     fieldKey: 'name18',
@@ -235,6 +254,7 @@ export const fieldList: ISchema[] = [
       regExp: RegExpEnum.fullName,
       msg: '请输入正确的中文'
     },
-    required: true
+    required: true,
+    useForm: true
   }
 ]

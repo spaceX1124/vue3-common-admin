@@ -19,18 +19,18 @@
           ...slotProps,
           ...createComponentProps(slotProps),
           placeholder,
-          schema:{...props},
           fieldName: props.fieldName
         }">
           <component
             :is="FieldComponent"
             v-bind="createComponentProps(slotProps)"
-            :schema="{...props}"
             :placeholder="placeholder"
             @updateOptions="updateOptions"
             @refreshOptions="refreshOptions"
             @validField="validField"
+            style="width: 100%"
           >
+            <!-- 渲染组件中内部的插槽内容 -->
             <template v-for="name in renderContentKey" :key="name" #[name]>
               <RenderContent
                 :content="customContentRender[name]"
@@ -56,7 +56,7 @@ import FormLabel from './form-label.vue'
 import FormMessage from './form-message.vue'
 import RenderContent from './render-content.vue'
 
-import { computed, onMounted, ref } from 'vue'
+import { computed } from 'vue'
 import { defineRule, Field as FieldItem } from 'vee-validate'
 
 import type { ISchema } from '@/adapter'
@@ -138,7 +138,9 @@ function createComponentProps (slotProps: Record<string, any>) {
     ...bindEvents,
     ...event,
     ...defaultComponentProps, // 默认的组件props
-    ...props.componentProps // 外部传入的UI框架自己的props
+    ...props.componentProps, // 外部传入的UI框架自己的props
+    async: props.async || {},
+    ...props.extraConfig
   }
   return bind
 }

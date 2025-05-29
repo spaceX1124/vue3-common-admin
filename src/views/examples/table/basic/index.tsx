@@ -71,31 +71,25 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       fieldKey: 'id',
       fieldName: '画像ID',
       component: 'Input',
-      formHidden: true
+      useTable: true
     },
     {
       fieldKey: 'agencyName',
       fieldName: '机构名称',
       component: 'Input',
-      search: true,
-      tableHidden: true,
-      formHidden: true
+      useSearch: true
     },
     {
       fieldKey: 'agencyId',
       fieldName: '机构ID',
       component: 'Input',
-      search: true,
-      tableHidden: true,
-      formHidden: true
+      useSearch: true
     },
     {
       fieldKey: 'agencySimpleName',
       fieldName: '机构简称',
       component: 'Input',
-      search: true,
-      tableHidden: true,
-      formHidden: true
+      useSearch: true
     },
     {
       fieldKey: 'auditStatus',
@@ -104,52 +98,50 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       componentProps: {
         options: businessList.checkType_
       },
-      search: true,
-      tableHidden: true,
-      formHidden: true
+      useSearch: true
     },
     {
       fieldKey: 'name',
       fieldName: '画像名称',
       component: 'Input',
-      search: true,
-      formHidden: true
+      useSearch: true,
+      useTable: true
     },
     {
       fieldKey: 'agencyName',
       fieldName: '所属机构',
       component: 'Input',
-      formHidden: true
+      useTable: true
     },
     {
       fieldKey: 'agencyId',
       fieldName: '机构ID',
       component: 'Input',
-      formHidden: true
+      useTable: true
     },
     {
       fieldKey: 'agencySimpleName',
       fieldName: '机构简称',
       component: 'Input',
-      formHidden: true
+      useTable: true
     },
     {
       fieldKey: 'storeCity',
       fieldName: '城市',
       component: 'Input',
-      formHidden: true
+      useTable: true
     },
     {
       fieldKey: 'createTime',
       fieldName: '创建时间',
       component: 'Input',
-      formHidden: true
+      useTable: true
     },
     {
       fieldKey: 'auditTime',
       fieldName: '审批时间',
       component: 'Input',
-      formHidden: true
+      useTable: true
     },
     {
       fieldKey: 'auditStatus',
@@ -159,33 +151,30 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         options: businessList.checkType_
       },
       isEcho: true,
-      formHidden: true
+      useTable: true
     },
     {
       fieldKey: 'remark',
       fieldName: '审批备注',
       component: 'Input',
-      formHidden: true
+      useTable: true
     },
     {
       fieldKey: 'auditOperator',
       fieldName: '审批人',
       component: 'Input',
-      formHidden: true
+      useTable: true
     },
     {
       fieldKey: 'account',
       fieldName: '账号手机号',
       component: 'Input',
-      search: true,
-      tableHidden: true,
-      formHidden: true
+      useSearch: true
     },
     {
       fieldKey: 'agencyId',
       fieldName: '公司',
-      component: 'Select',
-      tableHidden: true,
+      component: 'ApiSelect',
       async: {
         url: '/bus/cms/agency/select-list',
         method: 'get',
@@ -195,6 +184,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         remoteKey: 'name'
       },
       required: true,
+      useForm: true,
       componentEvent: {
         onChange: async (value: string) => {
           // 刷新门店地址参数
@@ -205,32 +195,35 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         }
       },
       async beforeMount (value) {
+        console.log(value, 'value444')
         // 刷新公司请求参数
         baseFormApi?.updateFieldProperty('agencyId', 'async.data.id', value)
         const agencyIdField = baseFormApi?.getField?.('agencyId')
+        console.log(agencyIdField, 'agencyIdField11')
         const agencyIdRefresh = agencyIdField?.insideComp?.refresh
         if (agencyIdRefresh) await agencyIdRefresh()// 刷新公司下拉数据
         // 需要清空请求参数，因为后续是通过remote搜索，不能带id了
-        baseFormApi?.updateFieldProperty('agencyId', 'async.data', {})
+        // baseFormApi?.updateFieldProperty('agencyId', 'async.data', {})
       }
     },
     {
       fieldKey: 'customerType',
       fieldName: '客户类型',
       component: 'RadioGroup',
-      tableHidden: true,
       componentProps: {
         options: businessList.customerType,
         isButton: true
       },
       componentEvent: {
         onChange: (value: any) => {
-          console.log('只一')
+          console.log('只一', value)
           visibleCustomerType(baseFormApi, value)
         }
       },
       required: true,
+      useForm: true,
       beforeMount (value) {
+        console.log(value, 'value11')
         visibleCustomerType(baseFormApi, value)
       }
     },
@@ -238,7 +231,6 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       fieldKey: 'customerPropertyCategory',
       fieldName: '客户资产',
       component: 'RadioGroup',
-      tableHidden: true,
       componentProps: {
         options: businessList.propertyType,
         isButton: true
@@ -249,6 +241,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         }
       },
       required: true,
+      useForm: true,
       formHidden: true,
       beforeMount: (value: any) => {
         visibleCustomerPropertyCategory(baseFormApi, value)
@@ -258,19 +251,19 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       fieldKey: 'house.type',
       fieldName: '房产类型',
       component: 'RadioGroup',
-      tableHidden: true,
       componentProps: {
         options: businessList.houseType,
         isButton: true
       },
       required: true,
+      useForm: true,
       formHidden: true
     },
     {
       fieldKey: 'house.belongPlace',
       fieldName: '房产归属地',
       component: 'Input',
-      tableHidden: true,
+      useForm: true,
       formHidden: true
     },
     {
@@ -282,7 +275,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         isButton: true
       },
       required: true,
-      tableHidden: true,
+      useForm: true,
       formHidden: true
     },
     {
@@ -294,7 +287,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         isButton: true
       },
       required: true,
-      tableHidden: true,
+      useForm: true,
       formHidden: true
     },
     {
@@ -306,7 +299,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         isButton: true
       },
       required: true,
-      tableHidden: true,
+      useForm: true,
       formHidden: true
     },
     {
@@ -316,7 +309,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       componentProps: {
         options: businessList.gjjRatioType
       },
-      tableHidden: true,
+      useForm: true,
       formHidden: true
     },
     {
@@ -326,7 +319,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       componentProps: {
         options: businessList.gjjAgeType
       },
-      tableHidden: true,
+      useForm: true,
       formHidden: true
     },
     {
@@ -337,12 +330,12 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         regExp: RegExpEnum.zero_9999point99,
         msg: '支持小数点后两位，0<x<9999.99'
       },
-      tableHidden: true,
-      formHidden: true,
       valueFormatter: {
         to: (value) => moneyTransform(value, 'yuan', 'fen'),
         from: (value) => moneyTransform(value, 'fen', 'yuan')
-      }
+      },
+      useForm: true,
+      formHidden: true
     },
     {
       fieldKey: 'socialInsurance.paymentYears',
@@ -351,7 +344,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       componentProps: {
         options: businessList.gjjAgeType
       },
-      tableHidden: true,
+      useForm: true,
       formHidden: true
     },
     {
@@ -362,12 +355,12 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         regExp: RegExpEnum.zero_9999point99,
         msg: '支持小数点后两位，0<x<9999.99'
       },
-      tableHidden: true,
-      formHidden: true,
       valueFormatter: {
         to: (value) => moneyTransform(value, 'yuan', 'fen'),
         from: (value) => moneyTransform(value, 'fen', 'yuan')
-      }
+      },
+      useForm: true,
+      formHidden: true
     },
     {
       fieldKey: 'company.establishmentYears',
@@ -377,7 +370,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         options: businessList.yearType,
         isButton: true
       },
-      tableHidden: true,
+      useForm: true,
       formHidden: true
     },
     {
@@ -388,8 +381,6 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         regExp: RegExpEnum.zero_9999999point99,
         msg: '支持小数点后两位，0<x<9999999.99'
       },
-      tableHidden: true,
-      formHidden: true,
       valueFormatter: {
         to: (value) => moneyTransform(value, 'wan', 'fen'),
         from: (value) => moneyTransform(value, 'fen', 'wan')
@@ -398,7 +389,9 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         return {
           suffix: '万元'
         }
-      }
+      },
+      useForm: true,
+      formHidden: true
     },
     {
       fieldKey: 'company.annualDenomination',
@@ -408,8 +401,6 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         regExp: RegExpEnum.zero_9999999point99,
         msg: '支持小数点后两位，0<x<9999999.99'
       },
-      tableHidden: true,
-      formHidden: true,
       valueFormatter: {
         to: (value) => moneyTransform(value, 'wan', 'fen'),
         from: (value) => moneyTransform(value, 'fen', 'wan')
@@ -418,7 +409,9 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         return {
           suffix: '万元'
         }
-      }
+      },
+      useForm: true,
+      formHidden: true
     },
     {
       fieldKey: 'company.taxBrackets',
@@ -428,7 +421,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         options: businessList.taxGradeList,
         isButton: true
       },
-      tableHidden: true,
+      useForm: true,
       formHidden: true
     },
     {
@@ -440,14 +433,13 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         isButton: true
       },
       required: true,
-      tableHidden: true,
-      defaultValue: 1
+      defaultValue: 1,
+      useForm: true
     },
     {
       fieldKey: 'storeCity',
       fieldName: '门店城市',
       component: 'Input',
-      tableHidden: true,
       componentEvent: {
         // 此字段是通过slot渲染，事件定义根据slot所用的组件emit的事件为准
         async emitData (value: string) {
@@ -456,13 +448,13 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
           const storeIdsRefresh = storeIdsField?.insideComp?.refresh
           if (storeIdsRefresh) await storeIdsRefresh()// 刷新门店地址下拉数据
         }
-      }
+      },
+      useForm: true
     },
     {
       fieldKey: 'storeIds',
       fieldName: '门店地址',
-      component: 'Select',
-      tableHidden: true,
+      component: 'ApiSelect',
       componentProps: {
         multiple: true
       },
@@ -475,7 +467,8 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
           id: ''
         },
         label: 'storeName',
-        value: 'id'
+        value: 'id',
+        immediate: false
       },
       componentEvent: {
         change (value: string[]) {
@@ -492,7 +485,8 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         if (storeIdsRefresh) await storeIdsRefresh()// 刷新门店地址下拉数据
         locateAddressFn(baseFormApi, value) // 回显门店详细地址
       },
-      required: true
+      required: true,
+      useForm: true
       // slotContent: {
       //   bottom: () => {
       //     return h('p', '')
@@ -504,12 +498,12 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       fieldKeyArr: ['ageMin', 'ageMax'],
       fieldName: '年龄要求',
       component: 'IntervalInput',
-      tableHidden: true,
       extraConfig: {
         minPlaceholder: '最小周岁',
         maxPlaceholder: '最大周岁'
       },
       required: true,
+      useForm: true,
       rules (value) {
         if (isArray(value)) {
           // 只输如25，代表25-最大（75）
@@ -537,24 +531,24 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       fieldKey: 'customerDemand',
       fieldName: '客户需求',
       component: 'RadioGroup',
-      tableHidden: true,
       componentProps: {
         options: businessList.customerXQType,
         isButton: true
-      }
+      },
+      useForm: true
     },
     {
       fieldKey: 'dailyAverageQuantity',
       fieldName: '日均客量',
       component: 'Input',
-      tableHidden: true,
       componentProps: {
         placeholder: '请输入每日想吸引客户的数量'
       },
       rules: {
         regExp: RegExpEnum.zero_9999,
         msg: '仅支持数字输入，0<x<9999'
-      }
+      },
+      useForm: true
     },
     {
       fieldKey: 'arrivalTimeType',
@@ -562,7 +556,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       fieldKeyArr: ['arrivalTimeType', 'arrivalTime'],
       component: 'RadioGroup',
       required: true,
-      tableHidden: true,
+      useForm: true,
       componentProps: {
         options: businessList.arrivalTimeType,
         isButton: true
@@ -587,8 +581,8 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       component: 'RadioGroup',
       fieldName: '接待周期',
       fieldKeyArr: ['receptionCycle', 'receptionCycleValue'],
-      tableHidden: true,
       required: true,
+      useForm: true,
       componentProps: {
         options: businessList.cycleType,
         isButton: true
@@ -617,7 +611,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         msg: '请输入100<=x<9999的整数'
       },
       required: true,
-      tableHidden: true,
+      useForm: true,
       valueFormatter: {
         to: (value) => moneyTransform(value, 'yuan', 'fen'),
         from: (value) => moneyTransform(value, 'fen', 'yuan')
@@ -628,11 +622,11 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       fieldName: '画像名称',
       component: 'Input',
       required: true,
+      useForm: true,
       componentProps: {
         placeholder: '请为本次画像命名',
         maxLength: 10
       },
-      tableHidden: true,
       rules (value) {
         if (value === 'null') {
           return '不能输入null'

@@ -5,15 +5,34 @@ import businessList from '@/enums/business.ts'
 export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
   return [
     {
+      fieldName: '时段',
+      fieldKey: 'beginDate',
+      fieldKeyArr: ['beginDate', 'endDate'],
+      component: 'DatePicker',
+      componentProps: {
+        type: 'daterange',
+        format: 'YYYY-MM-DD',
+        valueFormat: 'YYYYMMDD',
+        startPlaceholder: '开始日期',
+        endPlaceholder: '结束日期'
+        // style: {
+        //   width: '350px'
+        // }
+      },
+      useSearch: true
+    },
+    {
       fieldKey: 'channelId',
       component: 'Input',
-      fieldName: '渠道ID'
+      fieldName: '渠道ID',
+      useTable: true
     },
     {
       fieldKey: 'channelName',
       fieldName: '渠道名称',
       component: 'Input',
-      search: true
+      useSearch: true,
+      useTable: true
     },
     {
       fieldKey: 'type',
@@ -22,53 +41,61 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       componentProps: {
         options: businessList.channelType
       },
-      search: true,
-      tableHidden: true
+      useSearch: true
     },
     {
       fieldKey: 'channelNameType',
       component: 'Input',
-      fieldName: '渠道类型'
+      fieldName: '渠道类型',
+      useTable: true
     },
     {
       fieldKey: 'filterInfo',
       component: 'Input',
-      fieldName: '撞库数/撞库成功数'
+      fieldName: '撞库数/撞库成功数',
+      useTable: true
     },
     {
       fieldKey: 'visitInfo',
       component: 'Input',
-      fieldName: '到访率/访问uv/登录用户数/访登率'
+      fieldName: '到访率/访问uv/登录用户数/访登率',
+      useTable: true
     },
     {
       fieldKey: 'leaveInformationInfo',
       component: 'Input',
-      fieldName: '留资数/留资率'
+      fieldName: '留资数/留资率',
+      useTable: true
     },
     {
       fieldKey: 'capitalConfirmInfo',
       component: 'Input',
-      fieldName: '资质确定UV'
+      fieldName: '资质确定UV',
+      useTable: true
     },
     {
       fieldKey: 'customerInfo',
       component: 'Input',
-      fieldName: '转客数/转客率'
+      fieldName: '转客数/转客率',
+      useTable: true
     },
     {
       fieldKey: 'toStoreInfo',
       component: 'Input',
-      fieldName: '到店客/转化率/渠道到店率'
+      fieldName: '到店客/转化率/渠道到店率',
+      useTable: true
     },
     {
       fieldKey: 'income',
       component: 'Input',
-      fieldName: '渠道成本/渠道营收'
+      fieldName: '渠道成本/渠道营收',
+      useTable: true
     },
     {
       fieldKey: 'roi',
       component: 'Input',
-      fieldName: 'ROI'
+      fieldName: 'ROI',
+      useTable: true
     }
   ]
 }
@@ -91,8 +118,7 @@ export function getHourFieldList (baseFormApi?: FormMethods):ISchema[] {
         //   width: '350px'
         // }
       },
-      search: true,
-      tableHidden: true
+      useSearch: true
     },
     {
       fieldKey: 'beginHour',
@@ -103,53 +129,61 @@ export function getHourFieldList (baseFormApi?: FormMethods):ISchema[] {
         minPlaceholder: '初始时段',
         maxPlaceholder: '截止时段'
       },
-      search: true,
-      tableHidden: true
+      useSearch: true
     },
     {
       fieldKey: 'channelId',
       fieldName: '渠道ID',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     },
     {
       fieldKey: 'channelName',
       fieldName: '渠道名称',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     },
     {
       fieldKey: 'channelNameType',
       fieldName: '渠道类型',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     },
     {
       fieldKey: 'filterInfo',
       fieldName: '撞库数/撞库成功数',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     },
     {
       fieldKey: 'visitInfo',
       fieldName: '到访率/访问uv/登录用户数/访登率',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     },
     {
       fieldKey: 'leaveInformationInfo',
       fieldName: '留资数/留资率',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     },
     {
       fieldKey: 'capitalConfirmInfo',
       fieldName: '资质确定UV',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     },
     {
       fieldKey: 'customerInfo',
       fieldName: '转客数/转客率',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     },
     {
       fieldKey: 'toStoreInfo',
       fieldName: '到店客/转化率/渠道到店率',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     }
   ]
 }
@@ -172,48 +206,55 @@ export function getCapitalFieldList (baseFormApi?: FormMethods):ISchema[] {
         //   width: '350px'
         // }
       },
-      search: true,
-      tableHidden: true
+      useSearch: true
     },
     {
       fieldKey: 'day',
       fieldName: '数据日期',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     },
     {
       fieldKey: 'channelId',
       fieldName: '渠道ID',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     },
     {
       fieldKey: 'channelName',
       fieldName: '渠道名称',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     },
     {
       fieldKey: 'channelNameType',
       fieldName: '渠道类型',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     },
     {
       fieldKey: 'carInfo',
       fieldName: '有车（校验数丨校验有车）',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     },
     {
       fieldKey: 'gjjInfo',
       fieldName: '有公积金（校验数丨校验有公积金）',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     },
     {
       fieldKey: 'socialInsuranceInfo',
       fieldName: '有社保（校验数丨校验有社保）',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     },
     {
       fieldKey: 'houseInfo',
       fieldName: '有房（校验数丨校验有房）',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     }
   ]
 }
@@ -236,13 +277,13 @@ export function getCityFieldList (baseFormApi?: FormMethods):ISchema[]{
         //   width: '350px'
         // }
       },
-      search: true,
-      tableHidden: true
+      useSearch: true
     },
     {
       fieldKey: 'city',
       fieldName: '城市名称',
-      component: 'Input'
+      component: 'Input',
+      useTable: true
     },
     {
       fieldKey: 'leaveInformationInfo',
@@ -252,7 +293,8 @@ export function getCityFieldList (baseFormApi?: FormMethods):ISchema[]{
         sortKey: 'sortIndex',
         sortValue: 1,
         sortTypeKey: 'sortType'
-      }
+      },
+      useTable: true
     },
     {
       fieldKey: 'customerInfo',
@@ -262,7 +304,8 @@ export function getCityFieldList (baseFormApi?: FormMethods):ISchema[]{
         sortKey: 'sortIndex',
         sortValue: 2,
         sortTypeKey: 'sortType'
-      }
+      },
+      useTable: true
     },
     {
       fieldKey: 'toStoreInfo',
@@ -272,7 +315,8 @@ export function getCityFieldList (baseFormApi?: FormMethods):ISchema[]{
         sortKey: 'sortIndex',
         sortValue: 3,
         sortTypeKey: 'sortType'
-      }
+      },
+      useTable: true
     }
   ]
 }

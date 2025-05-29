@@ -28,14 +28,15 @@
 import { computed, onBeforeMount, watch, ref } from 'vue'
 import { ElRadioButton, ElRadio } from 'element-plus'
 
-import type { ISchema } from '@/adapter'
+import type { IAsync, ISchema } from '@/adapter'
 import { useOptions } from '@/packages/Forms/src/components/utils'
 import { isNullOrUndefOrEmpty } from '@/utils/is.ts'
 
 interface PropsType {
-  schema?: Partial<ISchema>;
+  async?: IAsync;
   modelValue?: string[];
   options?: Record<string, any>[];
+  isButton?: boolean;
   popoverTitle?: string;
   popoverShowList?: Record<string, any>[]; // popover要展示的数据
   popoverShowRadioVal?: string;// 哪个选项要弹popover
@@ -46,10 +47,16 @@ const props = withDefaults(defineProps<PropsType>(), {
 const emit = defineEmits(['update:modelValue', 'refreshOptions', 'updateOptions'])
 
 const showComponent = computed(() => {
-  return props.schema?.componentProps?.isButton ? ElRadioButton : ElRadio
+  return props?.isButton ? ElRadioButton : ElRadio
 })
 
-const { showList, getOptionsList, dealDataList, flag } = useOptions(props.schema)
+const asyncComputed = computed(() => {
+  return {
+    immediate: true,
+    ...props.async
+  }
+})
+const { showList, getApiList, dealDataList } = useOptions(asyncComputed)
 
 // 没有给el-radio-group双向绑定，绑定change事件不执行
 /**
@@ -64,9 +71,9 @@ function choose (item: Record<string, any>) {
   inputVal.value[0] = val
 
   emit('update:modelValue', inputVal.value)
-  if (props.schema?.componentEvent) {
-    props.schema.componentEvent?.onChange(inputVal.value[0])
-  }
+  // if (props.schema?.componentEvent) {
+  //   props.schema.componentEvent?.onChange(inputVal.value[0])
+  // }
 }
 
 function changeInput () {
@@ -97,20 +104,13 @@ watch(() => props.modelValue, (value) => {
   } else {
     inputVal.value = ['', '']
   }
-}, {
-  immediate: true
 })
 
-async function refresh () {
-  flag.value = true
-  await getOptionsList()
-}
-
 onBeforeMount(async () => {
-  if (props.schema?.async && props.schema.async.url) {
-    await getOptionsList()
+  if (asyncComputed.value.url && asyncComputed.value.immediate) {
+    await getApiList()
     // 用于外部使用，刷新下拉数据
-    emit('refreshOptions', refresh)
+    emit('refreshOptions', getApiList)
   } else {
     dealDataList(props.options)
   }

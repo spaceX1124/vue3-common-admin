@@ -26,18 +26,19 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onBeforeMount, watch } from 'vue'
+import { ref, onBeforeMount, watch, computed } from 'vue'
 import { type CheckboxValueType } from 'element-plus'
 
-import type { ISchema } from '@/adapter'
+import type { IAsync } from '@/adapter'
 import { useOptions } from '@/packages/Forms/src/components/utils'
 import { isArray, isNullOrUndefOrEmpty, isString } from '@/utils/is.ts'
 
 interface PropsType {
+  async?: IAsync;
   modelValue?: string | string[];
   // checked?: string | string[]; // 如果双向绑定底层是checked，就用这个，如ant-design-vue
-  schema?: Partial<ISchema>;
   options?: Record<string, any>[]
+  isAll?: boolean;
 }
 
 const props = withDefaults(defineProps<PropsType>(), {})
@@ -47,12 +48,14 @@ const checkAll = ref<boolean>(false)
 const isIndeterminate = ref(false)
 const selectVal = ref<string[]>([])
 
-const { showList, getOptionsListNow, dealDataList, flag } = useOptions(props.schema)
-
-// 是否展示全选
-const isAll = computed(() => {
-  return props.schema?.extraConfig?.isAll || false
+const asyncComputed = computed(() => {
+  return {
+    immediate: true,
+    ...props.async
+  }
 })
+
+const { showList, getApiList, dealDataList } = useOptions(asyncComputed)
 
 function handleCheckAllChange (val: CheckboxValueType) {
   let values = []
@@ -61,9 +64,9 @@ function handleCheckAllChange (val: CheckboxValueType) {
   emit('update:modelValue', values)
   // emit('update:checked', values)
   emit('change', values)
-  if (props.schema?.componentEvent) {
-    props.schema.componentEvent?.onChange(values)
-  }
+  // if (props.schema?.componentEvent) {
+  //   props.schema.componentEvent?.onChange(values)
+  // }
 }
 function handleCheckedChange (value: string[]) {
   const checkedCount = value.length
@@ -110,16 +113,11 @@ watch(() => props.modelValue, (newVal) => {
 //   immediate: true
 // })
 
-async function refresh () {
-  flag.value = true
-  await getOptionsListNow()
-}
-
 onBeforeMount(async () => {
-  if (props.schema?.async && props.schema.async.url) {
-    await getOptionsListNow()
+  if (asyncComputed.value.url && asyncComputed.value.immediate) {
+    await getApiList()
     // 用于外部使用，刷新下拉数据
-    emit('refreshOptions', refresh)
+    emit('refreshOptions', getApiList)
   } else {
     dealDataList(props.options)
   }

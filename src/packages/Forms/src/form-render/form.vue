@@ -4,9 +4,9 @@
       <template v-for="cSchema in computedSchema" :key="cSchema.key">
         <!-- 控制当前字段是否在表单中显示 -->
         <!-- 搜索组件&当前字段可搜索 ||  表单组件&字段非隐藏-->
-        <template v-if="(formMethods.isSearch && cSchema.search) ||
+        <template v-if="(formMethods.isSearch && cSchema.useSearch) ||
           (
-            !formMethods.isSearch && !(isFunc(cSchema.formHidden) ? cSchema.formHidden() : cSchema.formHidden)
+            !formMethods.isSearch && cSchema.useForm && !(isFunc(cSchema.formHidden) ? cSchema.formHidden() : cSchema.formHidden)
           )">
           <template v-if="cSchema.component === 'FormTitle'">
             <!-- 考虑一下，如何自定义title -->
@@ -53,7 +53,7 @@ const gridCols = computed(() => {
 const computedSchema = computed(() => {
   // 当formMethods.state.value.schema数据更新，这儿也会对应的更新
   // item类型推导不出来，只有重新定义类型
-  return formMethods.schema.value.map((item: ISchema, index: number) => {
+  return formMethods.schema.value.filter((item: ISchema) => ((formMethods.isSearch && item.useSearch) || (!formMethods.isSearch && item.useForm))).map((item: ISchema, index: number) => {
     const keepIndex = keepFormItemIndex.value
     // 显示折叠按钮 & 折叠状态 & 当前索引大于保留索引
     const hidden = formMethods.showCollapseButton && formCollapsed.value && keepIndex

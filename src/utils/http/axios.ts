@@ -18,7 +18,7 @@ const timestamps = Date.now()
 service.interceptors.request.use(
   // enc加密
   (config: any) => {
-    const token = 'YzhLdXNDNkxpRU8xa0s2a0F3TkNOa2pMWFMzQ1oyLzFnUXRvWVlwT0ZQNW1QdlUxdlZESGdLd1VXMjhneTJjUg'
+    const token = 'MGI4U3lNZjhQbEpJMXlsNjQvY01RQTBSbURYTUpLSUpnM29ITEYvMWRtME41Sk43N3MvTldOQ2ZsZEIzTzVUdA'
     let str
     const data = config.data || config.params
     // 签名

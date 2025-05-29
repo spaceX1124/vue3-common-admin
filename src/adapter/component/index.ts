@@ -1,14 +1,40 @@
-import { ElInput, ElButton } from 'element-plus'
+import {
+  ElInput,
+  ElButton,
+  ElSelectV2,
+  ElCheckboxGroup,
+  ElCheckboxButton,
+  ElCheckbox,
+  ElRadioGroup,
+  ElRadioButton,
+  ElRadio,
+  ElDatePicker
+} from 'element-plus'
 import { globalShareState } from '@/global/globalState'
 import { h, type Component, type SetupContext } from 'vue'
-import { Select, RadioGroup, IntervalInput, CheckboxGroup, DatePicker } from '@/packages/Forms'
+import { ApiRadioGroup, IntervalInput, ApiCheckboxAll, ApiComponent } from '@/packages/Forms'
+import { isArray } from '@/utils/is.ts'
+
+/**
+ * 将value处理成字符串
+ * */
+function dealDataList (arr: Record<string, any>[]) {
+  return isArray(arr) ? arr.map(item => {
+    return {
+      ...item, value: item.value.toString()
+    }
+  }) : []
+}
 
 // 这里需要自行根据业务组件库进行适配，需要用到的组件都需要在这里类型说明
 export type ComponentType =
     | 'Input'
     | 'Select'
+    | 'ApiSelect'
     | 'CheckboxGroup'
+    | 'ApiCheckboxAll'
     | 'RadioGroup'
+    | 'ApiRadioGroup'
     | 'IntervalInput'
     | 'FormTitle'
     | 'SlotCustom'
@@ -31,42 +57,61 @@ const withDefaultPlaceholder = <T extends Component>(
 export function initComponentAdapter () {
   const components: Partial<Record<ComponentType, Component>> = {
     Input: withDefaultPlaceholder(ElInput, '请输入'), // 输入框
-    // 下拉-支持单选，多选，异步
+    // 普通下拉框
     Select: (props, { attrs, slots }) => {
-      return h(
-        Select,
-        {
-          placeholder: '请选择',
-          ...props,
-          ...attrs,
-          component: Select
-        },
-        slots
-      )
+      return h(ElSelectV2, { ...props, options: dealDataList(props.options), attrs }, slots)
     },
-    // 复选框-带全选（可异步），将异步和同步写在一个组件中，因为有全选操作
+    // 异步下拉框-可输入搜索
+    ApiSelect: (props, { attrs, slots }) => {
+      return h(ApiComponent, { ...props, ...attrs, component: ElSelectV2 }, slots)
+    },
+    // 普通复选框
     CheckboxGroup: (props, { attrs, slots }) => {
+      let defaultSlot
+      if (Reflect.has(slots, 'default')) {
+        defaultSlot = slots.default
+      } else {
+        const { options, isButton } = attrs
+        if (Array.isArray(options)) {
+          defaultSlot = () =>
+            dealDataList(options).map((option) =>
+              h(isButton ? ElCheckboxButton : ElCheckbox, option)
+            )
+        }
+      }
       return h(
-        CheckboxGroup,
-        {
-          ...props,
-          ...attrs,
-          component: CheckboxGroup
-        },
-        slots
+        ElCheckboxGroup,
+        { ...props, ...attrs },
+        { ...slots, default: defaultSlot }
       )
     },
-    // 单选-支持异步
+    // 复杂复选框-可异步/可全选
+    ApiCheckboxAll: (props, { attrs, slots }) => {
+      return h(ApiCheckboxAll, { ...props, ...attrs }, slots)
+    },
+    // 普通单选
     RadioGroup: (props, { attrs, slots }) => {
+      let defaultSlot
+      if (Reflect.has(slots, 'default')) {
+        defaultSlot = slots.default
+      } else {
+        const { options } = attrs
+        if (Array.isArray(options)) {
+          defaultSlot = () =>
+            dealDataList(options).map((option) =>
+              h(attrs.isButton ? ElRadioButton : ElRadio, option)
+            )
+        }
+      }
       return h(
-        RadioGroup,
-        {
-          ...props,
-          ...attrs,
-          component: RadioGroup
-        },
-        slots
+        ElRadioGroup,
+        { ...props, ...attrs },
+        { ...slots, default: defaultSlot }
       )
+    },
+    // 单选-支持异步/支持选中取消
+    ApiRadioGroup: (props, { attrs, slots }) => {
+      return h(ApiRadioGroup, { ...props, ...attrs }, slots)
     },
     // 区间输入
     IntervalInput: (props, { attrs, slots }) => {
@@ -84,13 +129,23 @@ export function initComponentAdapter () {
     DefaultButton: (props, { attrs, slots }) => {
       return h(ElButton, { ...props, attrs }, slots)
     },
+    // 日期/日期区间
     DatePicker: (props, { attrs, slots }) => {
+      const { name, type } = props
+      const extraProps: Recordable<any> = {}
+      if (type && type.includes('range')) {
+        if (name && !Array.isArray(name)) {
+          extraProps.name = [name, `${name}_end`]
+        }
+      }
       return h(
-        DatePicker,
+        ElDatePicker,
         {
+          startPlaceholder: '开始日期',
+          endPlaceholder: '结束日期',
           ...props,
           ...attrs,
-          component: DatePicker
+          ...extraProps
         },
         slots
       )

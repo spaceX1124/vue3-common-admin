@@ -18,7 +18,6 @@
 </template>
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-
 import type { ISchema } from '@/adapter'
 
 interface PropsType {

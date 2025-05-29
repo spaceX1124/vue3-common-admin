@@ -25,7 +25,7 @@
       :title="popoverTitle"
     >
       <div>
-        <CheckboxGroup
+        <ApiCheckboxAll
           v-model="inputVal[1]"
           :options="popoverShowList"
           :schema="{
@@ -44,15 +44,17 @@
 import { computed, onBeforeMount, watch, ref, unref, type ComponentPublicInstance } from 'vue'
 import { ElRadioButton, ElRadio } from 'element-plus'
 
-import type { ISchema } from '@/adapter'
+import type { IAsync } from '@/adapter'
 import { useOptions } from '@/packages/Forms/src/components/utils'
-import { CheckboxGroup } from '@/packages/Forms'
+import { ApiCheckboxAll } from '@/packages/Forms'
 import { isNullOrUndefOrEmpty, isString, isArray } from '@/utils/is.ts'
 
 interface PropsType {
-  schema?: Partial<ISchema>;
+  async?: IAsync;
   modelValue?: string[];
   options?: Record<string, any>[];
+  isButton?: boolean;
+
   popoverTitle?: string;
   popoverShowList?: Record<string, any>[]; // popover要展示的数据
   popoverShowRadioVal?: string;// 哪个选项要弹popover
@@ -63,10 +65,10 @@ const props = withDefaults(defineProps<PropsType>(), {
 const emit = defineEmits(['update:modelValue', 'refreshOptions', 'updateOptions'])
 
 const showComponent = computed(() => {
-  return props.schema?.componentProps?.isButton ? ElRadioButton : ElRadio
+  return props.isButton ? ElRadioButton : ElRadio
 })
 
-const { showList, getOptionsList, dealDataList, flag } = useOptions(props.schema)
+const { showList, getApiList, dealDataList } = useOptions(props.async)
 const popoverRef = ref()
 
 // 没有给el-radio-group双向绑定，绑定change事件不执行
@@ -85,9 +87,9 @@ function choose (item: Record<string, any>) {
   }
 
   emit('update:modelValue', inputVal.value)
-  if (props.schema?.componentEvent) {
-    props.schema.componentEvent?.onChange(inputVal.value[0])
-  }
+  // if (props.schema?.componentEvent) {
+  //   props.schema.componentEvent?.onChange(inputVal.value[0])
+  // }
 }
 
 /**
@@ -124,16 +126,11 @@ watch(() => props.modelValue, (value) => {
   immediate: true
 })
 
-async function refresh () {
-  flag.value = true
-  await getOptionsList()
-}
-
 onBeforeMount(async () => {
-  if (props.schema?.async && props.schema.async.url) {
-    await getOptionsList()
+  if (props.async && props.async?.url) {
+    await getApiList()
     // 用于外部使用，刷新下拉数据
-    emit('refreshOptions', refresh)
+    emit('refreshOptions', getApiList)
   } else {
     dealDataList(props.options)
   }

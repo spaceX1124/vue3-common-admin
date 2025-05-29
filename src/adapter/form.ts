@@ -6,7 +6,8 @@ import { initForm, useZsForm } from '@/packages/Forms'
 initForm({
   // 组件的默认props
   defaultComponentProps: {
-    clearable: true // 是否可以清空选项
+    clearable: true, // 是否可以清空选项
+    class: 'w-full'
   },
   // 组件绑定值的映射关系
   /**

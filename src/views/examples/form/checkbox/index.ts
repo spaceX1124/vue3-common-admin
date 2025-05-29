@@ -5,78 +5,69 @@ export function getFieldList (baseFormApi: FormMethods):ISchema[] {
     {
       fieldKey: 'key1',
       component: 'CheckboxGroup',
-      fieldName: '多选',
+      fieldName: '普通多选',
       componentProps: {
-        options: [
-          {
-            label: '篮球',
-            value: 1
-          },
-          {
-            label: '足球',
-            value: 2
-          }
-        ]
+        options: [{ label: '篮球', value: 1 }, { label: '足球', value: 2 }]
       },
-      required: true
+      useForm: true
     },
     {
       fieldKey: 'key2',
       component: 'CheckboxGroup',
-      fieldName: '多选（带全选）',
+      fieldName: '普通多选-禁用',
       componentProps: {
-        options: [
-          {
-            label: '篮球',
-            value: 1
-          },
-          {
-            label: '足球',
-            value: 2
-          }
-        ]
+        options: [{ label: '篮球', value: 1 }, { label: '足球', value: 2, disabled: true }]
       },
-      required: true,
+      useForm: true
+    },
+    {
+      fieldKey: 'key3',
+      component: 'CheckboxGroup',
+      fieldName: '普通多选按钮',
+      componentProps: {
+        options: [{ label: '篮球', value: 1 }, { label: '足球', value: 2 }],
+        isButton: true
+      },
+      useForm: true
+    },
+    {
+      fieldKey: 'key4',
+      component: 'ApiCheckboxAll',
+      fieldName: '多选-带全选',
+      componentProps: {
+        options: [{ label: '篮球', value: 1 }, { label: '足球', value: 2 }]
+      },
       extraConfig: {
         isAll: true
-      }
+      },
+      useForm: true
+    },
+    {
+      fieldKey: 'key5',
+      component: 'ApiCheckboxAll',
+      fieldName: '异步多选',
+      async: {
+        url: '/bus/cms/channel-register-page/select-list',
+        method: 'get',
+        label: 'name',
+        value: 'id'
+      },
+      useForm: true
+    },
+    {
+      fieldKey: 'key6',
+      component: 'ApiCheckboxAll',
+      fieldName: '异步多选-带全选',
+      async: {
+        url: '/bus/cms/channel-register-page/select-list',
+        method: 'get',
+        label: 'name',
+        value: 'id'
+      },
+      extraConfig: {
+        isAll: true
+      },
+      useForm: true
     }
-    // {
-    //   fieldKey: 'key3',
-    //   component: 'CheckboxGroup',
-    //   fieldName: '异步多选（隐藏选项）',
-    //   async: {
-    //     // 需要异步数据
-    //     url: '/api/hobbyList', // 接口地址
-    //     method: 'post', // 请求方法
-    //     label: 'title', // list对应的label取对应的字段
-    //     value: 'id', // list对应的value取对应的字段
-    //     data: { type: 1 },
-    //     hiddenOptions: (data: any) => {
-    //       return data.id === 3
-    //     }
-    //   },
-    //   required: true
-    // },
-    // {
-    //   fieldKey: 'key4',
-    //   component: 'CheckboxGroup',
-    //   fieldName: '异步多选（带全选，禁用选项）',
-    //   async: {
-    //     // 需要异步数据
-    //     url: '/api/hobbyList', // 接口地址
-    //     method: 'post', // 请求方法
-    //     label: 'title', // list对应的label取对应的字段
-    //     value: 'id', // list对应的value取对应的字段
-    //     data: { type: 1 },
-    //     disabledOptions: (data: any) => {
-    //       return data.id === 3
-    //     }
-    //   },
-    //   required: true,
-    //   extraConfig: {
-    //     isAll: true
-    //   }
-    // }
   ]
 }

@@ -6,6 +6,19 @@
 import type { ComponentType } from './component'
 import { type Component } from 'vue'
 
+export interface IAsync {
+    url: string; // 接口地址
+    method: string; // 接口方法
+    label?: string; // 自定义选项名称
+    value?: string; // 自定义选项值
+    data?: Recordable; // 接口参数,
+    remote?: boolean; // 是否开启远程输入搜索
+    remoteKey?: string; // 远程输入搜索所需key
+    hiddenOptions?: string | ((data: Recordable) => boolean); // 需要隐藏的项，确定要隐藏的项的id，可传入字符串（多个逗号分隔），不确定可通过函数处理
+    disabledOptions?: string | ((data: Recordable) => boolean); // 需要置灰的项，确定要置灰的项的id，可传入字符串（多个逗号分隔），不确定可通过函数处理
+    immediate?: boolean; // 是否立即调用api
+}
+
 /**
  * 表格，表单，搜索，所需数据结构
  * */
@@ -23,17 +36,7 @@ export interface ISchema {
     rules?: // 可不必填的情况下也定义规则，满足规则才能校验通过
         | ((value: any) => string | boolean | Promise<string | boolean>)
         | { regExp: RegExp; msg: string; }; // 自定义校验，可以是一个函数(也可以异步校验)，也可以是一个正则表达式
-    async?: { // 需要异步请求数据
-        url: string; // 接口地址
-        method: string; // 接口方法
-        label?: string; // 自定义选项名称
-        value?: string; // 自定义选项值
-        data?: Recordable; // 接口参数,
-        remote?: boolean; // 是否开启远程输入搜索
-        remoteKey?: string; // 远程输入搜索所需key
-        hiddenOptions?: string | ((data: Recordable) => boolean); // 需要隐藏的项，确定要隐藏的项的id，可传入字符串（多个逗号分隔），不确定可通过函数处理
-        disabledOptions?: string | ((data: Recordable) => boolean); // 需要置灰的项，确定要置灰的项的id，可传入字符串（多个逗号分隔），不确定可通过函数处理
-    };
+    async?: IAsync; // 需要异步请求数据
     isEcho?: boolean; // 表格回显，如后端返id，需要匹配然后回显就传true，直接展示后端返回不传或设为false即可
     cellRenderer?: (obj: any) => any // 表格自定义渲染内容，如jsx语法等，可拿到最新的表头数据，有那种异步获取数据注入到表头的，@TODO，如何处理自定义渲染操作变更渲染内容
     extraConfig?: {
@@ -42,9 +45,14 @@ export interface ISchema {
         maxPlaceholder?: string; // 最大值提示
     },
     width?: string; // 表头宽度
-    search?: boolean; // 该字段是否用于搜索
+
     formHidden?: boolean | (() => boolean); // 该字段是否在表单中隐藏
     tableHidden?: boolean | (() => boolean); // 该字段是否在表格中隐藏
+
+    useSearch?: boolean; // 代表字段用于搜索
+    useTable?: boolean; // 代表字段用于表格
+    useForm?: boolean; // 代表字段用于表单
+
     valueFormatter?: {
         to?: (value: any) => any; // 将值处理成后端需要的
         from?: (value: any) => any; // 将值处理成前端需要的

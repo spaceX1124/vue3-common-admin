@@ -1,12 +1,11 @@
 import { isFunc, isString, isNullOrUndefOrEmpty } from '@/utils/is'
-import { ref, unref } from 'vue'
+import { type ComputedRef, ref, unref } from 'vue'
 import { http } from '@/utils/http'
-import type { ISchema } from '@/adapter'
+import type { IAsync } from '@/adapter'
 
-export function useOptions (schema?: Partial<ISchema>) {
+export function useOptions (async: ComputedRef<Partial<IAsync>>) {
+  // 要展示的选项数据
   const showList = ref<Record<string, any>[]>([])
-  // 控制接口请求只请求一次，如果需要每次都请求，就把它去掉
-  const flag = ref(true)
   // 控制加载状态
   const loading = ref(false)
   /**
@@ -14,9 +13,9 @@ export function useOptions (schema?: Partial<ISchema>) {
    * */
   function dealDataList (arr?: Record<string, any>[]) {
     // 禁用选项
-    const disabledOptions = schema?.async?.disabledOptions
+    const disabledOptions = async?.value?.disabledOptions
     // 隐藏选项
-    const hiddenOptions = schema?.async?.hiddenOptions
+    const hiddenOptions = async?.value?.hiddenOptions
     let hiddenOptionsSet
     if (isString(hiddenOptions)) {
       hiddenOptionsSet = new Set(hiddenOptions.split(','))
@@ -26,8 +25,8 @@ export function useOptions (schema?: Partial<ISchema>) {
       disabledOptionsSet = new Set(disabledOptions.split(','))
     }
 
-    const label = schema?.async?.label || 'label'
-    const value = schema?.async?.value || 'value'
+    const label = async?.value?.label || 'label'
+    const value = async?.value?.value || 'value'
     const listData: Record<string, any>[] = []
     if (arr?.length) {
       for (let i = 0; i < arr.length; i++) {
@@ -91,28 +90,16 @@ export function useOptions (schema?: Partial<ISchema>) {
    * */
   async function getOptionsList () {
     // 未开启远程输入搜索remote
-    if (unref(flag) && schema?.async && !schema.async.remote) {
-      await getApiList()
-    }
-  }
-  /**
-   * 用于外部刷新使用，遇到，开启了remote，但是有值的时候，进来就要请求
-   * */
-  async function getOptionsListNow () {
-    // 未开启远程输入搜索remote
-    if (unref(flag) && schema?.async) {
-      await getApiList()
-    }
+
   }
 
   async function getApiList () {
-    if (unref(flag) && schema?.async) {
+    if (async?.value) {
       try {
-        const { url, data, method } = schema.async
+        const { url, data, method } = async.value
         loading.value = true
         const res: Record<string, any>[] = await http[method || 'get'](url, data)
         loading.value = false
-        flag.value = false
         // 处理数据格式
         dealDataList(res)
       } catch (err) {
@@ -124,10 +111,8 @@ export function useOptions (schema?: Partial<ISchema>) {
   return {
     showList,
     loading,
-    searchData,
-    getOptionsList,
-    getOptionsListNow,
+    remoteApiData,
     dealDataList,
-    flag
+    getApiList
   }
 }

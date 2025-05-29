@@ -1,3 +1,4 @@
+<!-- 单选组件，支持选中取消，支持异步请求 -->
 <template>
   <el-radio-group :model-value="selectVal">
     <component
@@ -18,24 +19,32 @@
 import { computed, onBeforeMount, watch, ref } from 'vue'
 import { ElRadioButton, ElRadio } from 'element-plus'
 
-import type { ISchema } from '@/adapter'
+import type { IAsync } from '@/adapter'
 import { useOptions } from './utils'
 
 interface PropsType {
+  async?: IAsync;
   modelValue?: string | number;
-  schema?: Partial<ISchema>;
   options?: Record<string, any>[];
+  isButton?: boolean;
 }
 const props = withDefaults(defineProps<PropsType>(), {})
 const emit = defineEmits(['update:modelValue', 'refreshOptions', 'updateOptions', 'change'])
 
 const selectVal = ref('')
 
-const showComponent = computed(() => {
-  return props.schema?.componentProps?.isButton ? ElRadioButton : ElRadio
+const asyncComputed = computed(() => {
+  return {
+    immediate: true,
+    ...props.async
+  }
 })
 
-const { showList, getOptionsListNow, dealDataList, flag } = useOptions(props.schema)
+const showComponent = computed(() => {
+  return props.isButton ? ElRadioButton : ElRadio
+})
+
+const { showList, getApiList, dealDataList } = useOptions(asyncComputed)
 
 // 没有给el-radio-group双向绑定，绑定change事件不执行
 /**
@@ -60,16 +69,11 @@ watch(() => props.modelValue, (value) => {
   immediate: true
 })
 
-async function refresh () {
-  flag.value = true
-  await getOptionsListNow()
-}
-
 onBeforeMount(async () => {
-  if (props.schema?.async && props.schema.async.url) {
-    await getOptionsListNow()
+  if (asyncComputed.value.url && asyncComputed.value.immediate) {
+    await getApiList()
     // 用于外部使用，刷新下拉数据
-    emit('refreshOptions', refresh)
+    emit('refreshOptions', getApiList)
   } else {
     dealDataList(props.options)
   }

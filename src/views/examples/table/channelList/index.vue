@@ -2,16 +2,13 @@
   <Page auto-content-height>
     <InitPage ref="InitPageRef" :initPageData="initPageData">
       <template #paymentType="slotProps">
-        <div>
-          <RadioInput v-bind="slotProps"/>
-        </div>
+        <RadioInput v-bind="slotProps"/>
       </template>
       <template #onlinePeriod="slotProps">
         <RadioPopover
           v-bind="slotProps"
           popoverShowRadioVal="3"
           :popover-show-list="businessList.hoursList"
-          :schema="slotProps.schema"
           popoverTitle="自定义上线时段"
         />
       </template>
@@ -20,7 +17,6 @@
           v-bind="slotProps"
           popoverShowRadioVal="4"
           :popover-show-list="businessList.weekList"
-          :schema="slotProps.schema"
           popoverTitle="自定义周期"
         />
       </template>

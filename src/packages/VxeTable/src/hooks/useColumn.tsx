@@ -16,7 +16,7 @@ export function useColumn ({ tableMethods }: IColumnProp) {
   // const columns = ref<Recordable[]>([])
   const showColumns = computed(() => {
     const newColumns = tableMethods.schema.value
-    .filter(item => !(isFunc(item.tableHidden) ? item.tableHidden() : item.tableHidden))
+    .filter(item => (item.useTable && !(isFunc(item.tableHidden) ? item.tableHidden() : item.tableHidden)))
     .map((schema) => {
       // @todo 要怎么去渲染表格内容，不能直接把接口返回的数据直接渲染
       // 格式化显示内容

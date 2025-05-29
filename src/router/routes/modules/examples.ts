@@ -62,6 +62,13 @@ const routes: RouteRecordRaw[] = [
             component: () => import('@/views/examples/form/intervalInput/index.vue'), meta: {
               title: '区间输入'
             }
+          },
+          {
+            path: '/examples/form/query',
+            name: 'ExamplesFormQuery',
+            component: () => import('@/views/examples/form/query/index.vue'), meta: {
+              title: '渠道测试'
+            }
           }
         ]
       },

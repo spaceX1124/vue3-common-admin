@@ -13,7 +13,8 @@ export function getFieldList (baseFormApi: FormMethods):ISchema[] {
       extraConfig: {
         minPlaceholder: '请输入最小金额',
         maxPlaceholder: '请输入最大金额'
-      }
+      },
+      useForm: true
     },
     {
       fieldKey: 'key2',
@@ -37,7 +38,8 @@ export function getFieldList (baseFormApi: FormMethods):ISchema[] {
       extraConfig: {
         minPlaceholder: '请输入最小金额',
         maxPlaceholder: '请输入最大金额'
-      }
+      },
+      useForm: true
     },
     {
       fieldKey: 'key3',
@@ -47,7 +49,8 @@ export function getFieldList (baseFormApi: FormMethods):ISchema[] {
       extraConfig: {
         minPlaceholder: '请输入最小金额',
         maxPlaceholder: '请输入最大金额'
-      }
+      },
+      useForm: true
     },
     {
       fieldKey: 'key4',
@@ -70,7 +73,8 @@ export function getFieldList (baseFormApi: FormMethods):ISchema[] {
         } else {
           return true
         }
-      }
+      },
+      useForm: true
     },
     {
       fieldKey: 'key5',
@@ -92,7 +96,8 @@ export function getFieldList (baseFormApi: FormMethods):ISchema[] {
         } else {
           return true
         }
-      }
+      },
+      useForm: true
     }
   ]
 }

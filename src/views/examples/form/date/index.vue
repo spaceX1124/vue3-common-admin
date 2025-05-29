@@ -15,10 +15,11 @@
 <script lang="ts" setup>
 import Page from '@/components/page/Page.vue'
 import { useForm } from '@/adapter/form'
-import { fieldList } from './index'
+import { getFieldList } from './index'
+import { onMounted } from 'vue'
 
 const [BaseForm, baseFormApi] = useForm({
-  schema: fieldList,
+  schema: [],
   handleSubmit (values) {
     console.log(values, '数据框数据')
   }
@@ -48,4 +49,7 @@ function btn4 () {
     gridCols: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
   })
 }
+onMounted(() => {
+  baseFormApi.schema.value = getFieldList(baseFormApi)
+})
 </script>

@@ -12,14 +12,16 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       fieldKey: 'id',
       fieldName: '渠道ID',
       component: 'Input',
-      formHidden: true,
-      search: true
+      useSearch: true,
+      useTable: true
     },
     {
       fieldKey: 'name',
       fieldName: '渠道名称',
       component: 'Input',
-      search: true,
+      useSearch: true,
+      useTable: true,
+      useForm: true,
       componentProps: {
         maxlength: 10
       },
@@ -32,9 +34,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       componentProps: {
         options: businessList.channelType
       },
-      search: true,
-      formHidden: true,
-      tableHidden: true
+      useSearch: true
     },
     {
       fieldKey: 'type',
@@ -45,7 +45,9 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         isButton: true
       },
       isEcho: true,
-      required: true
+      required: true,
+      useTable: true,
+      useForm: true
     },
     {
       fieldKey: 'dockingType',
@@ -56,12 +58,14 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         isButton: true
       },
       isEcho: true,
-      required: true
+      required: true,
+      useTable: true,
+      useForm: true
     },
     {
       fieldKey: 'registerPageId',
       fieldName: '注册页',
-      component: 'Select',
+      component: 'ApiSelect',
       async: {
         url: '/bus/cms/channel-register-page/select-list',
         method: 'get',
@@ -71,7 +75,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
           return data.status === 0
         }
       },
-      tableHidden: true,
+      useForm: true,
       required: true,
       async beforeMount (value) {
         // 刷新公司请求参数
@@ -90,6 +94,8 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         options: businessList.jsType,
         isButton: true
       },
+      useTable: true,
+      useForm: true,
       cellRenderer: ({ row }) => {
         const { paymentType, paymentTypeValue } = row
         const jsName = businessList.jsType.find((item) => item.value === paymentType)
@@ -111,13 +117,29 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         } else {
           return true
         }
+      },
+      valueFormatter: {
+        to: (value) => {
+          if (value.index === 1) {
+            return moneyTransform(value.val, 'yuan', 'fen')
+          } else {
+            return value.val
+          }
+        },
+        from: (value) => {
+          if (value.index === 1) {
+            return moneyTransform(value.val, 'fen', 'yuan')
+          } else {
+            return value.val
+          }
+        }
       }
     },
     {
       fieldKey: 'dailyAverageQuantity',
       fieldName: '日均客量',
       component: 'Input',
-      tableHidden: true,
+      useForm: true,
       componentProps: {
         placeholder: '请输入每日想吸引客户的数量'
       },
@@ -134,7 +156,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         options: businessList.zkType,
         isButton: true
       },
-      tableHidden: true,
+      useForm: true,
       required: true
     },
     {
@@ -145,7 +167,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         options: businessList.filterTypeType,
         multiple: true
       },
-      tableHidden: true,
+      useForm: true,
       required: true
     },
     {
@@ -156,7 +178,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         options: businessList.shzzType,
         multiple: true
       },
-      tableHidden: true
+      useForm: true
     },
     {
       fieldKey: 'onlinePeriod',
@@ -168,6 +190,8 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         isButton: true
       },
       required: true,
+      useTable: true,
+      useForm: true,
       rules (value) {
         // 这儿还要校验复选框的值，还有，复选框的值怎么设置到表单数据中
         if(isArray(value)) {
@@ -211,6 +235,8 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         options: businessList.cycleType,
         isButton: true
       },
+      useTable: true,
+      useForm: true,
       required: true,
       cellRenderer: ({ row }) => {
         const { onlineCycle, onlineCycleValue } = row
@@ -244,13 +270,15 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
         isButton: true
       },
       isEcho: true,
-      required: true
+      required: true,
+      useTable: true,
+      useForm: true
     },
     {
       fieldKey: 'createTime',
       fieldName: '创建时间',
       component: 'Input',
-      formHidden: true
+      useTable: true
     }
   ]
 }
