@@ -68,13 +68,16 @@ export function useOptions (async: ComputedRef<Partial<IAsync>>) {
   /**
    * 根据输入的关键词去搜索
    * */
-  async function searchData (query?: string) {
-    if (schema?.async) {
+  async function remoteApiData (query?: string) {
+    if (!query) {
+      showList.value = []
+      return
+    }
+    if (async?.value) {
       try {
-        const { url, data, remoteKey, method } = schema.async
+        const { url, data, remoteKey, method } = async.value
         const postData = { ...data }
         remoteKey && (postData[remoteKey] = query)
-        console.log(postData, 'postData')
         loading.value = true
         const res: Record<string, any>[] = await http[method || 'get'](url, postData)
         loading.value = false
@@ -84,12 +87,6 @@ export function useOptions (async: ComputedRef<Partial<IAsync>>) {
         showList.value = []
       }
     }
-  }
-  /**
-   * focus的时候，如果没开启远程输入搜索remote才请求
-   * */
-  async function getOptionsList () {
-    // 未开启远程输入搜索remote
 
   }
 
