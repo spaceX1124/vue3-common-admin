@@ -55,7 +55,7 @@ const computedSchema = computed(() => {
   // item类型推导不出来，只有重新定义类型
   return formMethods.schema.value.filter((item: ISchema) => ((formMethods.isSearch && item.useSearch) || (!formMethods.isSearch && item.useForm))).map((item: ISchema, index: number) => {
     const keepIndex = keepFormItemIndex.value
-    // 显示折叠按钮 & 折叠状态 & 当前索引大于保留索引
+    // 显示折叠按钮 & 折叠状态 & 当前索引大于保留索引-用于搜索表单
     const hidden = formMethods.showCollapseButton && formCollapsed.value && keepIndex
       ? keepIndex <= index
       : false

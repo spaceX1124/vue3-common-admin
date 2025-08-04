@@ -9,6 +9,7 @@ interface AppPreferences {
     defaultAvatar: string; // 应用默认头像
     watermark: boolean; // 是否开启水印
     name: string; // 项目标题
+    isMobile: boolean; // 是否是移动端
 }
 
 // 侧边栏配置

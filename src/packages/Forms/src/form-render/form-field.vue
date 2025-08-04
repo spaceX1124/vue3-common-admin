@@ -103,7 +103,7 @@ function fieldBindEvent (slotProps: Record<string, any>) {
     return {
       [`onUpdate:${bindEventField}`]: handler,
       [bindEventField]: modelValue,
-      onChange: undefined,
+      onChange: slotProps.componentField['onChange'],
       onInput: undefined
     }
   }
@@ -140,7 +140,8 @@ function createComponentProps (slotProps: Record<string, any>) {
     ...defaultComponentProps, // 默认的组件props
     ...props.componentProps, // 外部传入的UI框架自己的props
     async: props.async || {},
-    ...props.extraConfig
+    ...props.extraConfig,
+    mergeSchema: props.mergeSchema
   }
   return bind
 }

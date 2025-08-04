@@ -39,6 +39,26 @@ body {
 .text-popover-foreground {
     color: rgba(242,242,242, 0.8);
 }
+
+.flex {
+    display: flex;
+}
+.items-center {
+    align-items: center;
+}
+.justify-center {
+    justify-content: center;
+}
+.justify-between {
+    justify-content: space-between;
+}
+.justify-start {
+    justify-content: flex-start;
+}
+.justify-end {
+    justify-content: flex-end;
+}
+
 .flex-center {
     @apply flex items-center justify-center;
 }

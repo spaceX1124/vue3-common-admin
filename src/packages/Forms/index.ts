@@ -5,7 +5,9 @@ export {
   IntervalInput,
   FormTitle,
   ApiCheckboxAll,
-  ApiComponent
+  ApiComponent,
+  Upload,
+  RadioSelect
 } from './src/components'
 
 export type * from './src/type'

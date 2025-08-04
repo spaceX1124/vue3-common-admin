@@ -1,12 +1,12 @@
 import type { ISchema } from '@/adapter'
-import type { FormMethods } from '@/packages/Forms'
 import businessList from '@/enums/business.ts'
 import { h } from 'vue'
 import { moneyTransform } from '@/utils/unit.ts'
 import { isArray, isEmpty, isNullOrUndefOrEmpty } from '@/utils/is.ts'
 import RegExpEnum from '@/utils/regExp.ts'
+import type { IGetFieldListParams } from '@/types/business.ts'
 
-export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
+export function getFieldList ({ formMethods, tableMethods, searchMethods }: IGetFieldListParams):ISchema[] {
   return [
     {
       fieldKey: 'id',
@@ -25,7 +25,8 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       componentProps: {
         maxlength: 10
       },
-      required: true
+      required: true,
+      isCopy: true
     },
     {
       fieldKey: 'type',
@@ -79,8 +80,8 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
       required: true,
       async beforeMount (value) {
         // 刷新公司请求参数
-        baseFormApi?.updateFieldProperty('registerPageId', 'async.data.id', value)
-        const registerPageIdField = baseFormApi?.getField?.('registerPageId')
+        formMethods?.updateFieldProperty('registerPageId', 'async.data.id', value)
+        const registerPageIdField = formMethods?.getField?.('registerPageId')
         const registerPageIdRefresh = registerPageIdField?.insideComp?.refresh
         if (registerPageIdRefresh) await registerPageIdRefresh()// 刷新注册页下拉数据
       }

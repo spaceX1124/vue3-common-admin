@@ -1,0 +1,16 @@
+{
+  "code": 0,
+  "data": {
+    "records": [
+      {
+        "key1": "张三"
+      }
+    ],
+    "current": 1,
+    "pages": 10,
+    "size": 10,
+    "total": 100
+  },
+  "message": "操作成功",
+  "ok": true
+}

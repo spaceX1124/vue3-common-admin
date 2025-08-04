@@ -5,11 +5,10 @@
 // 如果同时调用多个beforeEach，他会调用下一个导航守卫
 // router.beforeEach的回调函数的返回值如果是一个路由地址，
 // 那它会跳转至这个路由地址
-import type { Router } from 'vue-router'
 import { startProgress, stopProgress } from '@/utils/nprogress'
 import { usePermissionStore } from '@/stores/modules/permission'
 import { generateAccess } from './access'
-import { dynamicRoutes } from './routes'
+import type { Router } from 'vue-router'
 
 /**
  * 通用的守卫配置
@@ -30,21 +29,26 @@ function setupCommonGuard (router: Router) {
 function setupAccessGuard (router: Router) {
   router.beforeEach(async (to, from ) => {
     const permissionStore = usePermissionStore()
-    // 已经检查过权限
+    // 已经获取过权限菜单
     if (permissionStore.isAccessChecked) {
+      // 如果访问的是根路径
       if (to.path === '/') {
+        // 跳转到第一个菜单
         return {
           path: permissionStore.accessRoutes[0].path
         }
+      } else {
+        // 如果访问的是其他路径，正常跳转
+        return true
       }
-      return true
     }
-    // 处理权限菜单
-    const { accessibleMenus, accessibleRoutes } = await generateAccess({
-      router,
-      routes: dynamicRoutes
-    })
-    // 保存菜单信息和路由信息
+    /**
+     * 生成权限菜单和路由
+     * accessibleRoutes：权限路由
+     * accessibleMenus：权限菜单
+     * */
+    const { accessibleMenus, accessibleRoutes } = await generateAccess()
+    // 保存菜单信息和路由信息到store
     permissionStore.setAccessRoutes(accessibleRoutes)
     permissionStore.setAccessMenus(accessibleMenus)
     permissionStore.setIsAccessChecked(true)

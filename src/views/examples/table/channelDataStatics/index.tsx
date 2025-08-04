@@ -1,8 +1,9 @@
 import type { ISchema } from '@/adapter'
 import type { FormMethods } from '@/packages/Forms'
 import businessList from '@/enums/business.ts'
+import type { IGetFieldListParams } from '@/types/business.ts'
 
-export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
+export function getFieldList ({ formMethods, tableMethods, searchMethods }: IGetFieldListParams):ISchema[] {
   return [
     {
       fieldName: '时段',
@@ -101,7 +102,7 @@ export function getFieldList (baseFormApi?: FormMethods):ISchema[] {
 }
 
 // 时段明细字段
-export function getHourFieldList (baseFormApi?: FormMethods):ISchema[] {
+export function getHourFieldList ({ formMethods, tableMethods, searchMethods }: IGetFieldListParams):ISchema[] {
   return [
     {
       fieldName: '时段',

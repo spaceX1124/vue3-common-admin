@@ -53,6 +53,9 @@ const {
   handleMenuSelect
 } = useMixedMenu()
 
+/**
+ * 隐藏/显示菜单栏
+ * */
 function toggleSidebar () {
   updatePreferences({
     sidebar: {

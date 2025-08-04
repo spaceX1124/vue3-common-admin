@@ -37,11 +37,12 @@ interface PropsType {
   cancelText?: string; // 取消文字
   hiddenFooter?: boolean; // 隐藏底部
 }
-const emit = defineEmits(['confirm'])
+const emit = defineEmits(['confirm', 'close'])
 defineProps<PropsType>()
 
 function handleClose () {
   show.value = false
+  emit('close')
 }
 
 function handleConfirm () {

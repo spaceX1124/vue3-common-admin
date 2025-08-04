@@ -1,5 +1,6 @@
 // 菜单所需类型
 import type { Component } from 'vue'
+import type { RouteRecordRaw } from 'vue-router'
 // Menu菜单组件接受的参数类型
 export interface MenuProps {
     accordion?: boolean; // 是否只展开一个SubMenu
@@ -21,16 +22,29 @@ export interface MenuItemProps {
     icon?: Component | string; // 图标
 }
 
+// 接口返回的权限菜单数据
+export interface IApiMenu {
+    title: string; // 菜单名
+    path: string; // 用于路由名称
+    children: MenuRecordRaw[]; // 子菜单
+    icon: Component | string; // 图标名
+    order: number; // 排序号
+    id: number;
+    parentId: number;
+}
+export interface IApiMenuExtend extends IApiMenu {
+    fullPath?: string; // 前端自己需要的字段，用于匹配对应的组件页面路径
+}
+
+export type IRoute = { id: number} & RouteRecordRaw
+
 // 菜单原始数据对象
 export interface MenuRecordRaw {
     title: string; // 菜单名
-    name: string; // 用于路由名称
-    path: string; // 菜单路径，唯一，可当作key
-    children?: MenuRecordRaw[]; // 子菜单
-    icon?: Component | string; // 图标名
-    order?: number; // 排序号
-    show?: boolean; // 是否显示菜单
-    id?: number;
+    path: string; // 用于路由名称
+    children: MenuRecordRaw[]; // 子菜单
+    icon: Component | string; // 图标名
+    order: number; // 排序号
 }
 
 interface MenuItemRegistered {

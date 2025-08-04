@@ -2,7 +2,7 @@ import { ref, type Ref } from 'vue'
 import type { ISchema } from '@/adapter'
 import type { IApi, IButton, IPaper } from './type'
 import { http } from '@/utils/http'
-import { isFunc } from '@/utils/is.ts'
+import { type VxeGridInstance } from 'vxe-table'
 
 export interface ITableMethodsProps {
   schema: ISchema[]; // 表头数据结构
@@ -28,7 +28,8 @@ export class TableMethods {
   public loading: Ref<boolean> // 表格数据加载状态
   public pagerData: Ref<IPaper> // 分页数据
   public searchData: Ref<Record<string, any>> // 表格搜索数据
-  public sortData: Ref<Record<string, any>>
+  public sortData: Ref<Record<string, any>> // 排序数据
+  public gridRef: Ref<VxeGridInstance | null> // 表格ref
   constructor (options: ITableMethodsProps) {
     this.schema = ref(options.schema)
     this.listApi = options.listApi
@@ -47,6 +48,7 @@ export class TableMethods {
     this.tableData = ref([]) // 表格数据
     this.searchData = ref({}) // 搜索数据
     this.sortData = ref({}) // 排序数据
+    this.gridRef = ref(null)
   }
 
   /**
@@ -142,5 +144,63 @@ export class TableMethods {
   async updateSortData (data: Record<string, any>) {
     this.sortData.value = data
     await this.getApiDataList()
+  }
+
+  /**
+   * 设置schema的JSON数据
+   * */
+  setSchema (schema: ISchema[]) {
+    this.schema.value = schema
+  }
+
+  /**
+   * 设置表格ref
+   * */
+  setGridRef (ref: Ref<VxeGridInstance | null>) {
+    this.gridRef.value = ref.value
+  }
+
+  /**
+   * 重置分页数据
+   * */
+  resetPagerData () {
+    this.pagerData.value = {
+      current: 1,
+      size: 10,
+      total: 0
+    }
+  }
+
+  /**
+   * 重置排序参数
+   * */
+  resetSortData () {
+    this.sortData.value = {}
+  }
+
+  /**
+   * 重置搜索条件
+   * */
+  resetSearchData () {
+    this.searchData.value = {}
+  }
+
+  /**
+   * 重置选中
+   * */
+  resetSelected () {
+    if (this.gridRef.value) {
+      this.gridRef.value.clearCheckboxRow()
+    }
+  }
+  
+  /**
+   * 重置分页、重置排序、重置搜索条件、重置选中
+   * */
+  initial () {
+    this.resetPagerData()
+    this.resetSortData()
+    this.resetSearchData()
+    this.resetSelected()
   }
 }

@@ -60,7 +60,6 @@ export class FormMethods {
   }
   // 将vee-validate的useForm的实例传入
   mount (formContext: FormContext) {
-    console.log(formContext, 'formContext', this)
     Object.assign(this.form, formContext)
   }
 
@@ -161,8 +160,8 @@ export class FormMethods {
       }
 
     })
-    console.log(formData, 'formData11')
-    this.form.setValues(formData)
+    this.form.setValues(formData, false) // 设置表单值不触发表单校验
+
   }
 
   /**
@@ -171,10 +170,9 @@ export class FormMethods {
   getValues () {
     const formData: Record<string, any> = {}
     const values = this.form.values
-    console.log(values, 'values123')
     this.schema.value.forEach(item => {
       // 搜索表单只取搜索字段 || 新增表单取非隐藏字段
-      if((this.isSearch && item.useSearch) || (!this.isSearch && item.useForm)) {
+      if((this.isSearch && item.useSearch) || (!this.isSearch && item.useForm && !item.notSend)) {
         // 多个key，需要设置它们对应的属性值
         if (item.fieldKeyArr && item.fieldKeyArr.length) {
           item.fieldKeyArr.forEach((key, index) => {
@@ -225,8 +223,19 @@ export class FormMethods {
               !isNullOrUndefOrEmpty(val) ? newVal : ''
           }
         }
+        if (item.mergeSchema) {
+          const val = values[item.mergeSchema.fieldKey]
+          const newVal = isArray(val) ? val.join(',') : String(val)
+          // 是否需要处理值的格式化
+          formData[item.mergeSchema.fieldKey] = item.mergeSchema.valueFormatter && item.mergeSchema.valueFormatter.to && !isNullOrUndefOrEmpty(val)
+            ?
+            item.mergeSchema.valueFormatter.to(val) // 如果是fieldKeyArr，告诉外面格式化第几个，外部好判断
+            :
+            !isNullOrUndefOrEmpty(val) ? newVal : ''
+        }
       }
     })
+    console.log(formData, 'formData111')
     return formData
   }
 

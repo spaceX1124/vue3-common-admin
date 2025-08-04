@@ -7,7 +7,7 @@ interface IRouteMeta {
     icon?: Component | string;
     title?: string;
     order?: number;
-    hideInMenu?: boolean;
+    hideInBreadcrumb?: boolean;
 }
 declare module 'vue-router' {
     interface RouteMeta extends IRouteMeta {}

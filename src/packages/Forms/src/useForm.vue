@@ -35,7 +35,6 @@ const delegatedSlots = computed(() => {
       resultSlots.push(key)
     }
   }
-  console.log(resultSlots, 'resultSlots')
   return resultSlots
 })
 

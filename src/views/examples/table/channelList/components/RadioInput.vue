@@ -116,4 +116,5 @@ onBeforeMount(async () => {
   }
 })
 
+defineOptions({ inheritAttrs: false })
 </script>

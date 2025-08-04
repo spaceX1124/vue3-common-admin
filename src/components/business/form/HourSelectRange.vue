@@ -73,4 +73,5 @@ const handleEndChange = (val) => {
   // }
 }
 
+defineOptions({ inheritAttrs: false })
 </script>

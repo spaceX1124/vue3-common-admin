@@ -8,11 +8,12 @@ import {
   ElRadioGroup,
   ElRadioButton,
   ElRadio,
-  ElDatePicker
+  ElDatePicker,
+  ElCascader
 } from 'element-plus'
 import { globalShareState } from '@/global/globalState'
 import { h, type Component, type SetupContext } from 'vue'
-import { ApiRadioGroup, IntervalInput, ApiCheckboxAll, ApiComponent } from '@/packages/Forms'
+import { ApiRadioGroup, IntervalInput, ApiCheckboxAll, ApiComponent, Upload, RadioSelect } from '@/packages/Forms'
 import { isArray } from '@/utils/is.ts'
 
 /**
@@ -41,6 +42,9 @@ export type ComponentType =
     | 'Search'
     | 'DefaultButton'
     | 'DatePicker'
+    | 'Upload'
+    | 'Cascader'
+    | 'RadioSelect'
 
 // 这个函数可以处理初始的placeholder，不然在Form包中不好去处理
 const withDefaultPlaceholder = <T extends Component>(
@@ -149,6 +153,19 @@ export function initComponentAdapter () {
         },
         slots
       )
+    },
+    // 上传
+    Upload: (props, { attrs, slots }) => {
+      return h(Upload, { ...props, ...attrs }, slots)
+    },
+    // 级联选择器
+    Cascader: (props, { attrs, slots }) => {
+      return h(ElCascader, { ...props, options: dealDataList(props.options), attrs }, slots)
+    },
+
+    // 单选框结合下拉框
+    RadioSelect: (props, { attrs, slots }) => {
+      return h(RadioSelect, { ...props, ...attrs }, slots)
     }
   }
   globalShareState.setComponents(components)

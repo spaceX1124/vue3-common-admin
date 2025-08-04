@@ -258,7 +258,7 @@ watch(() => show.value, (val) => {
     getCityTree()
   }
 })
-
+defineOptions({ inheritAttrs: false })
 </script>
 <style lang="scss" scoped>
 .showCityStyle {

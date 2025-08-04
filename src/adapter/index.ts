@@ -41,8 +41,8 @@ export interface ISchema {
     cellRenderer?: (obj: any) => any // 表格自定义渲染内容，如jsx语法等，可拿到最新的表头数据，有那种异步获取数据注入到表头的，@TODO，如何处理自定义渲染操作变更渲染内容
     extraConfig?: {
         isAll?: boolean; // 复选框是否展示全选
-        minPlaceholder?: string; // 最小值提示
-        maxPlaceholder?: string; // 最大值提示
+        minPlaceholder?: string; // 区间输入-最小值提示
+        maxPlaceholder?: string; // 区间输入-最大值提示
     },
     width?: string; // 表头宽度
 
@@ -52,6 +52,8 @@ export interface ISchema {
     useSearch?: boolean; // 代表字段用于搜索
     useTable?: boolean; // 代表字段用于表格
     useForm?: boolean; // 代表字段用于表单
+
+    notSend?: boolean; // 该字段值不发送给后端
 
     valueFormatter?: {
         to?: (value: any) => any; // 将值处理成后端需要的
@@ -71,5 +73,7 @@ export interface ISchema {
         sortKey: string; // 映射字段所需的key
         sortValue: string | number; // 映射字段所需的值
         sortTypeKey: string; // 升序/降序所需的key
-    }
+    },
+    isCopy?: boolean; //  表格展示-支持复制
+    mergeSchema?: ISchema; // 当2个字段要揉成一个FormItem使用的时候
 }

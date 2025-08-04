@@ -256,5 +256,15 @@ export const fieldList: ISchema[] = [
     },
     required: true,
     useForm: true
+  },
+  {
+    fieldKey: 'name19',
+    component: 'Input',
+    fieldName: '未按要求输入清空操作(非0-9都输不了)',
+    componentProps: {
+      formatter: (value: string) => value.replace(/\D/g, ''),
+      parser: (value: string) => value.replace(/\D/g, '')
+    },
+    useForm: true
   }
 ]

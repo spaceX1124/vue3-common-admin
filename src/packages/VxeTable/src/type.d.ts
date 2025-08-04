@@ -1,4 +1,5 @@
 import type { ISchema } from '@/adapter'
+export type { TableMethods } from './tableMethods'
 
 export interface IApi {
     url: string | Function;

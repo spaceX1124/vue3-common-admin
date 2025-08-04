@@ -1,5 +1,21 @@
 import { cloneDeep as lodashCloneDeep, mergeWith, unionWith, isEqual, intersectionWith } from 'lodash-es'
 import { isArray, isObj, isFunc, isBoolean, isString } from '@/utils/is'
+import useClipboard from 'vue-clipboard3'
+import { ElMessage } from 'element-plus'
+
+/**
+ * 复制内容
+ * */
+export async function copy (msg: string){
+  const { toClipboard } = useClipboard()
+  try {
+    await toClipboard(msg)
+    ElMessage.success('复制成功！')
+  } catch (e) {
+    ElMessage.error('复制失败，请稍后重试')
+  }
+}
+
 /**
  * 深拷贝
  * */

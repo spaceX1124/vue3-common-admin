@@ -151,4 +151,6 @@ const currentRadioElement = computed(() => {
 function changeCheckbox () {
   emit('update:modelValue', inputVal.value)
 }
+
+defineOptions({ inheritAttrs: false })
 </script>

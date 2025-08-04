@@ -62,9 +62,11 @@ const props = withDefaults(defineProps<PropsType>(), {
 // 动态获取侧边栏的宽度
 const getSidebarWidth = computed(() => {
   let width = 0
+  // 如果侧边栏隐藏，则返回0
   if (props.sidebarHidden) {
     return width
   }
+  // 取得侧边栏的宽度
   width = props.sidebarWidth
   return width
 })

@@ -11,6 +11,9 @@ import { initStores } from '@/stores'
 // import '@/utils/mock.ts'
 import { initComponentAdapter }from '@/adapter/component'
 
+import { ls } from '@/utils/cache/storageCache.ts'
+import { cacheUserInfo } from '@/libs/constants.ts'
+
 const app = createApp(App)
 bootstrap()
 app.use(router)
@@ -25,3 +28,7 @@ function bootstrap () {
   const namespace = 'zs'
   initStores(app, { namespace })
 }
+//
+// ls.set(cacheUserInfo, {
+//   token: 'K2FhemJ2UnlHYjR6Q3d1TDVOVFNtMm1qTGhIbzZMR2tnN2RtcGQzemVHSzBNc2dRRFUzdVdkMklXQW5LRDRTMA'
+// })

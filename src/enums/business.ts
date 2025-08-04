@@ -1,9 +1,84 @@
+import ChinaAddressV4Data from '@/components/business/form/select-city-modal/china_address_vant.ts'
+
 const TimeArr: any = []
 for (let i = 0; i < 24; i++) {
   TimeArr.push({ label: i + '时', value: `${i}` })
 }
+interface ICityType {
+  label: string,
+  value: string,
+  children: ICityType[]
+}
+/**
+ * 树形-省/市
+ * */
+function getCityListFunction () {
+  const provinceList: { [propName: number]: string } = ChinaAddressV4Data.province_list
+  const cityList: { [propName: number]: string } = ChinaAddressV4Data.city_list
+  const parent: any[] = []
+  for (const i in provinceList) {
+    const pObj: ICityType = {
+      value: i,
+      label: provinceList[i],
+      children: []
+    }
+    for (const j in cityList) {
+      if (Number(j) - Number(i) > 0 && Number(j) - Number(i) <= 10000) {
+        const subObj: ICityType = {
+          value: j,
+          label: cityList[j],
+          children: []
+        }
+        pObj.children.push(subObj)
+      }
+    }
+    parent.push(pObj)
+  }
+  return parent
+}
+
+/**
+ * 树形-省/市/区
+ * */
+function getAreaListFunction () {
+  const provinceList: { [propName: number]: string } = ChinaAddressV4Data.province_list
+  const cityList: { [propName: number]: string } = ChinaAddressV4Data.city_list
+  const areaList: { [propName: number]: string } = ChinaAddressV4Data.county_list
+  const parent: any[] = []
+  for (const i in provinceList) {
+    const pObj: ICityType = {
+      value: i,
+      label: provinceList[i],
+      children: []
+    }
+    for (const j in cityList) {
+      if (Number(j) - Number(i) > 0 && Number(j) - Number(i) <= 10000) {
+        const subObj: ICityType = {
+          value: j,
+          label: cityList[j],
+          children: []
+        }
+        pObj.children.push(subObj)
+        for (const k in areaList) {
+          if (Number(k) - Number(j) > 0 && Number(k) - Number(j) <= 100) {
+            const sonObj: ICityType = {
+              value: k,
+              label: areaList[k],
+              children: []
+            }
+            subObj.children.push(sonObj)
+          }
+        }
+      }
+    }
+    parent.push(pObj)
+  }
+  return parent
+}
 
 const businessList = {
+  cityList: getCityListFunction(), // 省/市
+  areaList: getAreaListFunction(), // 省/市/区
   hoursList: TimeArr,
   checkType_: [
     { label: '待审核', value: 0 },
@@ -179,6 +254,11 @@ const businessList = {
   channelStatus_: [
     { label: '下线', value: 0 },
     { label: '上线', value: 1 }
-  ]
+  ],
+  cooperation: [
+    { label: '云saas', value: 1 },
+    { label: 'api机构', value: 2 }
+  ],
+  sexList: [{ label: '女', value: 0 }, { label: '男', value: 1 }]
 }
 export default businessList

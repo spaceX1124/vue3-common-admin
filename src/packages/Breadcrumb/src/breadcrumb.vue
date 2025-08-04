@@ -4,7 +4,7 @@
       <li
         v-for="(item, index) in breadcrumbs"
         :key="`${item.path}-${item.title}-${index}`"
-        class="bg-background h-7 text-[13px] flex-center">
+        class="bg-background flex-center">
         <span>{{item.title}}</span>
       </li>
     </TransitionGroup>
@@ -20,6 +20,9 @@ const breadcrumbs = computed((): IBreadcrumb[] => {
   const matched = route.matched
   const resultBreadcrumb: IBreadcrumb[] = []
   for (const match of matched) {
+    if (match.meta.hideInBreadcrumb) {
+      continue
+    }
     const { meta, path } = match
     if (meta.title) {
       resultBreadcrumb.push({
@@ -34,36 +37,65 @@ const breadcrumbs = computed((): IBreadcrumb[] => {
 <style lang="scss" scoped>
 .breadcrumb-box {
   >li {
-    @apply relative mr-9 pl-[5px] pr-2;
+    height: 28px;
+    font-size: 13px;
+    position: relative;
+    margin-right: 36px;
+    padding-left: 5px;
+    padding-right: 8px;
 
     &::before,
     &::after {
+      position: absolute;
+      top: 0;
+      height: 0;
+      width: 0;
+      border-width: 14px;
       border-color: rgb(var(--bg-background));
-      @apply absolute top-0 h-0 w-0 border-[.875rem] border-solid content-[''];
+      border-style: solid;
+      content: "";
     }
     &::before {
+      left: -28px;
+      z-index: 10;
       border-left-color: transparent;
-      @apply -left-7 z-10 border-l-transparent;
     }
     &::after {
       border-color: transparent;
       border-left-color: rgb(var(--bg-background))!important;
-      @apply left-full border-transparent;
+      left: 100%;
     }
     &:first-child::before {
-      @apply border-none;
+      border-style: none;
     }
     &:last-child::after {
-      @apply border-none;
+      border-style: none;
     }
 
     &:first-child {
-      @apply rounded-[4px_0_0_4px] pl-[15px];
+      border-radius: 4px 0 0 4px;
+      padding-left: 15px;
     }
 
     &:last-child{
-      @apply rounded-[0_4px_4px_0] pr-[15px];
+      border-radius: 0 4px 4px 0;
+      padding-right: 15px;
     }
   }
 }
+.breadcrumb-transition-enter-active {
+  transition:
+      transform 0.4s cubic-bezier(0.76, 0, 0.24, 1),
+      opacity 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.breadcrumb-transition-leave-active {
+  display: none;
+}
+
+.breadcrumb-transition-enter-from {
+  opacity: 0;
+  transform: translateX(30px) skewX(-30deg);
+}
+
 </style>

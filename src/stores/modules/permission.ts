@@ -8,6 +8,10 @@ interface PermissionState {
     isAccessChecked: boolean; // 是否已经检查过权限
 }
 
+/**
+ * 存储菜单
+ * 存储权限检查状态
+ * */
 export const usePermissionStore = defineStore({
   id: 'app-permission',
   state: (): PermissionState => ({

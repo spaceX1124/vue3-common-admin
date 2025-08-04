@@ -5,8 +5,10 @@
     :close-on-press-escape="false"
     :show-close="false"
     :title="title"
+    :confirmText="confirmText"
     @confirm="confirm"
     width="800px"
+    @close="close"
   >
     <div class="h-[450px]">
       <AddForm>
@@ -29,22 +31,24 @@ import type { ISchema } from '@/adapter'
 import Dialog from '@/components/common/dialog/Dialog.vue'
 import type { FormMethods } from '@/packages/Forms'
 
-import type { IApi } from '@/types/business.ts'
-import { computed, onMounted, useSlots } from 'vue'
+import type { IApi, IGetFieldListParams } from '@/types/business.ts'
+import { computed, onMounted, useSlots, watch } from 'vue'
 import { http } from '@/utils/http'
 import { isFunc } from '@/utils/is.ts'
 
 interface PropsType {
-  getFieldList: (formMethods?: FormMethods) => ISchema[]; // 字段数据
+  getFieldList: (params?: IGetFieldListParams) => ISchema[]; // 字段数据
   addUrl?: IApi; // 新增接口
   updateUrl?: IApi; // 修改接口
   detailUrl?: IApi; // 详情接口
   gridCols?: string;
   title?: string;
+  confirmText?: string;
   dataId?: string | number; // 数据id
 }
 
 const props = defineProps<PropsType>()
+const emit = defineEmits(['closeDetail'])
 
 const show = defineModel<boolean>()
 
@@ -72,6 +76,11 @@ const [AddForm, formMethods] = useForm({
 async function confirm () {
   let res = await formMethods.submit()
   console.log(res, 'res111')
+  console.log(props.addUrl, 'addUrl')
+}
+
+function close () {
+  emit('closeDetail')
 }
 
 // 获取数据详情
@@ -99,14 +108,25 @@ function dealBeforeMount () {
   })
 }
 
+watch(() => props.getFieldList, () => {
+  // 重置表单数据
+  formMethods.clearForm()
+  // 设置最新的表单字段
+  formMethods.setSchema(props.getFieldList({ formMethods }))
+})
+
 onMounted(() => {
   // 过滤掉
-  formMethods.setSchema(props.getFieldList(formMethods))
+  formMethods.setSchema(props.getFieldList({ formMethods }))
 
   // 获取详情数据
   if (props.dataId) {
     getDetail()
   }
+})
+
+defineExpose({
+  formMethods
 })
 </script>
 <style lang="scss" scoped>

@@ -60,14 +60,12 @@ const bindProps = computed(() => {
   }
 })
 watch(() => props.modelValue, (newVal) => {
-  console.log(props.multiple, 'props.multiple')
   // 多选，转成数组
   if (props.multiple) {
     selectVal.value = !isNullOrUndefOrEmpty(newVal) ? isArray(newVal) ? newVal.map(String) : newVal.split(',') : []
   } else {
     selectVal.value = !isNullOrUndefOrEmpty(newVal) ? newVal : ''
   }
-  console.log(selectVal, 'modelNewValue111', showList.value)
 }, {
   immediate: true
 })
@@ -75,11 +73,9 @@ watch(() => props.modelValue, (newVal) => {
  * 更新字段异步数据
  * */
 watch(() => showList.value, () => {
-  console.log(showList.value, 'showList.value')
   emit('updateOptions', showList.value)
 })
 onMounted(() => {
-  console.log(asyncComputed, 'asyncComputed')
   // 是否加载组件的时候就请获取api数据
   if (!asyncComputed.value?.remote && asyncComputed.value.immediate && asyncComputed.value.url) {
     getApiList()

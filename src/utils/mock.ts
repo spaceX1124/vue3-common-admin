@@ -191,3 +191,39 @@ Mock.mock('/api/getMenuList', 'post', (data:any) => {
     result: 'success'
   }
 })
+
+// 基础表格数据模拟
+Mock.mock('/api/table/basic/list', 'post', (data:any) => {
+  console.log(data, 'data22')
+  // 定义这个接口的总数
+  const total = 37
+  const postData = JSON.parse(data.body)
+  // 37 / 10 = 3.7 => 4页数据
+  // 向上取整，一页10条->4页，一页20条->2页，一页30条->2页，一页40条->1页
+  const pages = Math.ceil(total / postData.size)
+  // 取余，一页10条->7，一页20条->17，一页30条->7，一页40条->37
+  const remainder = total % postData.size
+  const loopNum = postData.page < pages ? postData.size : remainder
+  // 'data|10',我不知道怎么写这个变量，只能通过if判断了
+  const { list } = Mock.mock({
+    [`list|${loopNum}`]: [
+      {
+        'id|+1': 1 + (postData.page - 1) * postData.size,
+        key0: '@integer(10, 100)' // 年龄
+      }
+    ]
+  })
+  return {
+    code: 0,
+    data: {
+      current: postData.page, // 当前是第几页
+      pages, // 一共有多少页
+      size: postData.size, // 一页展示多少条
+      records: list, // 当前页的数据
+      total // 一共有多少条数据
+    },
+    message: '调用成功',
+    ok: true,
+    result: 'success'
+  }
+})

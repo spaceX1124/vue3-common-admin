@@ -3,9 +3,12 @@ import axios from 'axios'
 import { isEmpty } from '@/utils/is'
 import { toMd5 } from '@/utils/aes.ts'
 import { ElMessage } from 'element-plus'
+import { apiPrefixPath } from './api.ts'
+import { ls } from '@/utils/cache/storageCache.ts'
+import { cacheUserInfo } from '@/libs/constants.ts'
 
 const service = axios.create({
-  baseURL: 'https://test-gw.daokb.com',
+  baseURL: apiPrefixPath,
   timeout: 1000 * 600, // 如果请求时间超过 `timeout` 的值，则请求会被中断
   headers: {
     'Content-Type': 'application/json'
@@ -18,7 +21,7 @@ const timestamps = Date.now()
 service.interceptors.request.use(
   // enc加密
   (config: any) => {
-    const token = 'MGI4U3lNZjhQbEpJMXlsNjQvY01RQTBSbURYTUpLSUpnM29ITEYvMWRtME41Sk43N3MvTldOQ2ZsZEIzTzVUdA'
+    const token = ls.get<{token: string}>(cacheUserInfo)?.token
     let str
     const data = config.data || config.params
     // 签名
@@ -59,7 +62,7 @@ service.interceptors.response.use(
   (response: AxiosResponse) => {
     // response.data就是后端返回的数据，结构根据你们的约定来定义
     // 响应解密
-    if (response?.config?.responseType == 'blob') {
+    if (response?.config?.responseType === 'blob') {
       return response
     } else {
       return response.data

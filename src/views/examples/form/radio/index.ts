@@ -1,5 +1,6 @@
 import type { ISchema } from '@/adapter'
 import type { FormMethods } from '@/packages/Forms'
+import { select } from '@/libs/requestAddress.ts'
 export function getFieldList (baseFormApi: FormMethods):ISchema[] {
   return [
     {
@@ -9,7 +10,8 @@ export function getFieldList (baseFormApi: FormMethods):ISchema[] {
       componentProps: {
         options: [{ label: '篮球', value: 1 }, { label: '足球', value: 2 }, { label: '乒乓球', value: 3 }]
       },
-      useForm: true
+      useForm: true,
+      required: true
     },
     {
       fieldKey: 'key2',
@@ -18,7 +20,8 @@ export function getFieldList (baseFormApi: FormMethods):ISchema[] {
       componentProps: {
         options: [{ label: '篮球', value: 1 }, { label: '足球', value: 2, disabled: true }, { label: '乒乓球', value: 3 }]
       },
-      useForm: true
+      useForm: true,
+      required: true
     },
     {
       fieldKey: 'key3',
@@ -28,7 +31,8 @@ export function getFieldList (baseFormApi: FormMethods):ISchema[] {
         options: [{ label: '篮球', value: 1 }, { label: '足球', value: 2 }, { label: '乒乓球', value: 3 }],
         isButton: true
       },
-      useForm: true
+      useForm: true,
+      required: true
     },
     {
       fieldKey: 'key4',
@@ -37,19 +41,83 @@ export function getFieldList (baseFormApi: FormMethods):ISchema[] {
       componentProps: {
         options: [{ label: '篮球', value: 1 }, { label: '足球', value: 2 }, { label: '乒乓球', value: 3 }]
       },
-      useForm: true
+      useForm: true,
+      required: true
     },
     {
       fieldKey: 'key5',
       component: 'ApiRadioGroup',
       fieldName: '异步单选',
       async: {
-        url: '/bus/cms/channel-register-page/select-list',
-        method: 'get',
+        url: select.selectList,
+        method: 'post',
         label: 'name',
         value: 'id'
       },
-      useForm: true
+      useForm: true,
+      required: true
+    },
+    {
+      fieldKey: 'key6',
+      component: 'RadioSelect',
+      fieldName: '普通单选+普通下拉',
+      componentProps: {
+        options: [{ label: '篮球', value: 1 }, { label: '足球', value: 2 }, { label: '乒乓球', value: 3 }]
+      },
+      componentEvent: {
+        onChange: (value: string) => {
+          baseFormApi.updateFieldProperty('key6', 'mergeSchema.formHidden', value !== '3')
+          baseFormApi.clearFieldValue('key7')
+        }
+      },
+      useForm: true,
+      required: true,
+      mergeSchema: {
+        fieldKey: 'key7',
+        fieldName: '普通下拉',
+        component: 'Select',
+        componentProps: {
+          options: [{ label: '篮球', value: 1 }, { label: '足球', value: 2 }]
+        },
+        useForm: true,
+        required: true,
+        hideLabel: true,
+        formHidden: true
+      }
+    },
+    {
+      fieldKey: 'key8',
+      component: 'RadioSelect',
+      fieldName: '异步单选+异步下拉',
+      async: {
+        url: select.selectList,
+        method: 'post',
+        label: 'name',
+        value: 'id'
+      },
+      componentEvent: {
+        onChange: (value: string) => {
+          baseFormApi.updateFieldProperty('key8', 'mergeSchema.formHidden', value !== '3')
+          baseFormApi.clearFieldValue('key9')
+        }
+      },
+      useForm: true,
+      required: true,
+      mergeSchema: {
+        fieldKey: 'key9',
+        fieldName: '异步下拉',
+        component: 'ApiSelect',
+        async: {
+          url: select.selectList,
+          method: 'post',
+          label: 'name',
+          value: 'id'
+        },
+        useForm: true,
+        required: true,
+        hideLabel: true,
+        formHidden: true
+      }
     }
   ]
 }

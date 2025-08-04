@@ -14,10 +14,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onBeforeMount } from 'vue'
+import { computed, onBeforeMount, onMounted, ref } from 'vue'
 import type { VxeGridProps } from 'vxe-table'
 // 不能升级，目前4.8.11没问题，升级之后，引入会报Cannot resolve symbol 'VxeGrid'
-import { VxeGrid, type VxeGridListeners } from 'vxe-table'
+import { VxeGrid, type VxeGridListeners, type VxeGridInstance } from 'vxe-table'
 import 'vxe-table/lib/style.css'
 import { VxeUI, VxeLoading } from 'vxe-pc-ui'
 import 'vxe-pc-ui/lib/style.css'
@@ -77,7 +77,7 @@ const vxeGridOptions = computed(() => {
       background: false,
       pageSizes: [10, 20, 30, 50, 100, 200],
       className: 'w-full',
-      layouts: ['Total', 'Sizes', 'PrevPage', 'Number', 'NextPage'],
+      layouts: ['Total', 'Sizes', 'PrevPage', 'JumpNumber', 'NextPage', 'End'],
       size: 'mini',
       enabled: !props.tableMethods.hiddenPager // 隐藏分页
     },
@@ -94,7 +94,6 @@ const vxeGridOptions = computed(() => {
 // 给vxe-grid绑定事件
 const events: VxeGridListeners = {
   pageChange (data) {
-    console.log(data, '分页改变')
     props.tableMethods.updatePagerData({ current: data.currentPage, size: data.pageSize })
   },
   sortChange (data) {
@@ -115,5 +114,10 @@ const events: VxeGridListeners = {
 onBeforeMount(() => {
   // 获取表格数据
   props.tableMethods.dealApiColumnTableData()
+})
+
+const gridRef = ref<VxeGridInstance | null>(null)
+onMounted(() => {
+  props.tableMethods.setGridRef(gridRef)
 })
 </script>

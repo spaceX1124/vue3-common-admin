@@ -1,6 +1,34 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 import { createRouterGuard } from './guard'
-import { basicRoutes } from './routes'
+import Layouts from '@/components/layouts/Layouts.vue'
+
+const basicRoutes: RouteRecordRaw[] = [
+  {
+    path: '/',
+    name: 'Root',
+    component: Layouts,
+    meta: {
+      title: 'Root'
+    }
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/login/index.vue'),
+    meta: {
+      title: '登录'
+    }
+  },
+  {
+    path: '/:path(.*)*',
+    name: 'NotFound',
+    component: () => import('@/views/fallback/notFound/index.vue'),
+    meta: {
+      title: '404'
+    }
+  }
+]
 
 /**
  * 创建路由实例

@@ -51,7 +51,7 @@ function createStorage (params: StorageParams) {
       const aesData = this.isAes ? Aes.encrypt(stringData) : stringData
       this.storage.setItem(this.getKey(key), aesData)
     }
-    get<T> (key: string, def: null | T = null): null | T {
+    get<T = any> (key: string, def: null | T = null): null | T {
       const val = this.storage.getItem(this.getKey(key))
       if(!val) return def
       try {

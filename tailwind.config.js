@@ -1,8 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  mode: 'jit',
   content: [
     './index.html', // 包括 index.html
     './src/**/*.{vue,js,ts,jsx,tsx}' // 包含 Vue 文件路径
+  ],
+  purge: [ // 清理未使用的类
+    './src/**/*.html',
+    './src/**/*.vue',
+    './src/**/*.jsx'
   ],
   theme: {
     extend: {
