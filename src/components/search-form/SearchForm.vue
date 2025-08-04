@@ -23,9 +23,8 @@
 import { computed, onMounted, useSlots, watch } from 'vue'
 import { useForm } from '@/adapter/form'
 import type { ISchema } from '@/adapter'
-import type { FormMethods } from '@/packages/Forms'
 import { ChevronDown, Icons } from '@/packages/Icons'
-import { removeEmptyProperties } from '@/utils/tools.ts'
+import { removeEmptyProperties } from '@/packages/utils/tools.ts'
 import type { IGetFieldListParams } from '@/types/business.ts'
 
 interface PropsType {

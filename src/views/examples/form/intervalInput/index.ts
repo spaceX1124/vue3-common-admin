@@ -1,7 +1,7 @@
 import type { ISchema } from '@/adapter'
-import type { FormMethods } from '@/packages/Forms'
-import { isArray, isNullOrUndefOrEmpty } from '@/utils/is'
-import RegExpEnum from '@/utils/regExp'
+import type { FormMethods } from '@/packages/ui/forms'
+import { isArray, isNullOrUndefOrEmpty } from '@/packages/utils/is'
+import RegExpEnum from '@/packages/utils/regExp'
 export function getFieldList (baseFormApi: FormMethods):ISchema[] {
   return [
     {

@@ -15,7 +15,7 @@
 </template>
 <script lang="ts" setup>
 import { useTabBar } from './useTabBar'
-import { TabBar } from '@/packages/Tabbar'
+import { TabBar } from '@/packages/ui/tabbar'
 import { ChevronDown } from '@/packages/Icons'
 
 const {

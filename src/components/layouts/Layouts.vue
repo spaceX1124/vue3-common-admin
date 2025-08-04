@@ -38,7 +38,7 @@
   </Layouts>
 </template>
 <script lang="ts" setup>
-import { Layouts } from '@/packages/Layouts'
+import { Layouts } from '@/packages/layouts'
 import Content from './components/content/Content.vue'
 import Menu from './components/menu/Menu.vue'
 import TabBar from '@/components/layouts/components/tab-bar/TabBar.vue'

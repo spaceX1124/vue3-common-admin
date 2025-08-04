@@ -64,7 +64,7 @@
 import Dialog from '@/components/common/dialog/Dialog.vue'
 
 import { ref, watch } from 'vue'
-import { isArray } from '@/utils/is'
+import { isArray } from '@/packages/utils/is'
 
 import ChinaAddressV4Data from './china_address_vant.ts'
 

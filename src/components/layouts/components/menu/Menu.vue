@@ -2,8 +2,8 @@
   <Menus :menus="menus" :collapse="collapse" :default-active="defaultActive"/>
 </template>
 <script lang="ts" setup>
-import { Menus } from '@/packages/Menus'
-import type { MenuProps, MenuRecordRaw } from '@/packages/Menus'
+import { Menus } from '@/packages/ui/menus'
+import type { MenuProps, MenuRecordRaw } from '@/packages/ui/menus'
 interface PropsType extends MenuProps{
   menus: MenuRecordRaw[];
 }

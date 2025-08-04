@@ -1,11 +1,11 @@
 import type { ISchema } from '@/adapter'
-import type { FormMethods } from '@/packages/Forms'
+import type { FormMethods } from '@/packages/ui/forms'
 import businessList from '@/enums/business.ts'
 import { h } from 'vue'
-import { moneyTransform } from '@/utils/unit.ts'
-import { isNullOrUndefOrEmpty } from '@/utils/is.ts'
-import RegExpEnum from '@/utils/regExp.ts'
-import { http } from '@/utils/http'
+import { moneyTransform } from '@/packages/utils/unit.ts'
+import { isNullOrUndefOrEmpty } from '@/packages/utils/is.ts'
+import RegExpEnum from '@/packages/utils/regExp.ts'
+import { http } from '@/packages/utils/http'
 import type { IGetFieldListParams } from '@/types/business.ts'
 const accountList = {
   recharge: '/bus/cms/account/recharge',

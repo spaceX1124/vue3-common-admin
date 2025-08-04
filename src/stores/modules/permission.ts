@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { MenuRecordRaw } from '@/packages/Menus'
+import type { MenuRecordRaw } from '@/packages/ui/menus'
 import type { RouteRecordRaw } from 'vue-router'
 
 interface PermissionState {

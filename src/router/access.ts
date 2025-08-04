@@ -1,8 +1,8 @@
 import type { Component } from 'vue'
 const Layouts = () => import('@/components/layouts/Layouts.vue')
-import { forInTree, mapTree } from '@/utils/tree'
-import type { IApiMenu, IApiMenuExtend, IRoute } from '@/packages/Menus'
-import { http } from '@/utils/http'
+import { forInTree, mapTree } from '@/packages/utils/tree'
+import type { IApiMenu, IApiMenuExtend, IRoute } from '@/packages/ui/menus'
+import { http } from '@/packages/utils/http'
 import { sys } from '@/libs/requestAddress.ts'
 import router from './index'
 

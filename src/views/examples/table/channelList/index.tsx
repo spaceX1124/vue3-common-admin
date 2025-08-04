@@ -1,9 +1,9 @@
 import type { ISchema } from '@/adapter'
 import businessList from '@/enums/business.ts'
 import { h } from 'vue'
-import { moneyTransform } from '@/utils/unit.ts'
-import { isArray, isEmpty, isNullOrUndefOrEmpty } from '@/utils/is.ts'
-import RegExpEnum from '@/utils/regExp.ts'
+import { moneyTransform } from '@/packages/utils/unit.ts'
+import { isArray, isEmpty, isNullOrUndefOrEmpty } from '@/packages/utils/is.ts'
+import RegExpEnum from '@/packages/utils/regExp.ts'
 import type { IGetFieldListParams } from '@/types/business.ts'
 
 export function getFieldList ({ formMethods, tableMethods, searchMethods }: IGetFieldListParams):ISchema[] {

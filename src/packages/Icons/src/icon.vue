@@ -5,7 +5,7 @@
   <IconDefault v-else-if="fallback" v-bind="$attrs" />
 </template>
 <script lang="ts" setup>
-import { isString, isObj, isFunc, isHttpUrl } from '@/utils/is'
+import { isString, isObj, isFunc, isHttpUrl } from '@/packages/utils/is'
 import { computed, type Component } from 'vue'
 import { Icon as IconifyIcon } from '@iconify/vue'
 import { IconDefault } from './lucide'

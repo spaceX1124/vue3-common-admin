@@ -1,7 +1,7 @@
 import { computed, type ComputedRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { usePermissionStore } from '@/stores/modules/permission'
-import type { MenuRecordRaw } from '@/packages/Menus'
+import type { MenuRecordRaw } from '@/packages/ui/menus'
 export function useMixedMenu () {
   const route = useRoute()
   const router = useRouter()

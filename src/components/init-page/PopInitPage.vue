@@ -65,7 +65,7 @@ import SearchForm from '@/components/search-form/SearchForm.vue'
 import { computed, ref, useSlots } from 'vue'
 
 import type { ISchema } from '@/adapter'
-import { useTable } from '@/packages/VxeTable'
+import { useTable } from '@/packages/ui/vxe-table'
 import type { IPage } from '@/types/business.ts'
 
 interface PropsType {

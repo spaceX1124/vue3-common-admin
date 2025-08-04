@@ -5,7 +5,7 @@
 // 如果同时调用多个beforeEach，他会调用下一个导航守卫
 // router.beforeEach的回调函数的返回值如果是一个路由地址，
 // 那它会跳转至这个路由地址
-import { startProgress, stopProgress } from '@/utils/nprogress'
+import { startProgress, stopProgress } from '@/packages/utils/nprogress'
 import { usePermissionStore } from '@/stores/modules/permission'
 import { generateAccess } from './access'
 import type { Router } from 'vue-router'

@@ -1,5 +1,5 @@
 import type { ISchema } from '@/adapter'
-import RegExpEnum from '@/utils/regExp'
+import RegExpEnum from '@/packages/utils/regExp'
 
 export const fieldList: ISchema[] = [
   {

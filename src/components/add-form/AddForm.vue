@@ -29,12 +29,11 @@
 import { useForm } from '@/adapter/form'
 import type { ISchema } from '@/adapter'
 import Dialog from '@/components/common/dialog/Dialog.vue'
-import type { FormMethods } from '@/packages/Forms'
 
 import type { IApi, IGetFieldListParams } from '@/types/business.ts'
 import { computed, onMounted, useSlots, watch } from 'vue'
-import { http } from '@/utils/http'
-import { isFunc } from '@/utils/is.ts'
+import { http } from '@/packages/utils/http'
+import { isFunc } from '@/packages/utils/is.ts'
 
 interface PropsType {
   getFieldList: (params?: IGetFieldListParams) => ISchema[]; // 字段数据

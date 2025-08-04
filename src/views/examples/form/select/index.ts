@@ -1,5 +1,5 @@
 import type { ISchema } from '@/adapter'
-import type { FormMethods } from '@/packages/Forms'
+import type { FormMethods } from '@/packages/ui/forms'
 import { select } from '@/libs/requestAddress.ts'
 export function getFieldList (baseFormApi: FormMethods):ISchema[] {
   return [

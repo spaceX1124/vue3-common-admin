@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import { watch, ref } from 'vue'
 
-import { Upload } from '@/packages/Forms'
+import { Upload } from '@/packages/ui/forms'
 
 interface PropsType {
   fieldKeyArr: string[];

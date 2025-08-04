@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 import { watch, ref } from 'vue'
-import { isNullOrUndefOrEmpty } from '@/utils/is.ts'
+import { isNullOrUndefOrEmpty } from '@/packages/utils/is.ts'
 
 interface PropsType {
   modelValue?: string[];

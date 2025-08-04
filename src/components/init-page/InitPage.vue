@@ -78,7 +78,7 @@ import SearchForm from '@/components/search-form/SearchForm.vue'
 import { computed, ref, useSlots, nextTick, watch, onBeforeMount } from 'vue'
 
 import type { ISchema } from '@/adapter'
-import { useTable } from '@/packages/VxeTable'
+import { useTable } from '@/packages/ui/vxe-table'
 import type { IPage } from '@/types/business.ts'
 
 // @todo，考虑一下新增表单所用的配置传入问题

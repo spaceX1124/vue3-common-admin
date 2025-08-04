@@ -1,5 +1,4 @@
 import type { ISchema } from '@/adapter'
-import type { FormMethods } from '@/packages/Forms'
 import businessList from '@/enums/business.ts'
 import { Location } from '@element-plus/icons-vue'
 import type { IGetFieldListParams } from '@/types/business.ts'

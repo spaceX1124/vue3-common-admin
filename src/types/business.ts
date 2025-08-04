@@ -1,6 +1,6 @@
-import type { FormMethods } from '@/packages/Forms'
+import type { FormMethods } from '@/packages/ui/forms'
 import type { ISchema } from '@/adapter'
-import type { TableMethods } from '@/packages/VxeTable'
+import type { TableMethods } from '@/packages/ui/vxe-table'
 
 export interface IApi {
     url: string | ((data?: any ) => string); // 如(id: number) => `/bus/cms/customer/profile/status-change/${id}`

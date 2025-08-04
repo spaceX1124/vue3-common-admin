@@ -1,7 +1,7 @@
 import type { ISchema } from '@/adapter'
-import type { FormMethods } from '@/packages/Forms'
+import type { FormMethods } from '@/packages/ui/forms'
 import dayjs from 'dayjs'
-import { isArray } from '@/utils/is'
+import { isArray } from '@/packages/utils/is'
 import { ElMessage } from 'element-plus'
 export function getFieldList (baseFormApi: FormMethods):ISchema[] {
   return [

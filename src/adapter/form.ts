@@ -1,4 +1,4 @@
-import { initForm, useZsForm } from '@/packages/Forms'
+import { initForm, useZsForm } from '@/packages/ui/forms'
 
 /**
  * 初始化表单适配器

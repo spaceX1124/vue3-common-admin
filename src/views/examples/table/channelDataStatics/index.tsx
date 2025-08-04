@@ -1,5 +1,5 @@
 import type { ISchema } from '@/adapter'
-import type { FormMethods } from '@/packages/Forms'
+import type { FormMethods } from '@/packages/ui/forms'
 import businessList from '@/enums/business.ts'
 import type { IGetFieldListParams } from '@/types/business.ts'
 
