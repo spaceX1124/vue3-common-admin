@@ -39,7 +39,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       v-bind="{ ...forwarded, ...$attrs }"
       :class="
         [
-          'bg-accent text-accent-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 border-border shadow-float z-[1000] overflow-hidden border px-4 py-2 text-xs',
+          'tooltip-content z-popup bg-accent overflow-hidden',
           props.class,
         ]
       "
@@ -48,3 +48,12 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
     </TooltipContent>
   </TooltipPortal>
 </template>
+
+<style lang="scss">
+.tooltip-content {
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 12px;
+  line-height: 16px;
+}
+</style>
