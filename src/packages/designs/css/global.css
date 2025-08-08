@@ -28,8 +28,16 @@ body {
     background: rgb(var(--bg-background));
 }
 
+.text-primary {
+    color: rgb(var(--primary));
+}
+
 .bg-white {
     background: #fff;
+}
+
+.text-accent {
+    color: rgb(var(--text-color));
 }
 
 
@@ -71,6 +79,15 @@ body {
 .flex-end {
     @apply flex items-center justify-end;
 }
+.flex-1 {
+    flex: 1;
+}
+.shrink-0 {
+    flex-shrink: 0;
+}
+.flex-col {
+    flex-direction: column;
+}
 
 .pointer {
     cursor: pointer;
@@ -81,6 +98,33 @@ body {
 }
 .h-full {
     height: 100%;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+.overflow-y-hidden {
+    overflow-y: hidden;
+}
+.overflow-auto {
+    overflow: auto;
+}
+
+.transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.opacity-0 {
+    opacity: 0;
+}
+.opacity-100 {
+    opacity: 100;
+}
+
+.invisible {
+    visibility: hidden;
 }
 
 ::-webkit-scrollbar {

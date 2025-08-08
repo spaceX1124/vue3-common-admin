@@ -2,31 +2,31 @@
   <div class="initPageContent h-full flex flex-col">
     <!-- tab切换区域 -->
     <!-- 1级tab切换区域 -->
-    <div class="mb-3" v-if="initPageData.oneTabList">
-      <el-button
-        @click="oneTabClick(one.value)"
-        v-for="(one, index) in initPageData.oneTabList"
-        :key="index"
-        :type="oneTabActive === one.value ? 'primary' : 'default'"
-      >
-        {{one.label}}
-      </el-button>
-    </div>
+    <!--    <div class="mb-3" v-if="initPageData.oneTabList">-->
+    <!--      <el-button-->
+    <!--        @click="oneTabClick(one.value)"-->
+    <!--        v-for="(one, index) in initPageData.oneTabList"-->
+    <!--        :key="index"-->
+    <!--        :type="oneTabActive === one.value ? 'primary' : 'default'"-->
+    <!--      >-->
+    <!--        {{one.label}}-->
+    <!--      </el-button>-->
+    <!--    </div>-->
     <!-- 2级tab切换区域 -->
-    <div class="mb-3" v-if="initPageData.twoTabList">
-      <el-button
-        @click="twoTabClick(two.value)"
-        v-for="(two, index) in initPageData.twoTabList"
-        :key="index"
-        :type="twoTabActive === two.value ? 'primary' : 'default'"
-      >
-        {{two.label}}
-      </el-button>
-    </div>
+    <!--    <div class="mb-3" v-if="initPageData.twoTabList">-->
+    <!--      <el-button-->
+    <!--        @click="twoTabClick(two.value)"-->
+    <!--        v-for="(two, index) in initPageData.twoTabList"-->
+    <!--        :key="index"-->
+    <!--        :type="twoTabActive === two.value ? 'primary' : 'default'"-->
+    <!--      >-->
+    <!--        {{two.label}}-->
+    <!--      </el-button>-->
+    <!--    </div>-->
     <!-- 新增区域 -->
     <div>
       <slot name="add-before"/>
-      <el-button type="primary" @click="add" class="mb-3" v-if="!initPageData.hiddenAdd">新增</el-button>
+      <el-button type="primary" @click="add" class="add-btn" v-if="!initPageData.hiddenAdd">新增</el-button>
       <slot name="add-after"/>
     </div>
     <!-- 搜索区域 -->
@@ -77,7 +77,6 @@ import SearchForm from '@/components/search-form/SearchForm.vue'
 
 import { computed, ref, useSlots, nextTick, watch, onBeforeMount } from 'vue'
 
-import type { ISchema } from '@/adapter'
 import { useTable } from '@/packages/ui/vxe-table'
 import type { IPage } from '@/types/business.ts'
 
@@ -92,16 +91,16 @@ const emit = defineEmits(['closeDetail', 'oneTabClick', 'twoTabClick'])
 
 // -----------------
 // 顶部tab部分
-const oneTabActive = ref(props.initPageData.oneTabList?.[0].value)
-const twoTabActive = ref(props.initPageData.twoTabList?.[0].value)
-function oneTabClick (value: string) {
-  oneTabActive.value = value
-  emit('oneTabClick', value)
-}
-function twoTabClick (value: string) {
-  twoTabActive.value = value
-  emit('oneTabClick', value)
-}
+// const oneTabActive = ref(props.initPageData.oneTabList?.[0].value)
+// const twoTabActive = ref(props.initPageData.twoTabList?.[0].value)
+// function oneTabClick (value: string) {
+//   oneTabActive.value = value
+//   emit('oneTabClick', value)
+// }
+// function twoTabClick (value: string) {
+//   twoTabActive.value = value
+//   emit('oneTabClick', value)
+// }
 
 const slots = useSlots()
 const delegatedSlots = computed(() => {
@@ -177,3 +176,10 @@ onBeforeMount(() => {
   tableMethods.setSchema(props.initPageData.getFieldList({ tableMethods }))
 })
 </script>
+<style lang="scss" scoped>
+.initPageContent {
+  .add-btn {
+    margin-bottom: 12px;
+  }
+}
+</style>

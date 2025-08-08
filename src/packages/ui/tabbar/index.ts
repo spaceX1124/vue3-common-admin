@@ -1,2 +1,2 @@
-import TabBar from './src/Tabbar.vue'
-export { TabBar }
+import TabView from './src/tabView.vue'
+export { TabView }

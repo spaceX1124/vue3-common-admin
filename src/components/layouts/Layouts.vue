@@ -8,9 +8,9 @@
     @toggle-sidebar="toggleSidebar"
   >
     <template #logo>
-      <div class="h-full flex items-center px-3 transition-all duration-150">
-        <img class="w-8" src="https://unpkg.com/@vbenjs/static-source@0.1.7/source/logo-v1.webp" alt="">
-        <span v-if="!preferences.sidebar.collapsed" class="font-semibold ml-2 text-white">ZS Admin</span>
+      <div class="logo-box h-full flex items-center transition-all">
+        <img src="https://unpkg.com/@vbenjs/static-source@0.1.7/source/logo-v1.webp" alt="">
+        <span v-if="!preferences.sidebar.collapsed">ZS Admin</span>
       </div>
     </template>
     <template #menu>
@@ -64,3 +64,17 @@ function toggleSidebar () {
   })
 }
 </script>
+<style lang="scss" scoped>
+.logo-box {
+  padding: 0 12px;
+  > img {
+    width: 32px;
+    height: auto;
+  }
+  > span {
+    margin-left: 8px;
+    font-weight: 600;
+    color: #fff;
+  }
+}
+</style>

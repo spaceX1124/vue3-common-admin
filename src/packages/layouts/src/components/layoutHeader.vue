@@ -1,5 +1,5 @@
 <template>
-  <header :style="style" style="height: 50px" class="border-b flex items-center w-full bg-white">
+  <header :style="style" style="height: 50px" class="header flex items-center w-full bg-white">
     <slot name="toggle-button"/>
     <slot/>
   </header>
@@ -7,6 +7,7 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
 import { computed } from 'vue'
+
 interface PropsType {
   height: number; // 高度
 }
@@ -18,3 +19,8 @@ const style = computed((): CSSProperties => {
   }
 })
 </script>
+<style lang="scss" scoped>
+.header {
+  border-bottom-width: 1px;
+}
+</style>

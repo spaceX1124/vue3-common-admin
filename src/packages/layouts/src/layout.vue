@@ -15,13 +15,13 @@
       <slot name="menu"/>
     </LayoutSidebar>
     <!-- 右侧区域 -->
-    <div class="flex-1 flex flex-col overflow-hidden transition-all duration-150">
+    <div class="flex-1 flex flex-col overflow-hidden transition-all">
       <!-- 头部 -->
-      <div class="overflow-hidden transition-all duration-150" :style="headerWrapperStyle" >
+      <div class="overflow-hidden transition-all" :style="headerWrapperStyle" >
         <!-- header -->
         <LayoutHeader :height="headerHeight">
-          <button class="ml-2 mr-1 px-1" @click="handleHeaderToggle">
-            <Icons :icon="Menu" class="size-4"/>
+          <button class="toggle-sidebar" @click="handleHeaderToggle">
+            <Icons :icon="Menu" class="icon"/>
           </button>
           <slot name="header"/>
         </LayoutHeader>
@@ -96,3 +96,13 @@ function handleHeaderToggle () {
   emit('toggleSidebar')
 }
 </script>
+<style lang="scss" scoped>
+.toggle-sidebar {
+  margin: 0 4px 0 8px;
+  padding: 0 4px 0 4px;
+  .icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+</style>

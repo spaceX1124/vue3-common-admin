@@ -1,59 +1,55 @@
 <template>
-  <div class="h-full flex" :class="[nsTabs.b()]" ref="tabsRef">
-    <div
-      v-for="(tab, i) in tabsView"
-      :key="tab.key"
-      ref="tabRef"
-      class="h-full cursor-pointer translate-all"
-      :class="[
-        b(),
-        is('active', active === tab.key),
-        active === tab.key && 'active-tag'
-      ]"
-      @click.stop="active = tab.key"
-    >
-      <div class="relative size-full px-1">
-        <!-- divider -->
-        <div
-          v-if="i !== 0 && tab.key !== active"
-          :class="[m('divider')]"
-          class="absolute left-[var(--gap)] top-1/2 z-0 h-4 w-[1px] translate-y-[-50%] transition-all"
-        />
-        <!-- background -->
-        <div :class="[m('background')]" class="absolute size-full z-[-1] px-1.5" >
-          <div :class="[m('background-content')]" class="h-full rounded-t-lg transition-all duration-200"/>
-          <svg height="7" width="7" class="absolute bottom-0 left-[-1px] fill-background transition-all duration-200">
-            <path d="M 0 7 A 7 7 0 0 0 7 0 L 7 7 Z" />
-          </svg>
-          <svg height="7" width="7" class="absolute bottom-0 right-[-1px] fill-background transition-all duration-200">
-            <path d="M 0 0 A 7 7 0 0 0 7 7 L 0 7 Z" />
-          </svg>
-        </div>
-        <!-- 关闭和固定 -->
-        <div
-          class="tabs-chrome__extra absolute right-[7px] top-1/2 z-[3] size-4 translate-y-[-50%]"
-        >
-          <!-- close-icon -->
-          <X
-            v-show="tabsView.length > 1"
-            class="mt-[2px] size-3 cursor-pointer rounded-full transition-all"
-            @click.stop="() => emit('close', tab.key)"
+  <div class="tabs h-full flex" ref="tabsRef">
+    <TransitionGroup name="slide-left">
+      <div
+        v-for="(tab, i) in tabsView"
+        :key="tab.key"
+        ref="tabRef"
+        class="tabs-item h-full pointer translate-all"
+        :class="{'tabs-item-active': active === tab.key}"
+        @click.stop="active = tab.key"
+      >
+        <div class="relative tabs-item-child w-full h-full">
+          <!-- divider -->
+          <div
+            v-if="i !== 0 && tab.key !== active"
+            class="tabs-item--divider absolute transition-all"
           />
-        </div>
-        <!-- content -->
-        <div :class="[e('content')]" class="h-full flex items-center px-4 pl-2 mx-3.5">
-          <span class="text-sm whitespace-nowrap">
-            {{ tab.title }}
-          </span>
+          <!-- background -->
+          <div class="tabs-item--background absolute w-full h-full" >
+            <div class="tabs-item--background-content h-full transition-all"/>
+            <svg height="7" width="7" class="svg-1 absolute fill-background transition-all">
+              <path d="M 0 7 A 7 7 0 0 0 7 0 L 7 7 Z" />
+            </svg>
+            <svg height="7" width="7" class="svg-2 absolute fill-background transition-all">
+              <path d="M 0 0 A 7 7 0 0 0 7 7 L 0 7 Z" />
+            </svg>
+          </div>
+          <!-- 关闭和固定 -->
+          <div
+            class="close-icon absolute"
+          >
+            <X
+              v-show="tabsView.length > 1"
+              class="icon pointer transition-all"
+              @click.stop="() => emit('close', tab.key)"
+            />
+          </div>
+          <!-- content -->
+          <div class="tabs-item__content h-full flex items-center">
+            <span class="text-sm whitespace-nowrap">
+              {{ tab.title }}
+            </span>
+          </div>
         </div>
       </div>
-    </div>
+    </TransitionGroup>
+
   </div>
 </template>
 <script lang="ts" setup>
-import { computed, nextTick, onMounted, ref, unref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import type { TabsProps } from '../type'
-import { useNamespace } from '@/packages/utils/composables/useNameSpace'
 import { X } from '@/packages/Icons'
 interface PropsType extends TabsProps {}
 const props = withDefaults(defineProps<PropsType>(), {
@@ -69,9 +65,6 @@ const emit = defineEmits<{
 }>()
 
 const active = defineModel<string>('active')
-
-const nsTabs = useNamespace('tabs')
-const { b, is, e, m } = useNamespace('tabs-item')
 
 // 用于tabs的回显数据
 const tabsView = computed(() => {
@@ -97,8 +90,7 @@ onMounted(() => {
 
 </script>
 <style lang="scss" scoped>
-$namespace: zs;
-.#{$namespace}-tabs {
+.tabs {
   display: flex;
   white-space: nowrap;
   align-items: center;
@@ -106,49 +98,93 @@ $namespace: zs;
   position: relative;
   left: 0;
   top: 0;
-  &-item {
-    .fill-background {
-      fill: transparent;
+  .tabs-item {
+    .tabs-item-child {
+      padding: 0 4px;
     }
+
     &--divider {
       background: rgba(var(--primary), 0.15);
+      left: 7px;
+      z-index: 0;
+      height: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
     }
-    &:not(.is-active):hover {
-       & + .#{$namespace}-tabs-item {
-        .#{$namespace}-tabs-item--divider {
+    &--background {
+      z-index: -1;
+      padding-left: 6px;
+      padding-right: 6px;
+      &-content {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+      }
+      .svg-1 {
+        bottom: 0;
+        left: -1px;
+      }
+      .svg-2 {
+        bottom: 0;
+        right: -1px;
+      }
+      .fill-background {
+        fill: transparent;
+      }
+    }
+    .close-icon {
+      right: 7px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+      width: 16px;
+      height: 16px;
+      .icon {
+        margin-top: 2px;
+        width: 12px;
+        height: 12px;
+      }
+    }
+    .tabs-item__content {
+      padding-right: 16px;
+      padding-left: 8px;
+      margin: 0 14px;
+    }
+    &:not(.tabs-item-active):hover {
+      & + .tabs-item {
+        .tabs-item--divider {
           @apply opacity-0;
         }
       }
-      .#{$namespace}-tabs-item--background {
+      .tabs-item--background {
         padding-bottom: 2px;
 
       }
-      .#{$namespace}-tabs-item--background-content {
+      .tabs-item--background-content {
         background: rgba(var(--primary), 0.15);
         border-radius: 7px;
-        @apply mx-[2px];
+        margin: 0 2px;
       }
 
     }
-    &.is-active {
-      .#{$namespace}-tabs-item--background-content {
+    &.tabs-item-active {
+      .tabs-item--background-content {
         background: rgba(var(--primary), 0.15);
       }
       .fill-background {
         fill: rgba(var(--primary), 0.15);
       }
-      .#{$namespace}-tabs-item__content {
+      .tabs-item__content {
         span {
           color: rgb(var(--primary));
         }
 
       }
-      .#{$namespace}-tabs-item--divider {
+      .tabs-item--divider {
         @apply opacity-0;
       }
-      /* 相邻选择器：当前is-active相邻的第一个元素.#{$namespace}-tabs-item */
-      & + .#{$namespace}-tabs-item {
-        .#{$namespace}-tabs-item--divider {
+      & + .tabs-item {
+        .tabs-item--divider {
           @apply opacity-0;
         }
       }

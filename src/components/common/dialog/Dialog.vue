@@ -9,18 +9,18 @@
   >
 
     <template #header="{titleId, titleClass}">
-      <div class="flex justify-between items-center border-b px-5 py-4">
-        <h4 :id="titleId" :class="titleClass" class="font-bold">{{title}}</h4>
-        <div @click="handleClose" class="cursor-pointer hover:bg-accent-hover w-6 h-6 rounded-full flex-center text-accent opacity-50 hover:text-accent hover:opacity-100">
+      <div class="dialog-header flex justify-between items-center">
+        <h4 :id="titleId" :class="titleClass">{{title}}</h4>
+        <div @click="handleClose" class="close pointer flex-center text-accent">
           <Icons icon="formkit:close"/>
         </div>
       </div>
     </template>
-    <div class="p-4 overflow-auto">
+    <div class="dialog-content overflow-auto">
       <slot/>
     </div>
     <template #footer>
-      <div class="flex p-3 border-t justify-end" v-if="!hiddenFooter">
+      <div class="dialog-footer flex justify-end" v-if="!hiddenFooter">
         <el-button @click="handleClose">{{ cancelText || '取消' }}</el-button>
         <el-button type="primary" @click="handleConfirm">{{confirmText || '确认'}}</el-button>
       </div>
@@ -55,6 +55,29 @@ function handleConfirm () {
   .el-dialog__header {
     padding: 0;
   }
-
+  .dialog-header {
+    border-bottom-width: 1px;
+    padding: 16px 20px;
+    > h4 {
+      font-weight: 700;
+    }
+    .close {
+      opacity: 0.5;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      &:hover {
+        opacity: 1;
+        background-color: rgb(var(--bg-background));
+      }
+    }
+  }
+  .dialog-content {
+    padding: 16px;
+  }
+  .dialog-footer {
+    padding: 12px;
+    border-top-width: 1px;
+  }
 }
 </style>

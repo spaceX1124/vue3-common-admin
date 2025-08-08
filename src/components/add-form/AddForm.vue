@@ -10,7 +10,7 @@
     width="800px"
     @close="close"
   >
-    <div class="h-[450px]">
+    <div class="add-form">
       <AddForm>
         <template
           v-for="slotName in delegatedSlots"
@@ -129,5 +129,7 @@ defineExpose({
 })
 </script>
 <style lang="scss" scoped>
-
+.add-form {
+  height: 450px;
+}
 </style>

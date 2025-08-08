@@ -7,7 +7,7 @@
     <!-- 统一控状态 -->
     <template #empty>
       <slot name="empty">
-        <div class="mt-2">暂无数据</div>
+        <div style="margin-top: 8px">暂无数据</div>
       </slot>
     </template>
   </vxe-grid>

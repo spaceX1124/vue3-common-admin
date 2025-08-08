@@ -21,9 +21,18 @@ const contentStyle = computed<StyleValue>(() => {
 </script>
 
 <template>
-  <div class="h-full p-3.5" :class="contentClass" :style="contentStyle">
-    <div class="h-full p-3 rounded-md bg-white">
+  <div class="page h-full" :class="contentClass" :style="contentStyle">
+    <div class="page-box h-full bg-white">
       <slot/>
     </div>
   </div>
 </template>
+<style lang="scss" scoped>
+.page {
+  padding: 14px;
+  .page-box {
+    padding: 12px;
+    border-radius: 6px;
+  }
+}
+</style>

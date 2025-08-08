@@ -10,7 +10,8 @@ export function getFieldList1 ({ formMethods, tableMethods, searchMethods }: IGe
       fieldKey: 'id',
       fieldName: 'ID',
       component: 'Input',
-      useTable: true
+      useTable: true,
+      useForm: true
     },
     {
       fieldKey: 'name',

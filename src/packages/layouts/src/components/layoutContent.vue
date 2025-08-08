@@ -7,8 +7,3 @@
     <slot/>
   </main>
 </template>
-<script lang="ts" setup>
-// import { useLayoutContentStyle } from '@/utils/composables/useLayoutStyle'
-//
-// const { contentElement } = useLayoutContentStyle()
-</script>

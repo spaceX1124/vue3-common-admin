@@ -7,14 +7,14 @@
     >
       <slot :name="slotName" v-bind="slotProps"/>
     </template>
-    <div class="flex items-center h-8 mb-3">
+    <div class="search-operate flex items-center">
       <el-button @click="clearForm">清除</el-button>
       <el-button type="primary" @click="search">搜索</el-button>
-      <div class="flex ml-2 items-center text-primary text-sm pointer" @click.stop="setCollapse">
+      <div class="collapse-operate flex items-center text-primary pointer" @click.stop="setCollapse">
         <span>{{ searchMethods.isCollapsed.value ? '展开' : '收起' }}</span>
         <Icons :icon="ChevronDown"
                :class="{ 'rotate-180': !searchMethods.isCollapsed.value }"
-               class="transition-transform duration-300 size-4"/>
+               class="icon"/>
       </div>
     </div>
   </SearchForm>
@@ -89,3 +89,25 @@ onMounted(() => {
   searchMethods.setSchema(props.getFieldList({ searchMethods }))
 })
 </script>
+
+<style lang="scss" scoped>
+.search-operate {
+  margin-bottom: 12px;
+  height: 32px;
+  .collapse-operate {
+    margin-left: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    > .icon {
+      transition-property: transform;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 150ms;
+      width: 16px;
+      height: 16px;
+      &.rotate-180 {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
+</style>

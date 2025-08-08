@@ -27,13 +27,6 @@ watch(
       return
     }
     showSpinner.value = true
-    // 开始进行加载动画
-    // timer.value = setTimeout(() => {
-    //   showSpinner.value = true
-    //   if (showSpinner.value) {
-    //     renderSpinner.value = true
-    //   }
-    // }, props.minLoadingTime)
   },
   {
     immediate: true
@@ -49,9 +42,9 @@ function onTransitionEnd () {
 
 <template>
   <!-- 就是给主题内容上方盖了一层 -->
-  <!-- duration-500，就是过渡时间，所以我在切换页面的时候会看到内容都出现了，又随着加载动画出来，慢慢变模糊，所以这个时间不能太长 -->
+  <!-- 就是过渡时间，所以我在切换页面的时候会看到内容都出现了，又随着加载动画出来，慢慢变模糊，所以这个时间不能太长 -->
   <div
-    class="flex-center z-[9999] bg-overlay-content absolute left-0 top-0 size-full backdrop-blur-sm transition-all duration-0"
+    class="spinner-box flex-center absolute transition-all"
     :class="[
       !showSpinner ? 'invisible opacity-0': '',
       props.class
@@ -59,24 +52,48 @@ function onTransitionEnd () {
     @transitionend="onTransitionEnd"
   >
     <div
-      class="loader relative size-12 before:absolute before:left-0 before:top-[60px] before:h-[5px] before:w-12 before:rounded-[50%] before:content-[''] after:absolute after:left-0 after:top-0 after:h-full after:w-full after:rounded after:content-['']"
+      class="loader relative"
     />
   </div>
 </template>
 
-<style scoped>
-.bg-overlay-content {
+<style scoped lang="scss">
+.spinner-box {
+  z-index: 9999;
   background: rgba(242,242,242,0.45);
+  left: 0;
+  top: 0;
+  backdrop-filter: blur(4px); /* 模糊 */
+  width: 100%;
+  height: 100%;
 }
+
 .loader {
+  width: 48px;
+  height: 48px;
   &::before {
+    left: 0;
+    top: 60px;
+    width: 48px;
+    height: 5px;
+    border-radius: 50%;
+    content: "";
+    position: absolute;
     animation: loader-shadow-ani 0.5s linear infinite;
     background: rgba(var(--primary), 0.5);
   }
 
   &::after {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    content: "";
+    position: absolute;
     animation: loader-jump-ani 0.5s linear infinite;
     background: rgb(var(--primary));
+
   }
 }
 

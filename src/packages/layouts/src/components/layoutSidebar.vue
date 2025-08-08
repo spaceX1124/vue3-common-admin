@@ -1,8 +1,8 @@
 <template>
-  <div :style="style" class="h-full transition-all duration-150"/>
+  <div :style="style" class="h-full transition-all"/>
   <aside 
     :style="style"
-    class="fixed left-0 top-0 h-full border-r shrink-0 bg-side-background transition-all duration-150"
+    class="aside h-full border-r transition-all"
   >
     <div :style="{height: headerHeight + 'px'}">
       <slot name="logo"/>
@@ -11,9 +11,9 @@
     <Scrollbar :style="contentStyle" shadow shadow-border>
       <slot/>
     </Scrollbar>
-    <div :style="{height: collapseHeight + 'px'}" class="flex items-center px-2">
-      <div class="text-foreground_60 p-1 rounded">
-        <ChevronsLeft @click="handleCollapsed" class="size-4"/>
+    <div :style="{height: collapseHeight + 'px'}" class="collapsed-sidebar flex items-center">
+      <div class="text-foreground_60">
+        <ChevronsLeft @click="handleCollapsed" class="icon"/>
       </div>
     </div>
   </aside>
@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { ChevronsLeft } from '@/packages/Icons'
-import { Scrollbar } from '@/packages/Scrollbar'
+import { Scrollbar } from '@/packages/ui/scrollbar'
 
 interface PropsType {
   width: number; // 侧边栏宽度
@@ -63,11 +63,25 @@ function handleCollapsed () {
 
 </script>
 <style lang="scss" scoped>
-.bg-side-background {
+.aside {
+  position: fixed;
+  left: 0;
+  top: 0;
+  border-right-width: 1px;
+  flex-shrink: 0;
   background-color: rgb(var(--sidebar));
-  .text-foreground_60 {
-    color: rgba(255,255,255,.6);
-    background-color: rgb(46,48,51);
+  .collapsed-sidebar {
+    padding: 0 8px 0 8px;
+    .text-foreground_60 {
+      color: rgba(255,255,255,.6);
+      background-color: rgb(46,48,51);
+      padding: 4px;
+      border-radius: 4px;
+      .icon {
+        width: 16px;
+        height: 16px;
+      }
+    }
   }
 }
 </style>
