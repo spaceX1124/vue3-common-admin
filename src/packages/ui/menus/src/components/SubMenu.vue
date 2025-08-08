@@ -71,7 +71,6 @@ import SubMenuContent from './SubMenuContent.vue'
 import { computed, ref, reactive, onMounted, onBeforeUnmount } from 'vue'
 import { useMenuContext, createSubMenuContext, useSubMenuContext } from '../hooks/useMenuContext'
 import type { SubMenuProps, MenuProvider, MenuItemRegistered } from '../type'
-import { useNamespace } from '@/packages/utils/composables/useNameSpace'
 import { useMenu, useMenuStyle } from '../hooks/useMenu'
 import { HoverCard, type HoverCardContentProps } from '@/packages/ui/hover-card'
 

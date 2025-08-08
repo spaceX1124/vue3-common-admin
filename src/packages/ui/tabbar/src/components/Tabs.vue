@@ -37,7 +37,7 @@
           </div>
           <!-- content -->
           <div class="tabs-item__content h-full flex items-center">
-            <span class="text-sm whitespace-nowrap">
+            <span class="tabs-item__content__span">
               {{ tab.title }}
             </span>
           </div>
@@ -149,6 +149,11 @@ onMounted(() => {
       padding-right: 16px;
       padding-left: 8px;
       margin: 0 14px;
+      .tabs-item__content__span {
+        font-size: 14px;
+        line-height: 20px;
+        white-space: nowrap;
+      }
     }
     &:not(.tabs-item-active):hover {
       & + .tabs-item {

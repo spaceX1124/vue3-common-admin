@@ -32,8 +32,7 @@ import Tabs from './components/Tabs.vue'
 import { useTabView } from './hooks/useTabView.ts'
 import type { TabsProps } from './type.ts'
 
-interface Props extends TabsProps {}
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TabsProps>(), {
   wheelable: true
 })
 const {

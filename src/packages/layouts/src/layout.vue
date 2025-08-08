@@ -20,7 +20,7 @@
       <div class="overflow-hidden transition-all" :style="headerWrapperStyle" >
         <!-- header -->
         <LayoutHeader :height="headerHeight">
-          <button class="toggle-sidebar" @click="handleHeaderToggle">
+          <button class="toggle-sidebar pointer" @click="handleHeaderToggle">
             <Icons :icon="Menu" class="icon"/>
           </button>
           <slot name="header"/>

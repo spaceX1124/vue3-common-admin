@@ -7,14 +7,17 @@ npx tailwindcss init -p
 配置如下
 然后main.ts引入
 */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/*@tailwind base;*/
+/*@tailwind components;*/
+/*@tailwind utilities;*/
 #app,html,body {
     /*@apply 是 Tailwind CSS 中用于在 CSS 文件中引用 Tailwind 实用类的工具。这种方式可以让你将 Tailwind 的类组合在一起并应用到某个选择器中
     size-full: Tailwind 3.x 中的一个类，用来让元素的尺寸占据全部可用空间（即 width: 100% 和 height: 100%）。这是用来让 html 和 body 等元素填满整个视口。
     overscroll-none: 用来禁用滚动的过度滚动效果，这个类可以在某些浏览器中减少滚动时的视觉效果，如在 macOS 上的滚动惯性*/
-    @apply size-full overscroll-none;
+    @apply overscroll-none;
+    width: 100%;
+    height: 100%;
+    margin: 0;
 }
 body {
     min-height: 100vh;
@@ -109,6 +112,9 @@ body {
 .overflow-auto {
     overflow: auto;
 }
+.hidden {
+    display: none;
+}
 
 .transition-all {
     transition-property: all;
@@ -147,6 +153,32 @@ body {
     background: #d8d8d8
 }
 
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+* {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: #e5e7eb;
+}
 
+button {
+    background-color: transparent;
+}
+
+.relative {
+    position: relative;
+}
+.absolute {
+    position: absolute;
+}
+
+img, svg, video, canvas, audio, iframe, embed, object {
+    display: block;
+    vertical-align: middle;
+}
 
 
