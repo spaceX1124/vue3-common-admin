@@ -1,19 +1,15 @@
 <template>
-  <div :class="[
-    b(),
-  ]">
-    <Icons :icon="icon" :class="nsMenu.e('icon')"/>
+  <div class="sub-menu-content">
+    <Icons :icon="icon" class="menu__icon"/>
     <span v-if="!hiddenTitle">
       <slot name="title" />
     </span>
-    <!-- 用的是tailwindcss，size-4 -->
-    <component v-show="showArrowIcon" :is="iconComp" :class="[e('icon-arrow')]" :style="iconArrowStyle" class="size-4"/>
+    <component v-show="showArrowIcon" :is="iconComp" class="sub-menu-content__icon-arrow" :style="iconArrowStyle"/>
   </div>
 </template>
 <script setup lang="ts">
 import { ChevronDown, ChevronRight } from '@/packages/Icons'
 import { Icons } from '@/packages/Icons'
-import { useNamespace } from '@/packages/utils/composables/useNameSpace'
 import type { MenuItemProps } from '../type'
 import { computed } from 'vue'
 import { useMenuContext } from '../hooks/useMenuContext'
@@ -22,9 +18,6 @@ interface Props extends MenuItemProps {
   level?: number;
 }
 const props = withDefaults(defineProps<Props>(), {})
-
-const { b, e } = useNamespace('sub-menu-content')
-const nsMenu = useNamespace('menu')
 
 const rootMenu = useMenuContext()
 // 判断当前菜单是否已经在展开的 SubMenu 菜单项数据中

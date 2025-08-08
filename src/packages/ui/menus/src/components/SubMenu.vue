@@ -1,19 +1,17 @@
 <template>
-  <li :class="[
-        b(),
-        is('active', active),
-        is('opened', opened),
-      ]"
-      @focus="handleMouseenter"
-      @mouseenter="handleMouseenter"
-      @mouseleave="() => handleMouseleave()"
+  <li 
+    class="sub-menu"
+    :class="{'is-active': active, 'is-opened': opened}"
+    @focus="handleMouseenter"
+    @mouseenter="handleMouseenter"
+    @mouseleave="() => handleMouseleave()"
   >
 
     <template v-if="rootMenu.isMenuPopup">
       <HoverCard
         :content-class="[
-          nsMenu.e('popup-container'),
           opened ? '' : 'hidden',
+          'menu__popup-container'
         ]"
         :content-props="contentProps"
         :open="true"
@@ -21,7 +19,7 @@
       >
         <template #trigger>
           <SubMenuContent
-            :class="is('active', active)"
+            :class="{'is-active': active}"
             :icon="icon"
             :level="currentLevel"
             :path="path"
@@ -33,12 +31,13 @@
           </SubMenuContent>
         </template>
         <div
-          :class="[nsMenu.e('popup')]"
+          class="menu__popup"
           @focus="(e) => handleMouseenter(e, 100)"
           @mouseenter="(e) => handleMouseenter(e, 100)"
           @mouseleave="() => handleMouseleave(true)">
           <ul
-            :class="[nsMenu.b(), is('rounded', rounded)]"
+            class="menu"
+            :class="{'is-rounded':rounded }"
             :style="subMenuStyle"
           >
             <slot/>
@@ -48,7 +47,7 @@
     </template>
     <template v-else>
       <SubMenuContent
-        :class="is('active', active)"
+        :class="{'is-active': active}"
         @click.stop="handleClick"
         :icon="icon"
         :path="path"
@@ -59,7 +58,7 @@
         </template>
       </SubMenuContent>
       <CollapseTransition>
-        <ul v-show="opened" :class="[nsMenu.b(), is('rounded', rounded)]" :style="subMenuStyle">
+        <ul v-show="opened" class="menu" :class="{'is-rounded': rounded}" :style="subMenuStyle">
           <slot/>
         </ul>
       </CollapseTransition>
@@ -79,10 +78,6 @@ import { HoverCard, type HoverCardContentProps } from '@/packages/ui/hover-card'
 interface PropsType extends SubMenuProps {}
 const props = withDefaults(defineProps<PropsType>(), {})
 defineOptions({ name: 'SubMenu' })
-
-// 遵循BEM规范
-const { b, is } = useNamespace('sub-menu')
-const nsMenu = useNamespace('menu')
 
 // 当前SubMenu组件保存的所有后代MenuItem数据
 const subMenus = ref<MenuProvider['subMenus']>({})

@@ -1,24 +1,22 @@
 <template>
   <li
-    :class="[
-      b(),
-      is('active', active)
-    ]"
+    class="menu-item"
+    :class="{'is-active': active}"
     @click.stop="handleClick">
     <Tooltip
       v-if="showTooltip"
       side="right"
     >
       <template #trigger>
-        <div :class="[nsMenu.b('tooltip__trigger')]">
-          <Icons :class="nsMenu.e('icon')" :icon="icon" fallback />
+        <div class="menu-tooltip__trigger">
+          <Icons class="menu__icon" :icon="icon" fallback />
           <slot/>
         </div>
       </template>
       <slot name="title"/>
     </Tooltip>
-    <div v-show="!showTooltip" :class="[e('content')]">
-      <Icons :icon="icon" :class="nsMenu.e('icon')"/>
+    <div v-show="!showTooltip" class="menu-item__content">
+      <Icons :icon="icon" class="menu__icon"/>
       <slot name="title"/>
     </div>
   </li>
@@ -27,7 +25,6 @@
 import type { MenuItemProps, MenuItemRegistered } from '../type'
 import { useMenuContext, useSubMenuContext } from '../hooks/useMenuContext'
 import { useMenu } from '../hooks/useMenu'
-import { useNamespace } from '@/packages/utils/composables/useNameSpace'
 import { computed, onMounted, onBeforeUnmount, reactive, useSlots } from 'vue'
 import { Icons } from '@/packages/Icons'
 import { Tooltip } from '@/packages/Tooltip'
@@ -39,10 +36,6 @@ const props = withDefaults(defineProps<PropsType>(), {})
 const emit = defineEmits<{ click: [MenuItemRegistered] }>()
 // 设置组件的名称
 defineOptions({ name: 'MenuItem' })
-
-// 遵循BEM规范
-const { is, b, e } = useNamespace('menu-item')
-const nsMenu = useNamespace('menu')
 
 // 获取最外层Menu组件注入的数据
 const rootMenu = useMenuContext()

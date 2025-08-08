@@ -1,11 +1,8 @@
 <template>
   <ul
-    :class="[
-      b(),
-      is('collapse', collapse),
-    ]"
     :style="menuStyle"
-    class="is-vertical"
+    class="menu is-vertical"
+    :class="{'is-collapse':collapse }"
   >
     <slot/>
   </ul>
@@ -16,7 +13,6 @@ import { createMenuContext, createSubMenuContext } from '../hooks/useMenuContext
 import { useMenuStyle } from '../hooks/useMenu'
 import { reactive, ref, watch, computed } from 'vue'
 import { isHttpUrl } from '@/packages/utils/is'
-import { useNamespace } from '@/packages/utils/composables/useNameSpace'
 // 对组件进行命名
 defineOptions({ name: 'MenuShow' })
 
@@ -25,9 +21,6 @@ const props = withDefaults(defineProps<PropsType>(), {
   collapse: false, // 菜单是否折叠，默认值
   rounded: true // 显示圆角
 })
-
-// 遵循BEM规范
-const { b, is } = useNamespace('menu')
 
 // 这种对事件进行类型标注的方式——学习了
 const emit = defineEmits<{
@@ -239,9 +232,9 @@ watch(
 </script>
 
 <style lang="scss">
-$namespace: zs;
-.#{$namespace}-menu__popup-container,
-.#{$namespace}-menu {
+
+.menu__popup-container,
+.menu {
   --menu-item-height: 38px; /* MenuItem的高度 */
   --menu-font-size: 14px; /* MenuItem的文字大小 */
   --menu-item-radius: 8px; /* 鼠标移入和选中的radius */
@@ -288,12 +281,12 @@ $namespace: zs;
       padding 0.15s ease,
       border-color 0.15s ease;
 
-  .#{$namespace}-menu__icon {
+  .menu__icon {
     transition: transform 0.25s;
   }
   /* 当鼠标移出MenuItem的时候，图标放大1.2倍 */
   &:hover{
-    .#{$namespace}-menu__icon {
+    .menu__icon {
       transform: scale(1.2);
     }
   }
@@ -311,7 +304,7 @@ $namespace: zs;
   background: var(--menu-item-active-background-color);
 }
 
-.#{$namespace}-menu {
+.menu {
   background: var(--menu-background-color);
   &__popup-container {
     max-width: 240px;
@@ -322,28 +315,28 @@ $namespace: zs;
   &__popup {
     padding: 10px 0;
     border-radius: var(--menu-item-radius);
-    .#{$namespace}-sub-menu-content,
-    .#{$namespace}-menu-item {
+    .sub-menu-content,
+    .menu-item {
       padding: var(--menu-item-popup-padding-y) var(--menu-item-popup-padding-x);
     }
   }
   /* 只有最外层那个ul才有is-vertical，然后给这个类下面的这些样式做如下处理 */
   &.is-vertical {
     /* 非折叠的时候 */
-    &:not(.#{$namespace}-menu.is-collapse) {
+    &:not(.menu.is-collapse) {
       /*设置后代所有的菜单项和Submenu项的padding-left为：16 + level*16，第一级level=0*/
-      & .#{$namespace}-menu-item,
-      & .#{$namespace}-sub-menu-content {
+      & .menu-item,
+      & .sub-menu-content {
         padding-left: calc(
             var(--menu-item-indent) + var(--menu-level) * var(--menu-item-indent)
         );
       }
       // 选中第一级有子菜单的项li
-      & > .#{$namespace}-sub-menu {
+      & > .sub-menu {
         // 选中该li下面的二级ul
-        & > .#{$namespace}-menu {
+        & > .menu {
           // 选中二级ul中的li
-          & > .#{$namespace}-menu-item {
+          & > .menu-item {
             padding-left: calc(
                 0px + var(--menu-item-indent) + var(--menu-level) *
                 var(--menu-item-indent)
@@ -351,12 +344,12 @@ $namespace: zs;
           }
         }
         // 将第一级中的子菜单的项li中的那个div的padding-left设置为16 - 8
-        & > .#{$namespace}-sub-menu-content {
+        & > .sub-menu-content {
           padding-left: calc(var(--menu-item-indent) - 8px)!important;
         }
       }
       // 将第一级中没有子菜单的项li的padding-left设置为16 - 8
-      & > .#{$namespace}-menu-item {
+      & > .menu-item {
         padding-left: calc(var(--menu-item-indent) - 8px);
       }
     }
@@ -372,11 +365,11 @@ $namespace: zs;
   }
   /* 折叠的时候 */
   &.is-collapse {
-    .#{$namespace}-menu__icon {
+    .menu__icon {
       margin-right: 0;
     }
-    .#{$namespace}-sub-menu-content,
-    .#{$namespace}-menu-item {
+    .sub-menu-content,
+    .menu-item {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -393,21 +386,22 @@ $namespace: zs;
     }
   }
 }
-.#{$namespace}-sub-menu {
+.sub-menu {
   &.is-active {
-    .#{$namespace}-sub-menu-content {
+    .sub-menu-content {
       color: var(--menu-submenu-active-color);
     }
   }
 }
-.#{$namespace}-sub-menu-content {
+.sub-menu-content {
   height: var(--menu-item-height);
   @include menu-item;
   &__icon-arrow {
     position: absolute;
     top: 50%;
     right: 10px;
-    width: inherit;
+    width: 16px;
+    height: 16px;
     margin-top: -8px;
     margin-right: 0;
     font-weight: normal;
@@ -421,7 +415,7 @@ $namespace: zs;
     background: var(--menu-submenu-hover-background-color) !important;
   }
 }
-.#{$namespace}-menu-item {
+.menu-item {
   @include menu-item;
 
   &.is-active {
@@ -444,7 +438,7 @@ $namespace: zs;
     background: var(--menu-item-hover-background-color) !important;
   }
 
-  .#{$namespace}-menu-tooltip__trigger {
+  .menu-tooltip__trigger {
     position: absolute;
     top: 0;
     left: 0;

@@ -38,14 +38,14 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
 <template>
   <HoverCard v-bind="forwarded">
     <HoverCardTrigger as-child class="h-full">
-      <div class="h-full cursor-pointer">
+      <div class="h-full pointer">
         <slot name="trigger"/>
       </div>
     </HoverCardTrigger>
     <HoverCardContent
       :class="contentClass"
       v-bind="contentProps"
-      class="side-content z-[1000]"
+      class="side-content z-popup"
     >
       <slot/>
     </HoverCardContent>
