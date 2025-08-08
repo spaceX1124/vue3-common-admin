@@ -139,6 +139,7 @@ const delegatedProps = computed(() => {
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   will-change: opacity;
   background: linear-gradient(to bottom, rgb(28, 30, 35), transparent);
+  pointer-events: none;
 }
 .scrollbar-top-shadow {
   @extend %scrollbar-shadow;
